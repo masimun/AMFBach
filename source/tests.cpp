@@ -16,6 +16,7 @@ using namespace std;
 #include "parser.h"
 #include "stdlib.h"
 #include "ctime"
+#include <bitset>
 
 /**
  * Testmodule om simpele tests uit te voeren op klassen,
@@ -37,17 +38,26 @@ void test_smallbasicset() {
 
 	cout << s1.hasAsSubset(s5) << endl; // expected: 1
 	cout << s1.hasAsSubset(s3) << endl; // expected: 0
+
+	cout << "// --- bitwise output test" << endl;
+	cout << s1.toBitString() << endl;
+	int r = 7;
+	cout << std::bitset<16>(r << 1).to_string() <<endl;
+	cout << std::bitset<16>(0x1).to_string() << endl;
+	cout << std::bitset<16>((1 << 13) - 1) << endl;
 }
 
 void test_amfunction() {
 	cout << "# C++ FUNC TESTS - AMFUNCTION #" << endl;
 	Parser p;
-	SmallBasicSet s1 = p.parse("[1]", 1);
+	SmallBasicSet s1 = p.parse("[3]", 1);
 	SmallBasicSet s2 = p.parse("[23]", 2);
+	// SmallBasicSet s3 = p.parse("[2]", 1);
 
 	AMFunction a1;
-	a1.addSet(s1);
-	a1.addSet(s2);
+	a1.addSetConditional(s1);
+	a1.addSetConditional(s2);
+	//  a1.addSetConditional(s3);
 
 	for ( SmallBasicSet s : a1.getSets() ) {
 		cout << s.toString() << endl;
@@ -166,11 +176,11 @@ void test_speed() {
 
 int main() {
 	// run the tests
-	//test_smallbasicset();
-	//test_amfunction();
+	// test_smallbasicset();
+	test_amfunction();
 	//test_general();
     //test_smallbasicsetint();
     //test_smallbasicsetstress();
-    test_speed();
+    //test_speed();
 	return 0;
 }

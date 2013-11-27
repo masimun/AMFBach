@@ -9,6 +9,7 @@
 
 using namespace std;
 #include <set>
+#include <list>
 #include "SmallBasicSet.h"
 #include <iostream>
 
@@ -18,9 +19,12 @@ using namespace std;
  * Invariant: isAntiMonotonic()
  */
 class AMFunction {
+private:
+	SmallBasicSet universe = SmallBasicSet::universe(); // set of integers on which the function operates
 	set<SmallBasicSet> sets;
 public:
 	AMFunction();
+	AMFunction(SmallBasicSet s[], int size);
 	virtual ~AMFunction();
 
 	// query
@@ -30,7 +34,11 @@ public:
 
 	// alter
 	void addSet(SmallBasicSet s);
+	void addSetConditional(SmallBasicSet s);
 
+	// operations
+	AMFunction join(AMFunction other) const;
+	AMFunction meet(AMFunction other) const;
 };
 
 #endif /* AMFUNCTION_H_ */

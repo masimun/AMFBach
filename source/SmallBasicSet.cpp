@@ -5,30 +5,19 @@
  *      Author: Daan Seynaeve, Max Dekonick
  */
 #include "SmallBasicSet.h"
-
-string int_to_string(int a); // forward declaration
+#include <bitset>
 
 SmallBasicSet::SmallBasicSet() : numberofelem(0) {
-	for (int i = 1 ; i < MAXELEMENT ; i++ ) {
-		elements[i] = false;
-	}
     set = 0;
 }
 
 SmallBasicSet::SmallBasicSet(int a[], int asize) : numberofelem(asize) {
 	setSet(a,asize);
-    /**
-    for (int i = 1 ; i < MAXELEMENT ; i++ ) {
-		elements[i] = false;
-	}
-	for (int i = 0 ; i < asize ; i++ ) {
-		elements[a[i]] = true;
-	}
-    **/
 }
 
 SmallBasicSet::SmallBasicSet(uint_fast16_t a) {
     set = a;
+    numberofelem = bitset<16>(a).count();
 }
 
 SmallBasicSet::~SmallBasicSet() {
@@ -43,7 +32,6 @@ int SmallBasicSet::maxintvalue() {
 	return MAXINT;
 }
 
-//dit kan waarschijnlijk nog efficienter.
 string SmallBasicSet::toString() {
 	stringstream ss;
     int copyset = set;
@@ -51,7 +39,7 @@ string SmallBasicSet::toString() {
 	for (int i = MAXELEMENT ; i >= 0 ; i-- ) {
         int temp = copyset - getBit(i);
 		if (temp >= 0) {
-			ss << int_to_string(i);
+			ss << i;
             copyset = temp;
 		}
 	}
@@ -59,44 +47,26 @@ string SmallBasicSet::toString() {
 	return ss.str();
 }
 
+string SmallBasicSet::toBitString() {
+	return std::bitset<16>(set).to_string();
+}
+
 SmallBasicSet SmallBasicSet::setunion(SmallBasicSet other) const {
 	SmallBasicSet unie = set | other.set;
-    /**
-	for (int i = 0 ; i < MAXELEMENT ; i++ ) {
-		unie.elements[i] = elements[i] || other.elements[i];
-	}
-	return unie;
-    **/
     return unie;
 }
 
 SmallBasicSet SmallBasicSet::setdifference(SmallBasicSet other) const {
 	SmallBasicSet difference = set & ~ other.set;
-	/**
-    for (int i = 0 ; i < MAXELEMENT ; i++ ) {
-		difference.elements[i] = elements[i] && !other.elements[i];
-	}
-    **/
 	return difference;
 }
 
 SmallBasicSet SmallBasicSet::setintersect(SmallBasicSet other) const {
 	SmallBasicSet intersect = set & other.set;
-	/**
-     for (int i = 0 ; i < MAXELEMENT ; i++ ) {
-		intersect.elements[i] = elements[i] && other.elements[i];
-	}
-     **/
 	return intersect;
 }
 
 bool SmallBasicSet::equals(SmallBasicSet other) const {
-	/**
-    bool equal = true;
-	for (int i = 0 ; i < MAXELEMENT ; i++ ) {
-		equal &= elements[i] == other.elements[i];
-	}
-     **/
 	return (set == other.set);
 }
 
@@ -105,11 +75,11 @@ bool SmallBasicSet::hasAsSubset(SmallBasicSet other) const {
 }
 
 bool SmallBasicSet::operator<(const SmallBasicSet& other) const {
-    return id < other.id;
+    return set < other.set;
 }
 
 bool SmallBasicSet::operator==(const SmallBasicSet& other) const {
-	return id == other.id;
+	return equals(other);
 }
 
 int SmallBasicSet::getBit(int positie) {
@@ -130,10 +100,10 @@ void SmallBasicSet::setSet(int setvalues[], int asize) {
     }
 }
 
+SmallBasicSet SmallBasicSet::universe() {
+	return SmallBasicSet((1 << MAXELEMENT) - 1);
+}
 
-string int_to_string(int a) {
-	stringstream ss;
-	ss << a;
-	string str = ss.str();
-	return str;
+SmallBasicSet SmallBasicSet::universe(int n) {
+	return SmallBasicSet((1 << n) - 1);
 }

@@ -13,6 +13,12 @@ AMFunction::AMFunction() {
 	// do nothing
 }
 
+AMFunction::AMFunction(SmallBasicSet s[], int size) {
+	for( int i = 0 ; i < size ; i++ ) {
+		sets.insert(s[i]);
+	}
+}
+
 AMFunction::~AMFunction() {
 	// do nothing
 }
@@ -53,6 +59,47 @@ set<SmallBasicSet> AMFunction::getSets() const {
 	return sets;
 }
 
+/**
+ * May break invariants
+ */
 void AMFunction::addSet(SmallBasicSet s) {
 	sets.insert(s);
+}
+
+/**
+ * Does not break invariants:
+ *
+ * if isAntiMonotonic() was true before,
+ * it will still be after adding (s)
+ *
+ * doesn't add (s) if there is a superset of (s)
+ * removes all subsets of (s) uppon adding.
+ */
+void AMFunction::addSetConditional(SmallBasicSet s) {
+	list<SmallBasicSet> subsets;
+	for (set<SmallBasicSet>::iterator it = sets.begin() ; it != sets.end() ; ++it ) {
+		if (s.hasAsSubset(*it)) { subsets.push_front(*it); } // found a subset --> REMOVE
+		if ((*it).hasAsSubset(s)) { return; } // found a superset --> STOP!
+	}
+	for (list<SmallBasicSet>::iterator sub = subsets.begin(); sub != subsets.end() ; ++sub ) {
+		sets.erase(*sub);
+	}
+	sets.insert(s);
+}
+
+
+AMFunction AMFunction::join(AMFunction other) const {
+	AMFunction a;
+	// TODO: implement
+	return a;
+}
+
+AMFunction AMFunction::meet(AMFunction other) const {
+	AMFunction a;
+	for (set<SmallBasicSet>::iterator x = sets.begin() ; x != sets.end() ; ++x ) {
+		for (set<SmallBasicSet>::iterator y = x ; y != sets.end() ; ++y ) {
+			a.addSetConditional((*x).setintersect(*y));
+		}
+	}
+	return a;
 }
