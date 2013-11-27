@@ -5,7 +5,6 @@
  *      Author: Daan Seynaeve, Max Dekonick
  *
  *
- *      KENNETH IS EEN NEGER!!!!
  */
 #include "AMFunction.h"
 #include <iostream>
