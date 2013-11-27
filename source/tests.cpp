@@ -22,7 +22,7 @@ using namespace std;
  * later testen in afzonderlijke files steken.
  */
 void test_smallbasicset() {
-	cout << "# TESTS - SMALLBASICSET #" << endl;
+	cout << "# C++ FUNC TESTS - SMALLBASICSET #" << endl;
 	Parser p;
 	SmallBasicSet s1 = p.parse("[1234]", 4);
 	SmallBasicSet s2 = p.parse("[465]", 3);
@@ -40,7 +40,7 @@ void test_smallbasicset() {
 }
 
 void test_amfunction() {
-	cout << "# TESTS - AMFUNCTION #" << endl;
+	cout << "# C++ FUNC TESTS - AMFUNCTION #" << endl;
 	Parser p;
 	SmallBasicSet s1 = p.parse("[1]", 1);
 	SmallBasicSet s2 = p.parse("[23]", 2);
@@ -71,7 +71,7 @@ void test_smallbasicsetint() {
 void test_smallbasicsetstress() {
     int aantaloperaties=100;
     SmallBasicSet s[100];
-    cout << "# TESTS - STRESS TEST SMALL BASIC SETS #" << endl;
+    cout << "# C++ STRESS TESTS - TEST SMALL BASIC SETS #" << endl;
     cout << "-Start timing-" << endl;
     clock_t begin = clock();
     //maken van  small sets
@@ -113,7 +113,7 @@ void test_smallbasicsetstress() {
 double speed_test_smallbasicsetstress() {
     int aantaloperaties=100000;
     SmallBasicSet s[500];
-    cout << "# TESTS - STRESS TEST SMALL BASIC SETS #" << endl;
+    cout << "# C++ STRESS TESTS - TEST SMALL BASIC SETS #" << endl;
     cout << "-Start timing-" << endl;
     clock_t begin = clock();
     //maken van  small sets
