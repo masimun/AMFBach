@@ -81,7 +81,7 @@ void test_smallbasicsetstress() {
     }
     //uitvoeren van  operaties op random sets
     for (int j = 0; j<aantaloperaties; j++) {
-        int irand = rand() % 4 + 1;
+        int irand = rand() % 3 + 1;
         int irand2 = rand() % 100 + 0;
         int irand3 = rand() % 100 + 0;
         switch ( irand )
@@ -93,10 +93,10 @@ void test_smallbasicsetstress() {
                 cout << s[irand2].toString() << " intersect " << s[irand3].toString() << " = " << (s[irand2].setintersect(s[irand3])).toString() << endl;
                 ;
                 break;
+            //case 3:
+            //    cout << s[irand2].toString() << " / " << s[irand3].toString() << " = " << (s[irand2].setdifference(s[irand3])).toString() << endl;
+            //    break;
             case 3:
-                cout << s[irand2].toString() << " / " << s[irand3].toString() << " = " << (s[irand2].setdifference(s[irand3])).toString() << endl;
-                break;
-            case 4:
                 cout << s[irand2].toString() << " subset " << s[irand3].toString() << " = " << (s[irand2].hasAsSubset(s[irand3])) << endl;
                 break;
         }
