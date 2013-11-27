@@ -52,16 +52,16 @@ void test_amfunction() {
 	Parser p;
 	SmallBasicSet s1 = p.parse("[3]", 1);
 	SmallBasicSet s2 = p.parse("[23]", 2);
-	// SmallBasicSet s3 = p.parse("[2]", 1);
+	SmallBasicSet s3 = p.parse("[2]", 1);
+
+	cout << s1.toString() << endl;
+	cout << s2.toString() << endl;
+	cout << s3.toString() << endl;
+	// cout << s3.toString() << endl; // uncomment this line, compile and run and see what happens
 
 	AMFunction a1;
-	a1.addSetConditional(s1);
-	a1.addSetConditional(s2);
-	//  a1.addSetConditional(s3);
-
-	for ( SmallBasicSet s : a1.getSets() ) {
-		cout << s.toString() << endl;
-	}
+	a1.addSet(s1);
+	a1.addSet(s2);
 
 	cout << "antimonotonic:" << a1.isAntiMonotonic() << endl; // expected: 1
 }
