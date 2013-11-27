@@ -3,6 +3,9 @@
  *
  *  Created on: 25-nov.-2013
  *      Author: Daan Seynaeve, Max Dekonick
+ *
+ *
+ *      KENNETH IS EEN NEGER!!!!
  */
 #include "AMFunction.h"
 #include <iostream>
