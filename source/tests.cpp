@@ -54,17 +54,24 @@ void test_amfunction() {
 	SmallBasicSet s2 = p.parse("[13]", 2);
 	SmallBasicSet s3 = p.parse("[2]", 1);
 
-	cout << s1.toString() << endl;
-	cout << s2.toString() << endl;
-	cout << s3.toString() << endl;
-
 	AMFunction a1;
 	a1.addSetConditional(s1);
 	a1.addSetConditional(s2);
 	a1.addSetConditional(s3);
 
-	cout << "antimonotonic:" << a1.isAntiMonotonic() << endl; // expected: 1
+	cout << a1.toString() << endl; // expected: AM
 
+	SmallBasicSet s4 = p.parse("[12]",2);
+
+	AMFunction a2;
+	a2.addSet(s4);
+	cout << a2.toString() << endl; // expected AM
+
+	cout << "----" << endl;
+
+	a1.meet(a2);
+
+	// cout << a3.toString() << endl; // expected : [1]-[2]-(AM)
 }
 
 void test_smallbasicsetint() {

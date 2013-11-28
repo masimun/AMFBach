@@ -88,11 +88,19 @@ void AMFunction::addSetConditional(SmallBasicSet s) {
 	sets.insert(s);
 }
 
-
 AMFunction AMFunction::join(AMFunction other) const {
 	AMFunction a;
-	// TODO: implement
+	for (set<SmallBasicSet>::iterator it = sets.begin() ; it != sets.end() ; ++it ) {
+		a.addSetConditional(*it);
+	}
+	for (set<SmallBasicSet>::iterator it = other.getSets().begin() ; it != other.getSets().end() ; ++it ) {
+		a.addSetConditional(*it);
+	}
 	return a;
+}
+
+AMFunction AMFunction::operator+(AMFunction other) {
+	return join(other);
 }
 
 AMFunction AMFunction::meet(AMFunction other) const {
@@ -103,4 +111,21 @@ AMFunction AMFunction::meet(AMFunction other) const {
 		}
 	}
 	return a;
+}
+
+AMFunction AMFunction::operator^(AMFunction other) {
+	return meet(other);
+}
+
+string AMFunction::toString() {
+	string rep = "";
+	for (SmallBasicSet s : sets) {
+		rep += s.toString() + "-";
+	}
+	if (isAntiMonotonic()) {
+		rep += "(AM)";
+	} else {
+		rep += "(not AM)";
+	}
+	return rep;
 }

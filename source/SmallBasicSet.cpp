@@ -48,7 +48,6 @@ string SmallBasicSet::toString() {
         int temp = copyset - getBit(i);
 		if (temp >= 0) {
 			ss << int_to_string(i);
-			ss << ",";
             copyset = temp;
 		}
 	}
