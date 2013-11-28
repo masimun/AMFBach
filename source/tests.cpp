@@ -54,14 +54,6 @@ void test_amfunction() {
 	SmallBasicSet s2 = p.parse("[13]", 2);
 	SmallBasicSet s3 = p.parse("[2]", 1);
 
-<<<<<<< HEAD
-	cout << s1.toString() << endl;
-	cout << s2.toString() << endl;
-	cout << s3.toString() << endl;
-    cout << s3.toString() << endl; // uncomment this line, compile and run and see what happens
-
-=======
->>>>>>> 423a5cba5c9086a0738b8953e97dadda74381db6
 	AMFunction a1;
 	a1.addSetConditional(s1);
 	a1.addSetConditional(s2);
@@ -193,7 +185,7 @@ void test_speed() {
 int main() {
 	// run the tests
 	// test_smallbasicset();
-	//test_amfunction();
+	test_amfunction();
 	//test_general();
     //test_smallbasicsetint();
     //test_smallbasicsetstress();
