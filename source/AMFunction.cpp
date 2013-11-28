@@ -25,34 +25,32 @@ AMFunction::~AMFunction() {
 
 SmallBasicSet AMFunction::span() {
 	SmallBasicSet span;
-	for (set<SmallBasicSet>::iterator it = sets.begin(); it != sets.end() ; ++it ) {
-		span = span.setunion(*it);
+	for (SmallBasicSet s : sets ) {
+		span = span.setunion(s);
 	}
 	return span;
 }
 
 bool AMFunction::isAntiMonotonic() {
 	bool amf = true;
-	for (set<SmallBasicSet>::iterator a = sets.begin(); a != sets.end() ; ++a ) {
-		for (set<SmallBasicSet>::iterator b = sets.begin(); b != sets.end() ; ++b ) {
-			amf &= (!((*a).hasAsSubset(*b)) || (*a).equals(*b));
+	for (SmallBasicSet a : sets ) {
+		for (SmallBasicSet b : sets ) {
+			amf &= !(a.hasAsSubset(b)) || a.equals(b);
 		}
 	}
-	/**
-	 * Aan Max: is jouw C-compiler C++11 ?
-	 * anders kunnen we dit herschrijven als:
-	 *
-	 * 	for ( SmallBasicSet a : sets ) {
-	 * 		for ( SmallBasicSet b : sets ) {
-	 * 			amf &= !((*a).hasAsSubset(*b));
-	 * 		}
-	 * 	}
-	 *
-	 * 	wat net iets duidelijker is :)
-	 *
-	 * 	(TODO: remove this comment)
-	 */
 	return amf;
+}
+
+void AMFunction::makeAntiMonotonic() {
+	list<SmallBasicSet> subsets;
+	for (SmallBasicSet a : sets) {
+		for (SmallBasicSet b : sets) {
+			if (a.hasAsSubset(b)) {
+				subsets.push_front(b);
+			}
+		}
+	}
+	removeSets(subsets);
 }
 
 set<SmallBasicSet> AMFunction::getSets() const {
@@ -64,6 +62,12 @@ set<SmallBasicSet> AMFunction::getSets() const {
  */
 void AMFunction::addSet(SmallBasicSet s) {
 	sets.insert(s);
+}
+
+void AMFunction::removeSets(list<SmallBasicSet> rs) {
+	for (SmallBasicSet s : rs) {
+		sets.erase(s);
+	}
 }
 
 /**
@@ -78,13 +82,11 @@ void AMFunction::addSet(SmallBasicSet s) {
 
 void AMFunction::addSetConditional(SmallBasicSet s) {
 	list<SmallBasicSet> subsets;
-	for (set<SmallBasicSet>::iterator it = sets.begin() ; it != sets.end() ; ++it ) {
-		if (s.hasAsSubset(*it)) { subsets.push_front(*it); } // found a subset --> REMOVE
-		if ((*it).hasAsSubset(s)) { return; } // found a superset --> STOP!
+	for (SmallBasicSet a : sets ) {
+		if (s.hasAsSubset(a)) { subsets.push_front(a); } // found a subset --> REMOVE
+		if (a.hasAsSubset(s)) { return; } // found a superset --> STOP!
 	}
-	for (list<SmallBasicSet>::iterator sub = subsets.begin(); sub != subsets.end() ; ++sub ) {
-		sets.erase(*sub);
-	}
+	removeSets(subsets);
 	sets.insert(s);
 }
 

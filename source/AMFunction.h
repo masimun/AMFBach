@@ -35,7 +35,9 @@ public:
 
 	// alter
 	void addSet(SmallBasicSet s);
+	void removeSets(list<SmallBasicSet> rs);
 	void addSetConditional(SmallBasicSet s);
+	void makeAntiMonotonic();
 
 	// operations
 	AMFunction join(AMFunction other) const;
