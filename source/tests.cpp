@@ -57,7 +57,7 @@ void test_amfunction() {
 	cout << s1.toString() << endl;
 	cout << s2.toString() << endl;
 	cout << s3.toString() << endl;
-	// cout << s3.toString() << endl; // uncomment this line, compile and run and see what happens
+    cout << s3.toString() << endl; // uncomment this line, compile and run and see what happens
 
 	AMFunction a1;
 	a1.addSet(s1);
@@ -177,7 +177,7 @@ void test_speed() {
 int main() {
 	// run the tests
 	// test_smallbasicset();
-	test_amfunction();
+	//test_amfunction();
 	//test_general();
     //test_smallbasicsetint();
     //test_smallbasicsetstress();
