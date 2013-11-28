@@ -51,19 +51,35 @@ void test_amfunction() {
 	cout << "# C++ FUNC TESTS - AMFUNCTION #" << endl;
 	Parser p;
 	SmallBasicSet s1 = p.parse("[3]", 1);
-	SmallBasicSet s2 = p.parse("[23]", 2);
+	SmallBasicSet s2 = p.parse("[13]", 2);
 	SmallBasicSet s3 = p.parse("[2]", 1);
 
+<<<<<<< HEAD
 	cout << s1.toString() << endl;
 	cout << s2.toString() << endl;
 	cout << s3.toString() << endl;
     cout << s3.toString() << endl; // uncomment this line, compile and run and see what happens
 
+=======
+>>>>>>> 423a5cba5c9086a0738b8953e97dadda74381db6
 	AMFunction a1;
-	a1.addSet(s1);
-	a1.addSet(s2);
+	a1.addSetConditional(s1);
+	a1.addSetConditional(s2);
+	a1.addSetConditional(s3);
 
-	cout << "antimonotonic:" << a1.isAntiMonotonic() << endl; // expected: 1
+	cout << a1.toString() << endl; // expected: AM
+
+	SmallBasicSet s4 = p.parse("[12]",2);
+
+	AMFunction a2;
+	a2.addSet(s4);
+	cout << a2.toString() << endl; // expected AM
+
+	cout << "----" << endl;
+
+	a1.meet(a2);
+
+	// cout << a3.toString() << endl; // expected : [1]-[2]-(AM)
 }
 
 void test_smallbasicsetint() {
