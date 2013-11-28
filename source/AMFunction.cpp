@@ -75,6 +75,7 @@ void AMFunction::addSet(SmallBasicSet s) {
  * doesn't add (s) if there is a superset of (s)
  * removes all subsets of (s) uppon adding.
  */
+
 void AMFunction::addSetConditional(SmallBasicSet s) {
 	list<SmallBasicSet> subsets;
 	for (set<SmallBasicSet>::iterator it = sets.begin() ; it != sets.end() ; ++it ) {
@@ -87,19 +88,44 @@ void AMFunction::addSetConditional(SmallBasicSet s) {
 	sets.insert(s);
 }
 
-
 AMFunction AMFunction::join(AMFunction other) const {
 	AMFunction a;
-	// TODO: implement
+	for (set<SmallBasicSet>::iterator it = sets.begin() ; it != sets.end() ; ++it ) {
+		a.addSetConditional(*it);
+	}
+	for (set<SmallBasicSet>::iterator it = other.getSets().begin() ; it != other.getSets().end() ; ++it ) {
+		a.addSetConditional(*it);
+	}
 	return a;
+}
+
+AMFunction AMFunction::operator+(AMFunction other) {
+	return join(other);
 }
 
 AMFunction AMFunction::meet(AMFunction other) const {
 	AMFunction a;
 	for (set<SmallBasicSet>::iterator x = sets.begin() ; x != sets.end() ; ++x ) {
-		for (set<SmallBasicSet>::iterator y = x ; y != sets.end() ; ++y ) {
+		for (set<SmallBasicSet>::iterator y = other.getSets().begin() ; y != other.getSets().end() ; ++y ) {
 			a.addSetConditional((*x).setintersect(*y));
 		}
 	}
 	return a;
+}
+
+AMFunction AMFunction::operator^(AMFunction other) {
+	return meet(other);
+}
+
+string AMFunction::toString() {
+	string rep = "";
+	for (SmallBasicSet s : sets) {
+		rep += s.toString() + "-";
+	}
+	if (isAntiMonotonic()) {
+		rep += "(AM)";
+	} else {
+		rep += "(Not AM)";
+	}
+	return rep;
 }

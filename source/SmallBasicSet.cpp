@@ -12,6 +12,7 @@ SmallBasicSet::SmallBasicSet() : numberofelem(0) {
 }
 
 SmallBasicSet::SmallBasicSet(int a[], int asize) : numberofelem(asize) {
+	set = 0;
 	setSet(a,asize);
 }
 
@@ -32,6 +33,13 @@ int SmallBasicSet::maxintvalue() {
 	return MAXINT;
 }
 
+string int_to_string(int a) {
+	stringstream ss;
+	ss << a;
+	string str = ss.str();
+	return str;
+}
+
 string SmallBasicSet::toString() {
 	stringstream ss;
     int copyset = set;
@@ -39,7 +47,7 @@ string SmallBasicSet::toString() {
 	for (int i = MAXELEMENT ; i >= 0 ; i-- ) {
         int temp = copyset - getBit(i);
 		if (temp >= 0) {
-			ss << i;
+			ss << int_to_string(i);
             copyset = temp;
 		}
 	}

@@ -31,6 +31,7 @@ public:
 	SmallBasicSet span();
 	bool isAntiMonotonic();
 	set<SmallBasicSet> getSets() const;
+	string toString();
 
 	// alter
 	void addSet(SmallBasicSet s);
@@ -39,6 +40,8 @@ public:
 	// operations
 	AMFunction join(AMFunction other) const;
 	AMFunction meet(AMFunction other) const;
+	AMFunction operator^(AMFunction other); // meet
+	AMFunction operator+(AMFunction other); // join
 };
 
 #endif /* AMFUNCTION_H_ */
