@@ -69,8 +69,8 @@ void test_amfunction() {
 
 	cout << "----" << endl;
 
-	AMFunction a3 = a1.meet(a2);
-	AMFunction a4 = a1.join(a2);
+	AMFunction a3 = a1 ^ a2;
+	AMFunction a4 = a1 + a2;
 	cout << a3.toString() << endl;
 	cout << a4.toString() << endl;
 

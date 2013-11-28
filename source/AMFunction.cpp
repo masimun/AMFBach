@@ -90,11 +90,11 @@ void AMFunction::addSetConditional(SmallBasicSet s) {
 
 AMFunction AMFunction::join(AMFunction other) const {
 	AMFunction a;
-	for (set<SmallBasicSet>::iterator it = sets.begin() ; it != sets.end() ; ++it ) {
-		a.addSetConditional(*it);
+	for (SmallBasicSet s1 : sets ) {
+		a.addSetConditional(s1);
 	}
-	for (set<SmallBasicSet>::iterator it = other.getSets().begin() ; it != other.getSets().end() ; ++it ) {
-		a.addSetConditional(*it);
+	for (SmallBasicSet s2 : other.getSets() ) {
+		a.addSetConditional(s2);
 	}
 	return a;
 }
@@ -105,12 +105,9 @@ AMFunction AMFunction::operator+(AMFunction other) {
 
 AMFunction AMFunction::meet(AMFunction other) const {
 	AMFunction a;
-    int i = 1;
-	for (set<SmallBasicSet>::iterator x = sets.begin() ; x != sets.end() ; ++x ) {
-		for (set<SmallBasicSet>::iterator y = other.getSets().begin() ; y != other.getSets().end() ; ++y ) {
-			cout << i << endl;
-            i++;
-            a.addSetConditional((*x).setintersect(*y));
+	for (SmallBasicSet s1 : sets ) {
+		for (SmallBasicSet s2 : other.getSets() ) {
+            a.addSetConditional(s1.setintersect(s2));
 		}
 	}
 	return a;
