@@ -125,7 +125,7 @@ string AMFunction::toString() {
 	if (isAntiMonotonic()) {
 		rep += "(AM)";
 	} else {
-		rep += "(not AM)";
+		rep += "(Not AM)";
 	}
 	return rep;
 }
