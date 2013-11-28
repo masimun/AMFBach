@@ -69,7 +69,10 @@ void test_amfunction() {
 
 	cout << "----" << endl;
 
-	a1.meet(a2);
+	AMFunction a3 = a1.meet(a2);
+	AMFunction a4 = a1.join(a2);
+	cout << a3.toString() << endl;
+	cout << a4.toString() << endl;
 
 	// cout << a3.toString() << endl; // expected : [1]-[2]-(AM)
 }
