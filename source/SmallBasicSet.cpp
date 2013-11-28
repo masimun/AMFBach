@@ -103,8 +103,10 @@ void SmallBasicSet::setSet(bool elements[]) {
 }
 
 void SmallBasicSet::setSet(int setvalues[], int asize) {
+    if(asize >0){
     for (int i = 0; i<asize ; i++) {
         set += getBit(setvalues[i]);
+    }
     }
 }
 

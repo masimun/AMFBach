@@ -105,9 +105,12 @@ AMFunction AMFunction::operator+(AMFunction other) {
 
 AMFunction AMFunction::meet(AMFunction other) const {
 	AMFunction a;
+    int i = 1;
 	for (set<SmallBasicSet>::iterator x = sets.begin() ; x != sets.end() ; ++x ) {
 		for (set<SmallBasicSet>::iterator y = other.getSets().begin() ; y != other.getSets().end() ; ++y ) {
-			a.addSetConditional((*x).setintersect(*y));
+			cout << i << endl;
+            i++;
+            a.addSetConditional((*x).setintersect(*y));
 		}
 	}
 	return a;
