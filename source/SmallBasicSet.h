@@ -21,7 +21,7 @@ class SmallBasicSet {
     //constexpr wordt op compile time berekend en niet op runtime. constexpr static const
     int bits[13] = {1,2,4,8,16,32,64,128,256,512,1024,2048,4096};
 	int numberofelem;
-    uint_fast16_t set;
+	uint_fast16_t set;
 public:
 	SmallBasicSet();
 	SmallBasicSet(int a[], int asize);
@@ -35,6 +35,7 @@ public:
 	bool isemptyset();
 	string toString();
 	string toBitString();
+	uint_fast16_t getSet() const;
 
 	// static
 	static SmallBasicSet universe();

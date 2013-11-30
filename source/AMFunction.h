@@ -32,12 +32,17 @@ public:
 	bool isAntiMonotonic();
 	set<SmallBasicSet> getSets() const;
 	string toString();
+	bool equals(AMFunction other);
+	bool contains(SmallBasicSet s);
 
 	// alter
+	void setSets(set<SmallBasicSet> ss);
 	void addSet(SmallBasicSet s);
 	void removeSets(list<SmallBasicSet> rs);
 	void addSetConditional(SmallBasicSet s);
 	void makeAntiMonotonic();
+
+	AMFunction badclone();
 
 	// operations
 	AMFunction join(AMFunction other) const;

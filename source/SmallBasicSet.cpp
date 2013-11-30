@@ -110,6 +110,10 @@ void SmallBasicSet::setSet(int setvalues[], int asize) {
     }
 }
 
+uint_fast16_t SmallBasicSet::getSet() const {
+	return set;
+}
+
 SmallBasicSet SmallBasicSet::universe() {
 	return SmallBasicSet((1 << MAXELEMENT) - 1);
 }

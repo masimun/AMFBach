@@ -57,6 +57,10 @@ set<SmallBasicSet> AMFunction::getSets() const {
 	return sets;
 }
 
+void AMFunction::setSets(set<SmallBasicSet> ss) {
+	sets = ss;
+}
+
 /**
  * May break invariants
  */
@@ -130,4 +134,40 @@ string AMFunction::toString() {
 		rep += "(Not AM)";
 	}
 	return rep;
+}
+
+/**
+ * TODO: good clone
+ */
+AMFunction AMFunction::badclone() {
+	AMFunction clone;
+	for ( SmallBasicSet s : sets) {
+		clone.addSet(s);
+	}
+	return clone;
+}
+
+bool AMFunction::contains(SmallBasicSet s) {
+	for (SmallBasicSet i : sets) {
+		if (i.equals(s)) { return true; }
+	}
+	return false;
+}
+
+/**
+ * relies on ordered set
+ */
+bool AMFunction::equals(AMFunction other) {
+//	bool equal = true;
+//	set<SmallBasicSet>::iterator ita = sets.begin();
+//	set<SmallBasicSet>::iterator itb = other.getSets().begin();
+//	while (ita != sets.end()) {
+//		if (itb == sets.end()) { return false; }
+//		cout << (*ita).getSet() << "--" << (*itb).getSet() << endl;
+//		equal &= ((*ita).equals(*itb));
+//		ita++;
+//		itb++;
+//	}
+//	return equal;
+	return sets == other.getSets();
 }
