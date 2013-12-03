@@ -43,7 +43,7 @@ string int_to_string(int a) {
 string SmallBasicSet::toString() {
 	stringstream ss;
     int copyset = set;
-	ss << "[";
+	ss << "{";
 	for (int i = MAXELEMENT ; i >= 0 ; i-- ) {
         int temp = copyset - getBit(i);
 		if (temp >= 0) {
@@ -51,7 +51,7 @@ string SmallBasicSet::toString() {
             copyset = temp;
 		}
 	}
-	ss << "]";
+	ss << "}";
 	return ss.str();
 }
 

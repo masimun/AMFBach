@@ -22,6 +22,9 @@ void test_amfunction() {
 	SmallBasicSet s1 = p.parse("[3]", 1);
 	SmallBasicSet s2 = p.parse("[13]", 2);
 	SmallBasicSet s3 = p.parse("[2]", 1);
+	SmallBasicSet s4 = p.parse("[12]",2);
+	SmallBasicSet s8 = p.parse("[2]", 1);
+	SmallBasicSet s9 = p.parse("[1]", 1);
 
 	AMFunction a1;
 	a1.addSetConditional(s1);
@@ -29,8 +32,6 @@ void test_amfunction() {
 	a1.addSetConditional(s3);
 
 	cout << a1.toString() << endl; // expected: AM
-
-	SmallBasicSet s4 = p.parse("[12]",2);
 
 	AMFunction a2;
 	a2.addSet(s4);
@@ -43,14 +44,24 @@ void test_amfunction() {
 	cout << a3.toString() << endl; // expected : [1]-[2]-(AM)
 	cout << a4.toString() << endl;
 
-	SmallBasicSet s8 = p.parse("[2]", 1);
-	SmallBasicSet s9 = p.parse("[1]", 1);
-
 	AMFunction a5;
 	a5.addSet(s8);
 	a5.addSet(s9);
 	cout << a5.toString() << endl;
 	cout << a3.equals(a4) << endl; // expected : 0
+
+	cout << "----" << endl;
+
+	AMFunction a6;
+	a6.addSetConditional(s1);
+	a6.addSetConditional(s9);
+	AMFunction a7;
+	a7.addSetConditional(s2);
+	cout << a6.toString() << endl;
+	cout << a7.toString() << endl;
+
+	cout << a6.leq(a7) << endl; // expected: 1
+	cout << a7.leq(a6) << endl; // expected: 0
 }
 
 bool contains(list<AMFunction> as, AMFunction a) {
@@ -99,7 +110,6 @@ void verynaivededekind() {
 }
 
 int main() {
-	verynaivededekind();
-	//test_amfunction();
+	test_amfunction();
 	return 0;
 }

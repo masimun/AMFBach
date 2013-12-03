@@ -14,7 +14,7 @@ using namespace std;
 #include <iostream>
 
 /**
- * Deze klasse stelt een antimonotonic function voor.
+ * This class represents an anti-monotonic function.
  *
  * Invariant: isAntiMonotonic()
  */
@@ -24,15 +24,16 @@ private:
 	set<SmallBasicSet> sets;
 public:
 	AMFunction();
+	AMFunction(SmallBasicSet N);
 	AMFunction(SmallBasicSet s[], int size);
 	virtual ~AMFunction();
 
 	// query
 	SmallBasicSet span();
 	bool isAntiMonotonic();
+	bool isEmpty();
 	set<SmallBasicSet> getSets() const;
 	string toString();
-	bool equals(AMFunction other);
 	bool contains(SmallBasicSet s);
 
 	// alter
@@ -42,13 +43,23 @@ public:
 	void addSetConditional(SmallBasicSet s);
 	void makeAntiMonotonic();
 
-	AMFunction badclone();
+	// compare
+	bool leq(AMFunction other);
+	bool equals(AMFunction other);
 
 	// operations
+	AMFunction badclone();
 	AMFunction join(AMFunction other) const;
 	AMFunction meet(AMFunction other) const;
+	AMFunction times(AMFunction other) const;
 	AMFunction operator^(AMFunction other); // meet
 	AMFunction operator+(AMFunction other); // join
+
+	// class
+	static AMFunction emptyFunction(SmallBasicSet N);
+	static AMFunction universeFunction(SmallBasicSet N);
+	static AMFunction universeFunction(int n);
+	static AMFunction emptySetFunction(SmallBasicSet N);
 };
 
 #endif /* AMFUNCTION_H_ */

@@ -13,6 +13,11 @@ AMFunction::AMFunction() {
 	// do nothing
 }
 
+/* N = universe */
+AMFunction::AMFunction(SmallBasicSet N) {
+	universe = N;
+}
+
 AMFunction::AMFunction(SmallBasicSet s[], int size) {
 	for( int i = 0 ; i < size ; i++ ) {
 		sets.insert(s[i]);
@@ -41,6 +46,10 @@ bool AMFunction::isAntiMonotonic() {
 	return amf;
 }
 
+bool AMFunction::isEmpty() {
+	return sets.empty();
+}
+
 void AMFunction::makeAntiMonotonic() {
 	list<SmallBasicSet> subsets;
 	for (SmallBasicSet a : sets) {
@@ -56,6 +65,10 @@ void AMFunction::makeAntiMonotonic() {
 set<SmallBasicSet> AMFunction::getSets() const {
 	return sets;
 }
+
+/****************************************************
+ * ALTER
+ ****************************************************/
 
 void AMFunction::setSets(set<SmallBasicSet> ss) {
 	sets = ss;
@@ -94,6 +107,10 @@ void AMFunction::addSetConditional(SmallBasicSet s) {
 	sets.insert(s);
 }
 
+/****************************************************
+ * OPERATIONS
+ ****************************************************/
+
 AMFunction AMFunction::join(AMFunction other) const {
 	AMFunction a;
 	for (SmallBasicSet s1 : sets ) {
@@ -123,15 +140,15 @@ AMFunction AMFunction::operator^(AMFunction other) {
 	return meet(other);
 }
 
+/* (!) means not anti-monotonic! */
 string AMFunction::toString() {
+	if (isEmpty()) { return "0"; }
 	string rep = "";
 	for (SmallBasicSet s : sets) {
 		rep += s.toString() + "-";
 	}
-	if (isAntiMonotonic()) {
-		rep += "(AM)";
-	} else {
-		rep += "(Not AM)";
+	if (!isAntiMonotonic()) {
+		rep += "(!)";
 	}
 	return rep;
 }
@@ -147,6 +164,10 @@ AMFunction AMFunction::badclone() {
 	return clone;
 }
 
+/****************************************************
+ * COMPARE
+ ****************************************************/
+
 bool AMFunction::contains(SmallBasicSet s) {
 	for (SmallBasicSet i : sets) {
 		if (i.equals(s)) { return true; }
@@ -154,20 +175,51 @@ bool AMFunction::contains(SmallBasicSet s) {
 	return false;
 }
 
-/**
- * relies on ordered set
- */
+/* relies on ordered set */
 bool AMFunction::equals(AMFunction other) {
-//	bool equal = true;
-//	set<SmallBasicSet>::iterator ita = sets.begin();
-//	set<SmallBasicSet>::iterator itb = other.getSets().begin();
-//	while (ita != sets.end()) {
-//		if (itb == sets.end()) { return false; }
-//		cout << (*ita).getSet() << "--" << (*itb).getSet() << endl;
-//		equal &= ((*ita).equals(*itb));
-//		ita++;
-//		itb++;
-//	}
-//	return equal;
 	return sets == other.getSets();
 }
+
+/**
+ * Checks whether the AMFunction is less than or equal to other.
+ */
+bool AMFunction::leq(AMFunction other) {
+	for ( SmallBasicSet s1 : sets ) {
+		bool contained = false;
+		for ( SmallBasicSet s2 : other.getSets() ) {
+			if (s2.hasAsSubset(s1)) { contained = true; break; }
+		}
+		if (!contained) { return false; }
+	}
+	return true;
+}
+
+/****************************************************
+ * CLASS
+ ****************************************************/
+
+/* N = universe */
+AMFunction AMFunction::emptyFunction(SmallBasicSet N) {
+	return AMFunction(N);
+}
+
+/* N = universe */
+AMFunction AMFunction::universeFunction(int n) {
+	SmallBasicSet N = SmallBasicSet::universe(n);
+	return universeFunction(N);
+}
+
+/* N = universe */
+AMFunction AMFunction::universeFunction(SmallBasicSet N) {
+	AMFunction amf = AMFunction(N);
+	amf.addSet(N);
+	return amf;
+}
+
+/* N = universe */
+AMFunction AMFunction::emptySetFunction(SmallBasicSet N) {
+	AMFunction amf = AMFunction(N);
+	amf.addSet(SmallBasicSet());
+	return amf;
+}
+
