@@ -74,8 +74,8 @@ bool contains(list<AMFunction> as, AMFunction a) {
 }
 
 void verynaivededekind() {
-	int n = 3; // does not work for 4... and 5 is to hard to calculate.
-	int sbsamount = pow(2,n);
+	int const n = 3; // does not work for 4... and 5 is to hard to calculate.
+	int const sbsamount = pow(2,n);
 	SmallBasicSet sbs[sbsamount];
 	for (int i = 0 ; i < sbsamount ; i++) {
 		sbs[i] = SmallBasicSet(i);
@@ -110,6 +110,7 @@ void verynaivededekind() {
 }
 
 int main() {
-	test_amfunction();
+	// test_amfunction();
+	verynaivededekind();
 	return 0;
 }
