@@ -7,3 +7,11 @@
 
 #include "Solver.h"
 
+void test_solver() {
+	cout << Solver::combinations(6,3) << endl;
+}
+
+main() {
+	test_solver();
+}
+

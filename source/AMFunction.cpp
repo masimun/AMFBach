@@ -176,14 +176,22 @@ bool AMFunction::contains(SmallBasicSet s) {
 }
 
 /* relies on ordered set */
-bool AMFunction::equals(AMFunction other) {
+bool AMFunction::equals(AMFunction other) const {
 	return sets == other.getSets();
+}
+
+bool AMFunction::operator<(const AMFunction& other) const {
+    return sets < other.getSets();
+}
+
+bool AMFunction::operator==(const AMFunction& other) const {
+	return equals(other);
 }
 
 /**
  * Checks whether the AMFunction is less than or equal to other.
  */
-bool AMFunction::leq(AMFunction other) {
+bool AMFunction::leq(AMFunction other) const {
 	for ( SmallBasicSet s1 : sets ) {
 		bool contained = false;
 		for ( SmallBasicSet s2 : other.getSets() ) {
@@ -199,8 +207,15 @@ bool AMFunction::leq(AMFunction other) {
  ****************************************************/
 
 /* N = universe */
-AMFunction AMFunction::emptyFunction(SmallBasicSet N) {
-	return AMFunction(N);
+AMFunction AMFunction::emptyFunction() {
+	return AMFunction();
+}
+
+/* N = universe */
+AMFunction AMFunction::emptySetFunction() {
+	AMFunction amf = AMFunction();
+	amf.addSet(SmallBasicSet());
+	return amf;
 }
 
 /* N = universe */
@@ -213,13 +228,6 @@ AMFunction AMFunction::universeFunction(int n) {
 AMFunction AMFunction::universeFunction(SmallBasicSet N) {
 	AMFunction amf = AMFunction(N);
 	amf.addSet(N);
-	return amf;
-}
-
-/* N = universe */
-AMFunction AMFunction::emptySetFunction(SmallBasicSet N) {
-	AMFunction amf = AMFunction(N);
-	amf.addSet(SmallBasicSet());
 	return amf;
 }
 

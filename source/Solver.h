@@ -22,10 +22,14 @@ public:
 	Solver();
 	virtual ~Solver();
 
+	// UTILITY
+	static long combinations(int n, int i);
+	static long comb(int n, int i);
+
 	// ALGORITHMS
 	vector<map<AMFunction,long>> algorithm9(int n);
 	vector<map<AMFunction,long>> equivalence_classes(int n); // == algorithm 9
-	map<AMFunction,long> algorithm7(long n, map<AMFunction,long> S);
+	map<AMFunction,long> algorithm7(int n, map<AMFunction,long> S);
 
 	// COEFFICIENTS
 };

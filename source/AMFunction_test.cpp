@@ -112,8 +112,8 @@ void verynaivededekind() {
 	cout << "Dedekind number for n = " << n << ": " << accdede;
 }
 
-int main() {
-	// test_amfunction();
-	verynaivededekind();
-	return 0;
-}
+//int main() {
+//	// test_amfunction();
+//	verynaivededekind();
+//	return 0;
+//}

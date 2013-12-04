@@ -12,6 +12,7 @@ using namespace std;
 #include <list>
 #include "SmallBasicSet.h"
 #include <iostream>
+#include <utility>
 
 /**
  * This class represents an anti-monotonic function.
@@ -44,8 +45,10 @@ public:
 	void makeAntiMonotonic();
 
 	// compare
-	bool leq(AMFunction other);
-	bool equals(AMFunction other);
+	bool leq(AMFunction other) const;
+	bool equals(AMFunction other) const;
+	bool operator<(const AMFunction& other) const;
+	bool operator==(const AMFunction& other) const;
 
 	// operations
 	AMFunction badclone();
@@ -56,10 +59,10 @@ public:
 	AMFunction operator+(AMFunction other); // join
 
 	// class
-	static AMFunction emptyFunction(SmallBasicSet N);
+	static AMFunction emptyFunction();
+	static AMFunction emptySetFunction();
 	static AMFunction universeFunction(SmallBasicSet N);
 	static AMFunction universeFunction(int n);
-	static AMFunction emptySetFunction(SmallBasicSet N);
 };
 
 #endif /* AMFUNCTION_H_ */

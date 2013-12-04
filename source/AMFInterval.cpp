@@ -22,5 +22,5 @@ string AMFInterval::toString() {
 
 AMFInterval AMFInterval::fullspace(int n) {
 	SmallBasicSet N = SmallBasicSet::universe(n);
-	return AMFInterval(AMFunction::emptyFunction(N),AMFunction::universeFunction(N));
+	return AMFInterval(AMFunction::emptyFunction(),AMFunction::universeFunction(N));
 }
