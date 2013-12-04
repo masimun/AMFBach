@@ -74,7 +74,7 @@ bool contains(list<AMFunction> as, AMFunction a) {
 }
 
 void verynaivededekind() {
-	int const n = 3; // does not work for 4... and 5 is to hard to calculate.
+	int const n = 4; // works instant up to 4... and 5 takes a while.
 	int const sbsamount = pow(2,n);
 	SmallBasicSet sbs[sbsamount];
 	for (int i = 0 ; i < sbsamount ; i++) {
@@ -82,14 +82,15 @@ void verynaivededekind() {
 		cout << sbs[i].toString() << endl;
 	}
 	cout << "----" << endl;
-	int ncount = n;
 	int accdede = 1;
 	cout << "lege AMF - 1" << endl;
 	list<AMFunction> amfs;
 	amfs.push_front(AMFunction());
 	int itno = 0;
-	while (ncount > 0) {
-		cout << itno++ << endl;
+	bool set_added = true;
+	while (set_added) {
+		set_added = false;
+		cout << "chains of length " << (itno++)+1 << endl;
 		list<AMFunction> amfs_new;
 		for (AMFunction a : amfs) {
 			for (SmallBasicSet s : sbs) {
@@ -97,14 +98,16 @@ void verynaivededekind() {
 				if (!a_new.contains(s)) {
 					a_new.addSet(s);
 					if (a_new.isAntiMonotonic() && !contains(amfs_new,a_new)) {
-						cout << a_new.toString() << " - " << ++accdede << endl;
+						accdede++;
+						// cout << a_new.toString() << " - " << accdede << endl;
+						if (accdede % 1000 == 0) {cout << "count:" << accdede << endl;}
 						amfs_new.push_front(a_new);
+						set_added = true;
 					}
 				}
 			}
 		}
 		amfs = amfs_new;
-		ncount--;
 	}
 	cout << "Dedekind number for n = " << n << ": " << accdede;
 }
