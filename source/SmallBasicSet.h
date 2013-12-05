@@ -42,19 +42,10 @@ public:
 	static SmallBasicSet universe(int n);
 
 	// operation
-
-	/**
-	 * Aan Max: const wilt zeggen dat de functie geen
-	 * velden wijzigt van het object waarmee het
-	 * opgeroepen wordt.
-	 * Zet het waar mogelijk, anders kun je de methodes
-	 * niet gebruiken in iterators :-)
-	 *
-	 * (TODO: remove this comment)
-	 */
 	SmallBasicSet setunion(SmallBasicSet s) const;
 	SmallBasicSet setintersect(SmallBasicSet s) const;
 	SmallBasicSet setdifference(SmallBasicSet s) const;
+	SmallBasicSet map(int table[]) const;
 
 	// comparison
 	bool equals(SmallBasicSet s) const;
@@ -62,12 +53,14 @@ public:
 
 	// override
 	bool operator<(const SmallBasicSet& other) const;
+
 	bool operator==(const SmallBasicSet& other) const;
     
     //getters
     int getBit(int positie);
     
     //setters
+    void quickadd(int bit); // add an integer a to the set
 private:
     void setSet(bool elements[]);
     void setSet(int setvalues[],int asize);

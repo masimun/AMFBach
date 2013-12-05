@@ -56,7 +56,29 @@ string SmallBasicSet::toString() {
 }
 
 string SmallBasicSet::toBitString() {
-	return std::bitset<16>(set).to_string();
+	return std::bitset<13>(set).to_string();
+}
+
+/*******************************************
+ * OPERATIONS
+ *******************************************/
+
+/**
+ * map this set according to the transformation in table: i -> table[i] + 1
+ * TODO: verify this is working correctly
+ */
+SmallBasicSet SmallBasicSet::map(int table[]) const {
+	SmallBasicSet res;
+	int i = 1;
+	int bit = 1;
+	while (i <= MAXELEMENT) {
+		if ((bit & set) > 0) { res.quickadd(table[i] + 1); }
+		bit <<= 1; i++;
+	}
+	return res;
+}
+void SmallBasicSet::quickadd(int a) {
+	set |= getBit(a);
 }
 
 SmallBasicSet SmallBasicSet::setunion(SmallBasicSet other) const {
@@ -73,6 +95,10 @@ SmallBasicSet SmallBasicSet::setintersect(SmallBasicSet other) const {
 	SmallBasicSet intersect = set & other.set;
 	return intersect;
 }
+
+/*******************************************
+ * MISC
+ *******************************************/
 
 bool SmallBasicSet::equals(SmallBasicSet other) const {
 	return (set == other.set);
@@ -113,6 +139,10 @@ void SmallBasicSet::setSet(int setvalues[], int asize) {
 uint_fast16_t SmallBasicSet::getSet() const {
 	return set;
 }
+
+/*******************************************
+ * CLASS
+ *******************************************/
 
 SmallBasicSet SmallBasicSet::universe() {
 	return SmallBasicSet((1 << MAXELEMENT) - 1);
