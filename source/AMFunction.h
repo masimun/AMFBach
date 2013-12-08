@@ -13,6 +13,8 @@ using namespace std;
 #include "SmallBasicSet.h"
 #include <iostream>
 #include <utility>
+#include <tr1/unordered_set>
+#include "PairPermutator.h"
 
 /**
  * This class represents an anti-monotonic function.
@@ -57,6 +59,10 @@ public:
 	AMFunction times(AMFunction other) const;
 	AMFunction operator^(AMFunction other); // meet
 	AMFunction operator+(AMFunction other); // join
+	AMFunction map(int inverse[]);
+
+	// algo
+	tr1::unordered_set<int> symmetry_group() const;
 
 	// class
 	static AMFunction emptyFunction();

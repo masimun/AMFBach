@@ -5,9 +5,11 @@
  *      Author: Daan
  */
 
+using namespace std;
 #include "Solver.h"
 #include "PairPermutator.h"
 #include <iostream>
+#include <tr1/unordered_set>
 
 void printarray(int arr[], int size) {
 	cout <<"[";
@@ -19,6 +21,11 @@ void printarray(int arr[], int size) {
 
 void test_solver() {
 	cout << Solver::combinations(6,3) << endl;
+}
+
+void test_hash() {
+	// very test, much hash
+	tr1::unordered_set<int> a;
 }
 
 void test_permutator() {
@@ -40,8 +47,10 @@ void test_permutator() {
 
 }
 
-main() {
-	cout << (4 & 9) << endl;
+int main() {
+	cout << (3 & 6) << endl;
 
+
+	return 0;
 }
 

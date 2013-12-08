@@ -164,6 +164,17 @@ AMFunction AMFunction::badclone() {
 	return clone;
 }
 
+/**
+ * TODO: check for copy behaviour
+ */
+AMFunction AMFunction::map(int inverse[]) {
+	AMFunction res(universe);
+	for (SmallBasicSet s : sets) {
+		res.addSet(s.map(inverse));
+	}
+	return res;
+}
+
 /****************************************************
  * COMPARE
  ****************************************************/
@@ -200,6 +211,33 @@ bool AMFunction::leq(AMFunction other) const {
 		if (!contained) { return false; }
 	}
 	return true;
+}
+
+/****************************************************
+ * ALGO
+ ****************************************************/
+
+tr1::unordered_set<int> symmetry_group() const {
+	tr1::unordered_set<int> res;
+	SmallBasicSet span = span();
+	int maplen = span.numberofelements()
+	int* map = new int[maplen];
+	int* inversemap = new int[span.maximum() + 1];
+	int pos = 0;
+	// TODO:fill map and inverse
+//	for (int i:span) {
+//				map[pos] = i;
+//				inverseMap[i] = pos++;
+//			}
+	PairPermutator perm(map,inversemap,maplen);
+	// encode ??
+	while (!perm.finished()) {
+		// do stuff
+		perm.permute();
+	}
+	delete[] map;
+	delete[] inversemap;
+	return res;
 }
 
 /****************************************************

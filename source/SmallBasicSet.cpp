@@ -25,6 +25,11 @@ SmallBasicSet::~SmallBasicSet() {
 	// destructor
 }
 
+int numberofelements() {
+	// TODO: implement
+	return 0;
+}
+
 int SmallBasicSet::maxelement() {
 	return MAXELEMENT;
 }

@@ -32,12 +32,14 @@ public:
 	int maxelement();
     int maxintvalue();
 	int numberofelements();
+	int maximum(); // TODO: implement
+	int minimum(); // TODO: implement
 	bool isemptyset();
 	string toString();
 	string toBitString();
 	uint_fast16_t getSet() const;
 
-	// static
+	// class
 	static SmallBasicSet universe();
 	static SmallBasicSet universe(int n);
 
@@ -51,16 +53,20 @@ public:
 	bool equals(SmallBasicSet s) const;
 	bool hasAsSubset(SmallBasicSet s) const;
 
-	// override
+	// template args
 	bool operator<(const SmallBasicSet& other) const;
 
 	bool operator==(const SmallBasicSet& other) const;
     
+	// algo tools
+	void quickadd(int bit); // add an integer a to the set
+	int getNextInSet(int i); // TODO: implement, returns i's successor
+
     //getters
     int getBit(int positie);
     
     //setters
-    void quickadd(int bit); // add an integer a to the set
+
 private:
     void setSet(bool elements[]);
     void setSet(int setvalues[],int asize);
