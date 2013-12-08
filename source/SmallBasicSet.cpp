@@ -25,8 +25,18 @@ SmallBasicSet::~SmallBasicSet() {
 	// destructor
 }
 
-int numberofelements() {
-	// TODO: implement
+int SmallBasicSet::numberofelements() {
+	// TODO: stub, implement
+	return 0;
+}
+
+int SmallBasicSet::maximum() {
+	// TODO: stub, implement
+	return 0;
+}
+
+int SmallBasicSet::minimum() {
+	// TODO: stub, implement
 	return 0;
 }
 
@@ -99,6 +109,10 @@ SmallBasicSet SmallBasicSet::setdifference(SmallBasicSet other) const {
 SmallBasicSet SmallBasicSet::setintersect(SmallBasicSet other) const {
 	SmallBasicSet intersect = set & other.set;
 	return intersect;
+}
+
+SmallBasicSet SmallBasicSet::operator/(const SmallBasicSet& other) const {
+	return setdifference(other);
 }
 
 /*******************************************

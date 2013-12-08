@@ -23,7 +23,7 @@ using namespace std;
  */
 class AMFunction {
 private:
-	SmallBasicSet universe = SmallBasicSet::universe(); // set of integers on which the function operates
+	SmallBasicSet universe; // set of integers on which the function operates
 	set<SmallBasicSet> sets;
 public:
 	AMFunction();
@@ -60,15 +60,17 @@ public:
 	AMFunction operator^(AMFunction other); // meet
 	AMFunction operator+(AMFunction other); // join
 	AMFunction map(int inverse[]);
+	AMFunction omicron(AMFunction tau, AMFunction alfa);
 
 	// algo
-	tr1::unordered_set<int> symmetry_group() const;
+	tr1::unordered_set<int> symmetry_group(); // TODO: implement
 
 	// class
 	static AMFunction emptyFunction();
 	static AMFunction emptySetFunction();
 	static AMFunction universeFunction(SmallBasicSet N);
 	static AMFunction universeFunction(int n);
+	static AMFunction singletonFunction(int l);
 };
 
 #endif /* AMFUNCTION_H_ */

@@ -10,7 +10,7 @@
 #include <iostream>
 
 AMFunction::AMFunction() {
-	// do nothing
+	universe = SmallBasicSet::universe();
 }
 
 /* N = universe */
@@ -19,6 +19,7 @@ AMFunction::AMFunction(SmallBasicSet N) {
 }
 
 AMFunction::AMFunction(SmallBasicSet s[], int size) {
+	universe = SmallBasicSet::universe();
 	for( int i = 0 ; i < size ; i++ ) {
 		sets.insert(s[i]);
 	}
@@ -175,6 +176,26 @@ AMFunction AMFunction::map(int inverse[]) {
 	return res;
 }
 
+AMFunction AMFunction::omicron(AMFunction tau, AMFunction alfa) {
+	if ( tau.isEmpty() ) {
+		if ( alfa.isEmpty() ) { return *this; }
+		else { return AMFunction::emptyFunction(); }
+	}
+	AMFunction res(universe);
+	res.addSet(span().setdifference(alfa.span()));
+	for (SmallBasicSet s : alfa.getSets() ) {
+		AMFunction current(universe);
+		current.addSet(s);
+		res = res.times(current.meet(tau));
+	}
+	return res.meet(*this);
+}
+
+AMFunction AMFunction::times(AMFunction other) const {
+	// TODO: stub, implement
+	return (*this);
+}
+
 /****************************************************
  * COMPARE
  ****************************************************/
@@ -217,13 +238,13 @@ bool AMFunction::leq(AMFunction other) const {
  * ALGO
  ****************************************************/
 
-tr1::unordered_set<int> symmetry_group() const {
+tr1::unordered_set<int> AMFunction::symmetry_group() {
 	tr1::unordered_set<int> res;
-	SmallBasicSet span = span();
-	int maplen = span.numberofelements()
+	SmallBasicSet sp = span();
+	int maplen = sp.numberofelements();
 	int* map = new int[maplen];
-	int* inversemap = new int[span.maximum() + 1];
-	int pos = 0;
+	int* inversemap = new int[sp.maximum() + 1];
+	// int pos = 0;
 	// TODO:fill map and inverse
 //	for (int i:span) {
 //				map[pos] = i;
@@ -266,6 +287,14 @@ AMFunction AMFunction::universeFunction(int n) {
 AMFunction AMFunction::universeFunction(SmallBasicSet N) {
 	AMFunction amf = AMFunction(N);
 	amf.addSet(N);
+	return amf;
+}
+
+AMFunction AMFunction::singletonFunction(int l) {
+	AMFunction amf;
+	SmallBasicSet s;
+	s.quickadd(l);
+	amf.addSet(s);
 	return amf;
 }
 

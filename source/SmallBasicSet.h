@@ -32,8 +32,8 @@ public:
 	int maxelement();
     int maxintvalue();
 	int numberofelements();
-	int maximum(); // TODO: implement
-	int minimum(); // TODO: implement
+	int maximum();
+	int minimum();
 	bool isemptyset();
 	string toString();
 	string toBitString();
@@ -47,6 +47,7 @@ public:
 	SmallBasicSet setunion(SmallBasicSet s) const;
 	SmallBasicSet setintersect(SmallBasicSet s) const;
 	SmallBasicSet setdifference(SmallBasicSet s) const;
+	SmallBasicSet operator/(const SmallBasicSet& other) const;
 	SmallBasicSet map(int table[]) const;
 
 	// comparison

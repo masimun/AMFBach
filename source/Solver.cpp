@@ -41,9 +41,31 @@ vector<map<AMFunction,long>> Solver::algorithm9(int till) {
 	mapstore(res0,AMFunction::emptySetFunction());
 	res.push_back(res0);
 	for (int n = 0; n < till; n++ ) {
-		//res.push_back(algorithm7(n,res.at(n))); // calculate AMF(n+1) and add it to res.
+		// calculate AMF(n+1) and add it to res.
+		// res.push_back(algorithm7(n,res.at(n)));
 	}
 	return res;
 }
 
-// TODO: algo 7
+map<AMFunction,long> algorithm7(int n, map<AMFunction,long> S) {
+	map<AMFunction,long> S1;
+	AMFunction alfa = AMFunction::universeFunction(n);
+	AMFunction u = AMFunction::universeFunction(n+1);
+	AMFunction l = AMFunction::singletonFunction(n+1);
+	for( pair<AMFunction,long> tpair : S ) {
+		AMFunction t = tpair.first;
+		tr1::unordered_set<int> rtsymm = (t.join(l)).symmetry_group();
+		map<AMFunction, long> St;
+		AMFInterval delta(t.join(l),u.omicron(t,alfa));
+		/* TODO: iterate over delta
+		 * for (AMFunction x : delta) {
+		 * 		mapstore(St,x);
+		 * }
+		 */
+		for ( pair<AMFunction,long> xpair : St ) {
+			AMFunction x = xpair.first;
+			mapstore(S1,x,(xpair.second)*(tpair.second));
+		}
+	}
+	return S1;
+}
