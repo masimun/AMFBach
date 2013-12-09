@@ -48,7 +48,7 @@ void test_permutator() {
 }
 
 //int main() {
-//	cout << (3 & 6) << endl;
+//	test_permutator();
 //	return 0;
 //}
 

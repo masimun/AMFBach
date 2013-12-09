@@ -95,6 +95,8 @@ std::ostream& operator<<(std::ostream &strm, const SmallBasicSet &s) {
 
 /**
  * map this set according to the transformation in table: i -> table[i] + 1
+ * that is: for every integer i in the set, the integer table[i] + 1
+ * will be in the resulting set. required: maximum <= size(table)
  * TODO: verify this is working correctly
  */
 SmallBasicSet SmallBasicSet::map(int table[]) const {

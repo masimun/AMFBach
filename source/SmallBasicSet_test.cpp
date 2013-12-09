@@ -17,6 +17,35 @@ using namespace std;
 #include "stdlib.h"
 #include "ctime"
 #include <bitset>
+#include "Tests.hpp"
+
+void test_smallbasicset();
+void test_smallbasicset_map();
+void test_smallbasicsetint();
+double speed_test_smallbasicsetstress();
+void test_speed();
+
+//int main() {
+//	//test_smallbasicset();
+//	test_smallbasicset_map();
+//	return 0;
+//}
+
+void test_smallbasicset_map() {
+	Parser p;
+	int inv1[] = {0,0,1,2,3,4};
+	int inv2[] = {0,4,3,2,1,0};
+	int inv3[] = {0,1,2,3,4,0};
+	SmallBasicSet s = p.parse("[523]",3);
+	cout << s.map(inv1) << endl;
+	cout << s.map(inv2) << endl;
+	cout << s.map(inv3) << endl;
+	SmallBasicSet u = p.parse("[14]",2);
+	SmallBasicSet v = p.parse("[135]",3);
+	AMFunction a = p.parse_amf("{[14],[523]}");
+	test::ASSERT_EQUAL(a.map(inv2).toString(),(string)"{431}-{52}-");
+}
+
 
 /**
  * Testmodule om simpele tests uit te voeren op klassen,
@@ -62,8 +91,6 @@ void test_smallbasicsetint() {
     // zou een error moeten geven omdat 65536 > s.maxintvalue
     //SmallBasicSet s = SmallBasicSet(65536);
     //cout << s.maxintvalue() << endl;
-    
-    
 }
 
 void test_smallbasicsetstress() {
@@ -160,8 +187,3 @@ void test_speed() {
     cout << "gem runtime is: " << gem/300 << "ms" << endl;
     
 }
-
-//int main() {
-//	test_smallbasicset();
-//	return 0;
-//}

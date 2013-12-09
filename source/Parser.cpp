@@ -28,11 +28,11 @@ SmallBasicSet Parser::parse(string a, int size) {
 
 AMFunction Parser::parse_amf(string a) {
 	int size = a.size();
-	AMFunction amf; // universe? TODO
+	AMFunction amf;
 	bool sbs = false;
 	SmallBasicSet s;
 	for (int i = 0 ; i < size ; i++) {
-		if (sbs && a[i] != ']') {
+		if (sbs && a[i] != ']' && a[i] != ',') {
 			s.quickadd(a[i] - '0');
 		} else if ( a[i] == '[' ) {
 			sbs = true;
