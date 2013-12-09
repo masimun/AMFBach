@@ -62,6 +62,7 @@ void test_amfunction() {
 
 	cout << a6.leq(a7) << endl; // expected: 1
 	cout << a7.leq(a6) << endl; // expected: 0
+
 }
 
 void test_times() {
@@ -92,6 +93,9 @@ void test_times() {
 	AMFunction a3x4 = a3.times(a4);
 	cout << a1x2.toString() << endl;
 	cout << a3x4.toString() << endl;
+
+	cout << "tesing parser for amf" << endl;
+	cout << p.parse_amf("{[12],[3],[45]}").toString() << endl;
 }
 
 

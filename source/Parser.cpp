@@ -25,3 +25,22 @@ SmallBasicSet Parser::parse(string a, int size) {
 	SmallBasicSet s(b, size);
 	return s;
 }
+
+AMFunction Parser::parse_amf(string a) {
+	int size = a.size();
+	AMFunction amf; // universe? TODO
+	bool sbs = false;
+	SmallBasicSet s;
+	for (int i = 0 ; i < size ; i++) {
+		if (sbs && a[i] != ']') {
+			s.quickadd(a[i] - '0');
+		} else if ( a[i] == '[' ) {
+			sbs = true;
+			s = SmallBasicSet();
+		} else if ( a[i] == ']' ) {
+			sbs = false;
+			amf.addSet(s);
+		}
+	}
+	return amf;
+}
