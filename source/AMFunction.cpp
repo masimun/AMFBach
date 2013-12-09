@@ -29,7 +29,7 @@ AMFunction::~AMFunction() {
 	// do nothing
 }
 
-SmallBasicSet AMFunction::span() {
+SmallBasicSet AMFunction::span() const {
 	SmallBasicSet span;
 	for (SmallBasicSet s : sets ) {
 		span = span.setunion(s);
@@ -47,7 +47,7 @@ bool AMFunction::isAntiMonotonic() {
 	return amf;
 }
 
-bool AMFunction::isEmpty() {
+bool AMFunction::isEmpty() const {
 	return sets.empty();
 }
 
@@ -154,10 +154,7 @@ string AMFunction::toString() {
 	return rep;
 }
 
-/**
- * TODO: good clone
- */
-AMFunction AMFunction::badclone() {
+AMFunction AMFunction::shallowclone() {
 	AMFunction clone;
 	for ( SmallBasicSet s : sets) {
 		clone.addSet(s);
@@ -165,9 +162,6 @@ AMFunction AMFunction::badclone() {
 	return clone;
 }
 
-/**
- * TODO: check for copy behaviour
- */
 AMFunction AMFunction::map(int inverse[]) {
 	AMFunction res(universe);
 	for (SmallBasicSet s : sets) {
@@ -192,7 +186,16 @@ AMFunction AMFunction::omicron(AMFunction tau, AMFunction alfa) {
 }
 
 AMFunction AMFunction::times(AMFunction other) const {
-	// TODO: stub, implement
+	if (isEmpty()) { return other; } // TODO: check for return by value!!!
+	else if (other.isEmpty()) { return (*this); }
+	SmallBasicSet a = span();
+	SmallBasicSet b = other.span();
+	AMFunction res = AMFunction(universe);
+	for (SmallBasicSet s1 : sets) {
+		for (SmallBasicSet s2 : other.getSets() ) {
+			res.addSetConditional((s1/b).setunion(s2/a).setunion(s1.setintersect(s2)));
+		}
+	}
 	return (*this);
 }
 

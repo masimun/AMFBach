@@ -62,6 +62,8 @@ void test_amfunction() {
 
 	cout << a6.leq(a7) << endl; // expected: 1
 	cout << a7.leq(a6) << endl; // expected: 0
+
+	cout << sizeof("yoloswag") << endl;
 }
 
 bool contains(list<AMFunction> as, AMFunction a) {
@@ -94,7 +96,7 @@ void verynaivededekind() {
 		list<AMFunction> amfs_new;
 		for (AMFunction a : amfs) {
 			for (SmallBasicSet s : sbs) {
-				AMFunction a_new = a.badclone();
+				AMFunction a_new = a.shallowclone();
 				if (!a_new.contains(s)) {
 					a_new.addSet(s);
 					if (a_new.isAntiMonotonic() && !contains(amfs_new,a_new)) {
@@ -112,8 +114,8 @@ void verynaivededekind() {
 	cout << "Dedekind number for n = " << n << ": " << accdede;
 }
 
-//int main() {
-//	// test_amfunction();
+int main() {
+	test_amfunction();
 //	verynaivededekind();
-//	return 0;
-//}
+	return 0;
+}

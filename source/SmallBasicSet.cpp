@@ -26,18 +26,29 @@ SmallBasicSet::~SmallBasicSet() {
 }
 
 int SmallBasicSet::numberofelements() {
-	// TODO: stub, implement
-	return 0;
+	return bitset<MAXELEMENT>(set).count();
 }
 
 int SmallBasicSet::maximum() {
-	// TODO: stub, implement
-	return 0;
+	int max = MAXELEMENT;
+	int bit = getBit(MAXELEMENT);
+	while ( max > 0 ) {
+		if ((bit & set) != 0) { break; }
+		bit >>= 1;
+		max--;
+	}
+	return max;
 }
 
 int SmallBasicSet::minimum() {
-	// TODO: stub, implement
-	return 0;
+	int min = 1;
+	int bit = 1;
+	while ( min <= MAXELEMENT ) {
+		if ((bit & set) != 0) { break; }
+		bit <<= 1;
+		min++;
+	}
+	return min;
 }
 
 int SmallBasicSet::maxelement() {
@@ -55,7 +66,7 @@ string int_to_string(int a) {
 	return str;
 }
 
-string SmallBasicSet::toString() {
+string SmallBasicSet::toString() const {
 	stringstream ss;
     int copyset = set;
 	ss << "{";
@@ -71,7 +82,11 @@ string SmallBasicSet::toString() {
 }
 
 string SmallBasicSet::toBitString() {
-	return std::bitset<13>(set).to_string();
+	return std::bitset<MAXELEMENT>(set).to_string();
+}
+
+std::ostream& operator<<(std::ostream &strm, const SmallBasicSet &s) {
+  return strm << s.toString();
 }
 
 /*******************************************
@@ -97,17 +112,17 @@ void SmallBasicSet::quickadd(int a) {
 }
 
 SmallBasicSet SmallBasicSet::setunion(SmallBasicSet other) const {
-	SmallBasicSet unie = set | other.set;
+	SmallBasicSet unie(set | other.set);
     return unie;
 }
 
 SmallBasicSet SmallBasicSet::setdifference(SmallBasicSet other) const {
-	SmallBasicSet difference = set & ~ other.set;
+	SmallBasicSet difference(set & ~ other.set);
 	return difference;
 }
 
 SmallBasicSet SmallBasicSet::setintersect(SmallBasicSet other) const {
-	SmallBasicSet intersect = set & other.set;
+	SmallBasicSet intersect(set & other.set);
 	return intersect;
 }
 
@@ -135,7 +150,7 @@ bool SmallBasicSet::operator==(const SmallBasicSet& other) const {
 	return equals(other);
 }
 
-int SmallBasicSet::getBit(int positie) {
+int SmallBasicSet::getBit(int positie) const {
     return bits[positie-1];
 }
 

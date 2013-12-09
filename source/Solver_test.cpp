@@ -47,10 +47,8 @@ void test_permutator() {
 
 }
 
-int main() {
-	cout << (3 & 6) << endl;
-
-
-	return 0;
-}
+//int main() {
+//	cout << (3 & 6) << endl;
+//	return 0;
+//}
 

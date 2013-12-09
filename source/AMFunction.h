@@ -32,9 +32,9 @@ public:
 	virtual ~AMFunction();
 
 	// query
-	SmallBasicSet span();
+	SmallBasicSet span() const;
 	bool isAntiMonotonic();
-	bool isEmpty();
+	bool isEmpty() const;
 	set<SmallBasicSet> getSets() const;
 	string toString();
 	bool contains(SmallBasicSet s);
@@ -53,7 +53,7 @@ public:
 	bool operator==(const AMFunction& other) const;
 
 	// operations
-	AMFunction badclone();
+	AMFunction shallowclone();
 	AMFunction join(AMFunction other) const;
 	AMFunction meet(AMFunction other) const;
 	AMFunction times(AMFunction other) const;

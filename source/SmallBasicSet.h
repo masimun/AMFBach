@@ -22,6 +22,7 @@ class SmallBasicSet {
     int bits[13] = {1,2,4,8,16,32,64,128,256,512,1024,2048,4096};
 	int numberofelem;
 	uint_fast16_t set;
+	friend std::ostream& operator<<(std::ostream &strm, const SmallBasicSet &s);
 public:
 	SmallBasicSet();
 	SmallBasicSet(int a[], int asize);
@@ -35,7 +36,7 @@ public:
 	int maximum();
 	int minimum();
 	bool isemptyset();
-	string toString();
+	string toString() const;
 	string toBitString();
 	uint_fast16_t getSet() const;
 
@@ -64,7 +65,7 @@ public:
 	int getNextInSet(int i); // TODO: implement, returns i's successor
 
     //getters
-    int getBit(int positie);
+    int getBit(int positie) const;
     
     //setters
 

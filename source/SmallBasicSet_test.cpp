@@ -27,24 +27,31 @@ void test_smallbasicset() {
 	Parser p;
 	SmallBasicSet s1 = p.parse("[1234]", 4);
 	SmallBasicSet s2 = p.parse("[465]", 3);
-	cout << s1.toString() << endl;
-	cout << s2.toString() << endl;
+	cout << s1 << endl;
+	cout << s2 << endl;
+
+	cout << "// --- operations test" << endl;
 	SmallBasicSet s3 = s1.setunion(s2);
-	cout << s3.toString() << endl;
+	cout << s3 << endl;
 	SmallBasicSet s4 = s1.setdifference(s2);
-	cout << s4.toString() << endl;
+	cout << s4 << endl;
+	cout << s2 / s1 << endl;
 	SmallBasicSet s5 = s1.setintersect(s2);
-	cout << s5.toString() << endl;
+	cout << s5 << endl;
+
+	cout << "// --- subset test" << endl;
 
 	cout << s1.hasAsSubset(s5) << endl; // expected: 1
 	cout << s1.hasAsSubset(s3) << endl; // expected: 0
 
 	cout << "// --- bitwise output test" << endl;
 	cout << s1.toBitString() << endl;
-	int r = 7;
-	cout << std::bitset<16>(r << 1).to_string() <<endl;
-	cout << std::bitset<16>(0x1).to_string() << endl;
-	cout << std::bitset<16>((1 << 13) - 1) << endl;
+
+	cout << "// --- count/max/min tests" << endl;
+	cout << s1.numberofelements() << endl; // expected: 4
+	cout << (s2 / s1).numberofelements() << endl; // expected: 2
+	cout << p.parse("[974]",3).minimum() << endl; // expected: 4
+	cout << p.parse("[14286]",5).maximum() << endl; // expected: 8
 }
 
 void test_smallbasicsetint() {
@@ -152,5 +159,9 @@ void test_speed() {
     }
     cout << "gem runtime is: " << gem/300 << "ms" << endl;
     
-    
 }
+
+//int main() {
+//	test_smallbasicset();
+//	return 0;
+//}
