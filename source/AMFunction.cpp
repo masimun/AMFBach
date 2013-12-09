@@ -80,6 +80,7 @@ void AMFunction::setSets(set<SmallBasicSet> ss) {
  */
 void AMFunction::addSet(SmallBasicSet s) {
 	sets.insert(s);
+	bugstr = toString();
 }
 
 void AMFunction::removeSets(list<SmallBasicSet> rs) {
@@ -106,6 +107,7 @@ void AMFunction::addSetConditional(SmallBasicSet s) {
 	}
 	removeSets(subsets);
 	sets.insert(s);
+	bugstr = toString();
 }
 
 /****************************************************
@@ -186,7 +188,7 @@ AMFunction AMFunction::omicron(AMFunction tau, AMFunction alfa) {
 }
 
 AMFunction AMFunction::times(AMFunction other) const {
-	if (isEmpty()) { return other; } // TODO: check for return by value!!!
+	if (isEmpty()) { return other; }
 	else if (other.isEmpty()) { return (*this); }
 	SmallBasicSet a = span();
 	SmallBasicSet b = other.span();
@@ -196,7 +198,7 @@ AMFunction AMFunction::times(AMFunction other) const {
 			res.addSetConditional((s1/b).setunion(s2/a).setunion(s1.setintersect(s2)));
 		}
 	}
-	return (*this);
+	return res;
 }
 
 /****************************************************

@@ -71,6 +71,9 @@ public:
 	static AMFunction universeFunction(SmallBasicSet N);
 	static AMFunction universeFunction(int n);
 	static AMFunction singletonFunction(int l);
+
+	// debug
+	string bugstr;
 };
 
 #endif /* AMFUNCTION_H_ */
