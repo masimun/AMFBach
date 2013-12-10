@@ -140,6 +140,7 @@ void test_omicron() {
 					,p.parse_amf("")
 	};
 
+	cout << "# C++ FUNC TESTS - AMFUNCTION OMICRON #" << endl;
 	for (int i = 0; i < 5; i++) {
 		AMFunction top, alfa, tau;
 		top = testSpan[i];

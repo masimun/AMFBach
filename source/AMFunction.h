@@ -63,7 +63,7 @@ public:
 	AMFunction omicron(AMFunction tau, AMFunction alfa);
 
 	// algo
-	tr1::unordered_set<int> symmetry_group(); // TODO: implement
+	tr1::unordered_set<vector<int>> symmetry_group(); // TODO: implement
 
 	// class
 	static AMFunction emptyFunction();

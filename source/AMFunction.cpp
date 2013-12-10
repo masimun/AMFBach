@@ -243,24 +243,42 @@ bool AMFunction::leq(AMFunction other) const {
  * ALGO
  ****************************************************/
 
-tr1::unordered_set<int> AMFunction::symmetry_group() {
-	tr1::unordered_set<int> res;
+tr1::unordered_set<vector<int>> AMFunction::symmetry_group() {
+	tr1::unordered_set<vector<int>> res;
 	SmallBasicSet sp = span();
 	int maplen = sp.numberofelements();
+	int max = sp.maximum();
+	int min = sp.minimum();
 	int* map = new int[maplen];
-	int* inversemap = new int[sp.maximum() + 1];
-	// int pos = 0;
-	// TODO:fill map and inverse
-//	for (int i:span) {
-//				map[pos] = i;
-//				inverseMap[i] = pos++;
-//			}
-	PairPermutator perm(map,inversemap,maplen);
-	// encode ??
-	while (!perm.finished()) {
-		// do stuff
-		perm.permute();
+	int* inversemap = new int[max + 1];
+	// iterate over set
+	int pos = 0;
+	int i = min;
+	int bit = sp.getBit(i);
+	while (i < max) {
+		if ((bit & sp.getSet()) != 0) {
+			map[pos] = i;
+			inversemap[pos] = pos;
+			pos++;
+		}
+		i++;
+		bit <<= 1;
 	}
+	map[pos] = max;
+	inversemap[pos] = pos;
+	// permute
+	PairPermutator perm(map,inversemap,maplen);
+	int* p = new int[maplen+1];
+	while (!perm.finished()) {
+		perm.permute();
+		AMFunction kand = this->map(inversemap);
+		if ( (*this).equals(kand) ) {
+			vector<int> v;
+			std::copy(inversemap,inversemap+maplen,v.begin());
+			res.insert(v);
+		}
+	}
+	delete[] p;
 	delete[] map;
 	delete[] inversemap;
 	return res;

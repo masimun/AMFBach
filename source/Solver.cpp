@@ -54,12 +54,12 @@ map<AMFunction,long> algorithm7(int n, map<AMFunction,long> S) {
 	AMFunction l = AMFunction::singletonFunction(n+1);
 	for( pair<AMFunction,long> tpair : S ) {
 		AMFunction t = tpair.first;
-		tr1::unordered_set<int> rtsymm = (t.join(l)).symmetry_group();
+		tr1::unordered_set<vector<int>> rtsymm = (t.join(l)).symmetry_group();
 		map<AMFunction, long> St;
 		AMFInterval delta(t.join(l),u.omicron(t,alfa));
 		/* TODO: iterate over delta
 		 * for (AMFunction x : delta) {
-		 * 		mapstore(St,x);
+		 * 		mapstore(St,x.standard());
 		 * }
 		 */
 		for ( pair<AMFunction,long> xpair : St ) {

@@ -104,7 +104,7 @@ SmallBasicSet SmallBasicSet::map(int table[]) const {
 	int i = 1;
 	int bit = 1;
 	while (i <= MAXELEMENT) {
-		if ((bit & set) > 0) { res.quickadd(table[i] + 1); }
+		if ((bit & set) != 0) { res.quickadd(table[i] + 1); }
 		bit <<= 1; i++;
 	}
 	return res;
