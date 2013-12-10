@@ -107,6 +107,53 @@ void test_times() {
 	cout << a3x4.toString() << endl;
 }
 
+<<<<<<< HEAD
+void verynaivededekind() {
+	int const n = 4; // works instant up to 4... and 5 takes a while.
+    int const sbsamount =  pow(2,n);
+    SmallBasicSet sbs[] = new SmallBasicSet[sbsamount];
+	for (int i = 0 ; i < sbsamount ; i++) {
+		sbs[i] = SmallBasicSet(i);
+		cout << sbs[i].toString() << endl;
+	}
+	cout << "----" << endl;
+	int accdede = 1;
+	cout << "lege AMF - 1" << endl;
+	list<AMFunction> amfs;
+	amfs.push_front(AMFunction());
+	int itno = 0;
+	bool set_added = true;
+	while (set_added) {
+		set_added = false;
+		cout << "chains of length " << (itno++)+1 << endl;
+		list<AMFunction> amfs_new;
+		for (AMFunction a : amfs) {
+			for (SmallBasicSet s : sbs) {
+				AMFunction a_new = a.badclone();
+				if (!a_new.contains(s)) {
+					a_new.addSet(s);
+					if (a_new.isAntiMonotonic() && !contains(amfs_new,a_new)) {
+						accdede++;
+						// cout << a_new.toString() << " - " << accdede << endl;
+						if (accdede % 1000 == 0) {cout << "count:" << accdede << endl;}
+						amfs_new.push_front(a_new);
+						set_added = true;
+					}
+				}
+			}
+		}
+		amfs = amfs_new;
+	}
+    delete [] sbs;
+	cout << "Dedekind number for n = " << n << ": " << accdede;
+}
+
+int main() {
+//	// test_amfunction();
+	verynaivededekind();
+	return 0;
+}
+=======
 void test_omicron() {
 
 	Parser p;
@@ -151,3 +198,4 @@ void test_omicron() {
 		test::ASSERT_EQUAL(testAnswer[i],o);
 	}
 }
+>>>>>>> 584c6a9f415021d1d8b29885af5550e34d32b30e

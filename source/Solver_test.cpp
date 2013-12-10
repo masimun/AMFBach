@@ -23,6 +23,11 @@ void test_solver() {
 	cout << Solver::combinations(6,3) << endl;
 }
 
+<<<<<<< HEAD
+//int main() {
+//	test_solver();
+//}
+=======
 void test_hash() {
 	// very test, much hash
 	tr1::unordered_set<int> a;
@@ -46,6 +51,7 @@ void test_permutator() {
 	}
 
 }
+>>>>>>> 584c6a9f415021d1d8b29885af5550e34d32b30e
 
 //int main() {
 //	test_permutator();
