@@ -12,6 +12,7 @@ PairPermutator::PairPermutator(int* tab, int* inv , int len) {
 	inverse = inv;
 	length = len;
 	done = false;
+	first = true;
 }
 
 PairPermutator::~PairPermutator() {
@@ -19,6 +20,7 @@ PairPermutator::~PairPermutator() {
 }
 
 void PairPermutator::permute() {
+	if (first) { first = false; return; }
 	done = !next_permutation(table,table+length);
 	next_permutation(inverse+1,inverse+1+length);
 }

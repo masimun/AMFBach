@@ -20,3 +20,20 @@ using namespace std;
 void test_amfinterval() {
 	cout << (AMFInterval::fullspace(4)).toString() << endl;
 }
+
+
+void test_iterator() {
+    Parser p;
+    AMFInterval amf(p.parse_amf("{[1]}"), p.parse_amf("{}"));
+    AMFInterval::AMFIterator freddy = amf.begin();
+    //cout << p.parse_amf("{[1,2,3]}").toString() << endl;
+    AMFunction &b = *(freddy.amf);
+    cout <<  b.toString();
+    //cout << (*amf.end()).toString() << endl;
+    
+}
+
+int main() {
+    test_iterator();
+    return 0;
+}

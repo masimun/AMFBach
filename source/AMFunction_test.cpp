@@ -20,11 +20,13 @@ using namespace std;
 void test_amfunction();
 void test_times();
 void test_omicron();
+void test_iterator();
 
-int main() {
-	test_omicron();
-	return 0;
-}
+//int main() {
+   
+//	return 0;
+//}
+
 
 void test_amfunction() {
 	cout << "# C++ FUNC TESTS - AMFUNCTION #" << endl;
@@ -107,7 +109,7 @@ void test_times() {
 	cout << a3x4.toString() << endl;
 }
 
-<<<<<<< HEAD
+/*
 void verynaivededekind() {
 	int const n = 4; // works instant up to 4... and 5 takes a while.
     int const sbsamount =  pow(2,n);
@@ -147,13 +149,14 @@ void verynaivededekind() {
     delete [] sbs;
 	cout << "Dedekind number for n = " << n << ": " << accdede;
 }
+ */
 
-int main() {
+//int main() {
 //	// test_amfunction();
-	verynaivededekind();
-	return 0;
-}
-=======
+//	verynaivededekind();
+//	return 0;
+//}
+
 void test_omicron() {
 
 	Parser p;
@@ -187,6 +190,7 @@ void test_omicron() {
 					,p.parse_amf("")
 	};
 
+	cout << "# C++ FUNC TESTS - AMFUNCTION OMICRON #" << endl;
 	for (int i = 0; i < 5; i++) {
 		AMFunction top, alfa, tau;
 		top = testSpan[i];
@@ -197,4 +201,3 @@ void test_omicron() {
 		test::ASSERT_EQUAL(testAnswer[i],o);
 	}
 }
->>>>>>> 584c6a9f415021d1d8b29885af5550e34d32b30e

@@ -13,7 +13,8 @@ using namespace std;
 #include "SmallBasicSet.h"
 #include <iostream>
 #include <utility>
-#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 #include "PairPermutator.h"
 
 /**
@@ -22,9 +23,12 @@ using namespace std;
  * Invariant: isAntiMonotonic()
  */
 class AMFunction {
+    
 private:
 	SmallBasicSet universe; // set of integers on which the function operates
 	set<SmallBasicSet> sets;
+    
+    
 public:
 	AMFunction();
 	AMFunction(SmallBasicSet N);
@@ -38,7 +42,8 @@ public:
 	set<SmallBasicSet> getSets() const;
 	string toString();
 	bool contains(SmallBasicSet s);
-
+    
+    
 	// alter
 	void setSets(set<SmallBasicSet> ss);
 	void addSet(SmallBasicSet s);
@@ -63,8 +68,8 @@ public:
 	AMFunction omicron(AMFunction tau, AMFunction alfa);
 
 	// algo
-    unordered_set<int> symmetry_group(); // TODO: implement
-
+	unordered_set<vector<int>> symmetry_group(); // TODO: implement
+    
 	// class
 	static AMFunction emptyFunction();
 	static AMFunction emptySetFunction();
@@ -74,6 +79,9 @@ public:
 
 	// debug
 	string bugstr;
-};
 
+    
+    
+    
+};
 #endif /* AMFUNCTION_H_ */

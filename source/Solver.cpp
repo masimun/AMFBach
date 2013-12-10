@@ -46,7 +46,7 @@ vector<map<AMFunction,long>> Solver::algorithm9(int till) {
 	}
 	return res;
 }
-
+/*****
 map<AMFunction,long> algorithm7(int n, map<AMFunction,long> S) {
 	map<AMFunction,long> S1;
 	AMFunction alfa = AMFunction::universeFunction(n);
@@ -54,14 +54,14 @@ map<AMFunction,long> algorithm7(int n, map<AMFunction,long> S) {
 	AMFunction l = AMFunction::singletonFunction(n+1);
 	for( pair<AMFunction,long> tpair : S ) {
 		AMFunction t = tpair.first;
-		tr1::unordered_set<int> rtsymm = (t.join(l)).symmetry_group();
+		unordered_set<vector<int>> rtsymm = (t.join(l)).symmetry_group();
 		map<AMFunction, long> St;
 		AMFInterval delta(t.join(l),u.omicron(t,alfa));
-		/* TODO: iterate over delta
+		* TODO: iterate over delta
 		 * for (AMFunction x : delta) {
-		 * 		mapstore(St,x);
+		 * 		mapstore(St,x.standard());
 		 * }
-		 */
+		 *
 		for ( pair<AMFunction,long> xpair : St ) {
 			AMFunction x = xpair.first;
 			mapstore(S1,x,(xpair.second)*(tpair.second));
@@ -69,6 +69,7 @@ map<AMFunction,long> algorithm7(int n, map<AMFunction,long> S) {
 	}
 	return S1;
 }
+*/
 
 bool contains(list<AMFunction> as, AMFunction a) {
 	for ( AMFunction b : as ) {
@@ -78,7 +79,7 @@ bool contains(list<AMFunction> as, AMFunction a) {
 	}
 	return false;
 }
-
+/*
 void verynaivededekind() {
 	int const n = 4; // works instant up to 4... and 5 takes a while.
 	int const sbsamount = pow(2,n);
@@ -117,3 +118,4 @@ void verynaivededekind() {
 	}
 	cout << "Dedekind number for n = " << n << ": " << accdede;
 }
+*/

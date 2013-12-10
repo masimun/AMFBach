@@ -19,6 +19,7 @@ private:
 	int* inverse;
 	int length;
 	bool done;
+	bool first;
 public:
 	PairPermutator(int* tab, int* inv, int len);
 	virtual ~PairPermutator();

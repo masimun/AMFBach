@@ -32,7 +32,7 @@ AMFunction Parser::parse_amf(string a) {
 	bool sbs = false;
 	SmallBasicSet s;
 	for (int i = 0 ; i < size ; i++) {
-		if (sbs && a[i] != ']' && a[i] != ',') {
+		if (sbs && a[i] != ']' && a[i] != ',' && a[i] != ' ') {
 			s.quickadd(a[i] - '0');
 		} else if ( a[i] == '[' ) {
 			sbs = true;
