@@ -13,7 +13,7 @@ using namespace std;
 #include "SmallBasicSet.h"
 #include <iostream>
 #include <utility>
-#include <tr1/unordered_set>
+#include <unordered_map>
 #include "PairPermutator.h"
 
 /**
@@ -63,7 +63,7 @@ public:
 	AMFunction omicron(AMFunction tau, AMFunction alfa);
 
 	// algo
-	tr1::unordered_set<int> symmetry_group(); // TODO: implement
+    unordered_set<int> symmetry_group(); // TODO: implement
 
 	// class
 	static AMFunction emptyFunction();
