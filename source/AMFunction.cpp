@@ -10,7 +10,7 @@
 #include <iostream>
 
 AMFunction::AMFunction() {
-	// do nothing
+	universe = SmallBasicSet::universe();
 }
 
 /* N = universe */
@@ -19,6 +19,7 @@ AMFunction::AMFunction(SmallBasicSet N) {
 }
 
 AMFunction::AMFunction(SmallBasicSet s[], int size) {
+	universe = SmallBasicSet::universe();
 	for( int i = 0 ; i < size ; i++ ) {
 		sets.insert(s[i]);
 	}
@@ -28,7 +29,7 @@ AMFunction::~AMFunction() {
 	// do nothing
 }
 
-SmallBasicSet AMFunction::span() {
+SmallBasicSet AMFunction::span() const {
 	SmallBasicSet span;
 	for (SmallBasicSet s : sets ) {
 		span = span.setunion(s);
@@ -46,7 +47,7 @@ bool AMFunction::isAntiMonotonic() {
 	return amf;
 }
 
-bool AMFunction::isEmpty() {
+bool AMFunction::isEmpty() const {
 	return sets.empty();
 }
 
@@ -79,6 +80,7 @@ void AMFunction::setSets(set<SmallBasicSet> ss) {
  */
 void AMFunction::addSet(SmallBasicSet s) {
 	sets.insert(s);
+	bugstr = toString();
 }
 
 void AMFunction::removeSets(list<SmallBasicSet> rs) {
@@ -105,6 +107,7 @@ void AMFunction::addSetConditional(SmallBasicSet s) {
 	}
 	removeSets(subsets);
 	sets.insert(s);
+	bugstr = toString();
 }
 
 /****************************************************
@@ -153,15 +156,49 @@ string AMFunction::toString() {
 	return rep;
 }
 
-/**
- * TODO: good clone
- */
-AMFunction AMFunction::badclone() {
+AMFunction AMFunction::shallowclone() {
 	AMFunction clone;
 	for ( SmallBasicSet s : sets) {
 		clone.addSet(s);
 	}
 	return clone;
+}
+
+AMFunction AMFunction::map(int inverse[]) {
+	AMFunction res(universe);
+	for (SmallBasicSet s : sets) {
+		res.addSet(s.map(inverse));
+	}
+	return res;
+}
+
+AMFunction AMFunction::omicron(AMFunction tau, AMFunction alfa) {
+	if ( tau.isEmpty() ) {
+		if ( alfa.isEmpty() ) { return *this; }
+		else { return AMFunction::emptyFunction(); }
+	}
+	AMFunction res(universe);
+	res.addSet(span().setdifference(alfa.span()));
+	for (SmallBasicSet s : alfa.getSets() ) {
+		AMFunction current(universe);
+		current.addSet(s);
+		res = res.times(current.meet(tau));
+	}
+	return res.meet(*this);
+}
+
+AMFunction AMFunction::times(AMFunction other) const {
+	if (isEmpty()) { return other; }
+	else if (other.isEmpty()) { return (*this); }
+	SmallBasicSet a = span();
+	SmallBasicSet b = other.span();
+	AMFunction res = AMFunction(universe);
+	for (SmallBasicSet s1 : sets) {
+		for (SmallBasicSet s2 : other.getSets() ) {
+			res.addSetConditional((s1/b).setunion(s2/a).setunion(s1.setintersect(s2)));
+		}
+	}
+	return res;
 }
 
 /****************************************************
@@ -203,6 +240,33 @@ bool AMFunction::leq(AMFunction other) const {
 }
 
 /****************************************************
+ * ALGO
+ ****************************************************/
+
+tr1::unordered_set<int> AMFunction::symmetry_group() {
+	tr1::unordered_set<int> res;
+	SmallBasicSet sp = span();
+	int maplen = sp.numberofelements();
+	int* map = new int[maplen];
+	int* inversemap = new int[sp.maximum() + 1];
+	// int pos = 0;
+	// TODO:fill map and inverse
+//	for (int i:span) {
+//				map[pos] = i;
+//				inverseMap[i] = pos++;
+//			}
+	PairPermutator perm(map,inversemap,maplen);
+	// encode ??
+	while (!perm.finished()) {
+		// do stuff
+		perm.permute();
+	}
+	delete[] map;
+	delete[] inversemap;
+	return res;
+}
+
+/****************************************************
  * CLASS
  ****************************************************/
 
@@ -228,6 +292,14 @@ AMFunction AMFunction::universeFunction(int n) {
 AMFunction AMFunction::universeFunction(SmallBasicSet N) {
 	AMFunction amf = AMFunction(N);
 	amf.addSet(N);
+	return amf;
+}
+
+AMFunction AMFunction::singletonFunction(int l) {
+	AMFunction amf;
+	SmallBasicSet s;
+	s.quickadd(l);
+	amf.addSet(s);
 	return amf;
 }
 

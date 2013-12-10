@@ -12,9 +12,11 @@
 #include <list>
 #include "SmallBasicSet.h"
 #include "AMFunction.h"
+#include "AMFInterval.h"
 #include <iostream>
 #include <map>
 #include <vector>
+#include <tr1/unordered_set>
 using namespace std;
 
 class Solver {

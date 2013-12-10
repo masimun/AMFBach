@@ -13,6 +13,8 @@ using namespace std;
 #include "SmallBasicSet.h"
 #include <iostream>
 #include <utility>
+#include <tr1/unordered_set>
+#include "PairPermutator.h"
 
 /**
  * This class represents an anti-monotonic function.
@@ -21,7 +23,7 @@ using namespace std;
  */
 class AMFunction {
 private:
-	SmallBasicSet universe = SmallBasicSet::universe(); // set of integers on which the function operates
+	SmallBasicSet universe; // set of integers on which the function operates
 	set<SmallBasicSet> sets;
 public:
 	AMFunction();
@@ -30,9 +32,9 @@ public:
 	virtual ~AMFunction();
 
 	// query
-	SmallBasicSet span();
+	SmallBasicSet span() const;
 	bool isAntiMonotonic();
-	bool isEmpty();
+	bool isEmpty() const;
 	set<SmallBasicSet> getSets() const;
 	string toString();
 	bool contains(SmallBasicSet s);
@@ -51,18 +53,27 @@ public:
 	bool operator==(const AMFunction& other) const;
 
 	// operations
-	AMFunction badclone();
+	AMFunction shallowclone();
 	AMFunction join(AMFunction other) const;
 	AMFunction meet(AMFunction other) const;
 	AMFunction times(AMFunction other) const;
 	AMFunction operator^(AMFunction other); // meet
 	AMFunction operator+(AMFunction other); // join
+	AMFunction map(int inverse[]);
+	AMFunction omicron(AMFunction tau, AMFunction alfa);
+
+	// algo
+	tr1::unordered_set<int> symmetry_group(); // TODO: implement
 
 	// class
 	static AMFunction emptyFunction();
 	static AMFunction emptySetFunction();
 	static AMFunction universeFunction(SmallBasicSet N);
 	static AMFunction universeFunction(int n);
+	static AMFunction singletonFunction(int l);
+
+	// debug
+	string bugstr;
 };
 
 #endif /* AMFUNCTION_H_ */

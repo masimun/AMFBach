@@ -15,6 +15,16 @@ using namespace std;
 #include <bitset>
 #include <cmath>
 #include <list>
+#include "Tests.hpp"
+
+void test_amfunction();
+void test_times();
+void test_omicron();
+
+int main() {
+	test_omicron();
+	return 0;
+}
 
 void test_amfunction() {
 	cout << "# C++ FUNC TESTS - AMFUNCTION #" << endl;
@@ -62,17 +72,42 @@ void test_amfunction() {
 
 	cout << a6.leq(a7) << endl; // expected: 1
 	cout << a7.leq(a6) << endl; // expected: 0
+
+	cout << "tesing parser for amf" << endl;
+	cout << p.parse_amf("{[12],[3],[45]}").toString() << endl;
 }
 
-bool contains(list<AMFunction> as, AMFunction a) {
-	for ( AMFunction b : as ) {
-		if (b.equals(a)) {
-			return true;
-		}
-	}
-	return false;
+void test_times() {
+	cout << "# C++ FUNC TESTS - AMFUNCTION TIMES #" << endl;
+	Parser p;
+	SmallBasicSet s1 = p.parse("[3]", 1);
+	SmallBasicSet s2 = p.parse("[13]", 2);
+	SmallBasicSet s3 = p.parse("[2]", 1);
+	SmallBasicSet s4 = p.parse("[12]",2);
+	SmallBasicSet s5 = p.parse("[2]", 1);
+	SmallBasicSet s6 = p.parse("[1]", 1);
+
+	AMFunction a1;
+	a1.addSet(s6);
+	cout << a1.toString() << " : " << a1.span() << endl;
+	AMFunction a2;
+	a2.addSet(s3);
+	cout << a2.toString() << " : " << a2.span() << endl;
+	AMFunction a3;
+	a3.addSet(s6);
+	a3.addSet(s3);
+	cout << a3.toString() << " : " << a3.span() << endl;
+	AMFunction a4;
+	a4.addSet(s1);
+	cout << a4.toString() << " : " << a4.span() << endl;
+
+	AMFunction a1x2 = a1.times(a2);
+	AMFunction a3x4 = a3.times(a4);
+	cout << a1x2.toString() << endl;
+	cout << a3x4.toString() << endl;
 }
 
+<<<<<<< HEAD
 void verynaivededekind() {
 	int const n = 4; // works instant up to 4... and 5 takes a while.
     int const sbsamount =  pow(2,n);
@@ -118,3 +153,48 @@ int main() {
 	verynaivededekind();
 	return 0;
 }
+=======
+void test_omicron() {
+
+	Parser p;
+
+	AMFunction testAlfa[] = {
+					p.parse_amf("{[1,2],[3,4]}")
+					,p.parse_amf("{[1,2],[2,3],[3,4,5]}")
+					,p.parse_amf("{[1,2],[2,3,4,5]}")
+					,p.parse_amf("{[1,2],[2,3,4,5]}")
+					,p.parse_amf("{}")
+	};
+	AMFunction testTau[] = {
+					p.parse_amf("{[1],[3,4]}")
+					,p.parse_amf("{[1],[3],[4,5]}")
+					,p.parse_amf("{[1],[2,3],[3,4],[2,4,5]}")
+					,p.parse_amf("{[1],[2,3],[3,4],[2,4,5]}")
+					,p.parse_amf("{}")
+	};
+	AMFunction testSpan[] = {
+					p.parse_amf("{[1,2,3,4,5]}")
+					,p.parse_amf("{[1,2,3,4,5,6,7]}")
+					,p.parse_amf("{[1,2,3,4,5]}")
+					,p.parse_amf("{[1,2,3],[2,3,4,5]}")
+					,p.parse_amf("")
+	};
+	AMFunction testAnswer[] = {
+						p.parse_amf("{[1, 3, 4, 5]}")
+					,p.parse_amf("{[1, 3, 6, 7], [1, 4, 5, 6, 7]}")
+					,p.parse_amf("{[2, 3], [1, 3, 4], [1, 4, 5], [2, 4, 5]}")
+					,p.parse_amf("{[1, 3], [2, 3], [3, 4], [2, 4, 5]}")
+					,p.parse_amf("")
+	};
+
+	for (int i = 0; i < 5; i++) {
+		AMFunction top, alfa, tau;
+		top = testSpan[i];
+		alfa = testAlfa[i];
+		tau = testTau[i];
+		AMFunction o = top.omicron(tau,alfa);
+		cout << top.toString() << ".omicron(" << tau.toString() << "," << alfa.toString() << ") = " << o.toString() << endl;
+		test::ASSERT_EQUAL(testAnswer[i],o);
+	}
+}
+>>>>>>> 584c6a9f415021d1d8b29885af5550e34d32b30e

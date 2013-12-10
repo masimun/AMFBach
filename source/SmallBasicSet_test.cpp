@@ -17,6 +17,35 @@ using namespace std;
 #include "stdlib.h"
 #include "ctime"
 #include <bitset>
+#include "Tests.hpp"
+
+void test_smallbasicset();
+void test_smallbasicset_map();
+void test_smallbasicsetint();
+double speed_test_smallbasicsetstress();
+void test_speed();
+
+//int main() {
+//	//test_smallbasicset();
+//	test_smallbasicset_map();
+//	return 0;
+//}
+
+void test_smallbasicset_map() {
+	Parser p;
+	int inv1[] = {0,0,1,2,3,4};
+	int inv2[] = {0,4,3,2,1,0};
+	int inv3[] = {0,1,2,3,4,0};
+	SmallBasicSet s = p.parse("[523]",3);
+	cout << s.map(inv1) << endl;
+	cout << s.map(inv2) << endl;
+	cout << s.map(inv3) << endl;
+	SmallBasicSet u = p.parse("[14]",2);
+	SmallBasicSet v = p.parse("[135]",3);
+	AMFunction a = p.parse_amf("{[14],[523]}");
+	test::ASSERT_EQUAL(a.map(inv2).toString(),(string)"{431}-{52}-");
+}
+
 
 /**
  * Testmodule om simpele tests uit te voeren op klassen,
@@ -27,24 +56,31 @@ void test_smallbasicset() {
 	Parser p;
 	SmallBasicSet s1 = p.parse("[1234]", 4);
 	SmallBasicSet s2 = p.parse("[465]", 3);
-	cout << s1.toString() << endl;
-	cout << s2.toString() << endl;
+	cout << s1 << endl;
+	cout << s2 << endl;
+
+	cout << "// --- operations test" << endl;
 	SmallBasicSet s3 = s1.setunion(s2);
-	cout << s3.toString() << endl;
+	cout << s3 << endl;
 	SmallBasicSet s4 = s1.setdifference(s2);
-	cout << s4.toString() << endl;
+	cout << s4 << endl;
+	cout << s2 / s1 << endl;
 	SmallBasicSet s5 = s1.setintersect(s2);
-	cout << s5.toString() << endl;
+	cout << s5 << endl;
+
+	cout << "// --- subset test" << endl;
 
 	cout << s1.hasAsSubset(s5) << endl; // expected: 1
 	cout << s1.hasAsSubset(s3) << endl; // expected: 0
 
 	cout << "// --- bitwise output test" << endl;
 	cout << s1.toBitString() << endl;
-	int r = 7;
-	cout << std::bitset<16>(r << 1).to_string() <<endl;
-	cout << std::bitset<16>(0x1).to_string() << endl;
-	cout << std::bitset<16>((1 << 13) - 1) << endl;
+
+	cout << "// --- count/max/min tests" << endl;
+	cout << s1.numberofelements() << endl; // expected: 4
+	cout << (s2 / s1).numberofelements() << endl; // expected: 2
+	cout << p.parse("[974]",3).minimum() << endl; // expected: 4
+	cout << p.parse("[14286]",5).maximum() << endl; // expected: 8
 }
 
 void test_smallbasicsetint() {
@@ -55,8 +91,6 @@ void test_smallbasicsetint() {
     // zou een error moeten geven omdat 65536 > s.maxintvalue
     //SmallBasicSet s = SmallBasicSet(65536);
     //cout << s.maxintvalue() << endl;
-    
-    
 }
 
 void test_smallbasicsetstress() {
@@ -151,6 +185,5 @@ void test_speed() {
         gem = gem + speed_test_smallbasicsetstress();
     }
     cout << "gem runtime is: " << gem/300 << "ms" << endl;
-    
     
 }

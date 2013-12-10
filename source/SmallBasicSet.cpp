@@ -25,6 +25,32 @@ SmallBasicSet::~SmallBasicSet() {
 	// destructor
 }
 
+int SmallBasicSet::numberofelements() {
+	return bitset<MAXELEMENT>(set).count();
+}
+
+int SmallBasicSet::maximum() {
+	int max = MAXELEMENT;
+	int bit = getBit(MAXELEMENT);
+	while ( max > 0 ) {
+		if ((bit & set) != 0) { break; }
+		bit >>= 1;
+		max--;
+	}
+	return max;
+}
+
+int SmallBasicSet::minimum() {
+	int min = 1;
+	int bit = 1;
+	while ( min <= MAXELEMENT ) {
+		if ((bit & set) != 0) { break; }
+		bit <<= 1;
+		min++;
+	}
+	return min;
+}
+
 int SmallBasicSet::maxelement() {
 	return MAXELEMENT;
 }
@@ -40,7 +66,7 @@ string int_to_string(int a) {
 	return str;
 }
 
-string SmallBasicSet::toString() {
+string SmallBasicSet::toString() const {
 	stringstream ss;
     int copyset = set;
 	ss << "{";
@@ -56,23 +82,59 @@ string SmallBasicSet::toString() {
 }
 
 string SmallBasicSet::toBitString() {
-	return std::bitset<16>(set).to_string();
+	return std::bitset<MAXELEMENT>(set).to_string();
+}
+
+std::ostream& operator<<(std::ostream &strm, const SmallBasicSet &s) {
+  return strm << s.toString();
+}
+
+/*******************************************
+ * OPERATIONS
+ *******************************************/
+
+/**
+ * map this set according to the transformation in table: i -> table[i] + 1
+ * that is: for every integer i in the set, the integer table[i] + 1
+ * will be in the resulting set. required: maximum <= size(table)
+ * TODO: verify this is working correctly
+ */
+SmallBasicSet SmallBasicSet::map(int table[]) const {
+	SmallBasicSet res;
+	int i = 1;
+	int bit = 1;
+	while (i <= MAXELEMENT) {
+		if ((bit & set) > 0) { res.quickadd(table[i] + 1); }
+		bit <<= 1; i++;
+	}
+	return res;
+}
+void SmallBasicSet::quickadd(int a) {
+	set |= getBit(a);
 }
 
 SmallBasicSet SmallBasicSet::setunion(SmallBasicSet other) const {
-	SmallBasicSet unie = set | other.set;
+	SmallBasicSet unie(set | other.set);
     return unie;
 }
 
 SmallBasicSet SmallBasicSet::setdifference(SmallBasicSet other) const {
-	SmallBasicSet difference = set & ~ other.set;
+	SmallBasicSet difference(set & ~ other.set);
 	return difference;
 }
 
 SmallBasicSet SmallBasicSet::setintersect(SmallBasicSet other) const {
-	SmallBasicSet intersect = set & other.set;
+	SmallBasicSet intersect(set & other.set);
 	return intersect;
 }
+
+SmallBasicSet SmallBasicSet::operator/(const SmallBasicSet& other) const {
+	return setdifference(other);
+}
+
+/*******************************************
+ * MISC
+ *******************************************/
 
 bool SmallBasicSet::equals(SmallBasicSet other) const {
 	return (set == other.set);
@@ -90,7 +152,7 @@ bool SmallBasicSet::operator==(const SmallBasicSet& other) const {
 	return equals(other);
 }
 
-int SmallBasicSet::getBit(int positie) {
+int SmallBasicSet::getBit(int positie) const {
     return bits[positie-1];
 }
 
@@ -113,6 +175,10 @@ void SmallBasicSet::setSet(int setvalues[], int asize) {
 uint_fast16_t SmallBasicSet::getSet() const {
 	return set;
 }
+
+/*******************************************
+ * CLASS
+ *******************************************/
 
 SmallBasicSet SmallBasicSet::universe() {
 	return SmallBasicSet((1 << MAXELEMENT) - 1);
