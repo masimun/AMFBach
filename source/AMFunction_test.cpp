@@ -75,8 +75,8 @@ bool contains(list<AMFunction> as, AMFunction a) {
 
 void verynaivededekind() {
 	int const n = 4; // works instant up to 4... and 5 takes a while.
-	int const sbsamount = pow(2,n);
-	SmallBasicSet sbs[sbsamount];
+    int const sbsamount =  pow(2,n);
+    SmallBasicSet sbs[] = new SmallBasicSet[sbsamount];
 	for (int i = 0 ; i < sbsamount ; i++) {
 		sbs[i] = SmallBasicSet(i);
 		cout << sbs[i].toString() << endl;
@@ -109,11 +109,12 @@ void verynaivededekind() {
 		}
 		amfs = amfs_new;
 	}
+    delete [] sbs;
 	cout << "Dedekind number for n = " << n << ": " << accdede;
 }
 
-//int main() {
+int main() {
 //	// test_amfunction();
-//	verynaivededekind();
-//	return 0;
-//}
+	verynaivededekind();
+	return 0;
+}

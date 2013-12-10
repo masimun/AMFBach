@@ -11,7 +11,7 @@ void test_solver() {
 	cout << Solver::combinations(6,3) << endl;
 }
 
-main() {
-	test_solver();
-}
+//int main() {
+//	test_solver();
+//}
 
