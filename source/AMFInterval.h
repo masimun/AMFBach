@@ -19,11 +19,16 @@ using namespace std;
 class AMFInterval {
 public:
     class AMFIterator : public iterator<forward_iterator_tag, AMFunction> {
-        friend class AMFunction;
+        friend class AMFInterval;
         public:
-            AMFunction* amf;
-            AMFIterator(AMFInterval interval) {amf = &interval.from;};
-            const reference operator*() {return *amf;}
+            AMFInterval *interval;
+            AMFunction amf;
+            AMFIterator(AMFInterval intr,AMFunction funct) {interval = &intr; amf = funct;};
+            const reference operator*() {return amf;}
+            AMFIterator operator++() { AMFIterator i = *this; return i; }
+            AMFIterator operator++(int junk) { return *this; }
+            bool operator <=(const AMFunction otherAmf) { return amf.leq(otherAmf); }
+            bool operator >(const AMFunction otherAmf) { return !(amf.leq(otherAmf)); }
         
     };
     
@@ -36,8 +41,8 @@ public:
 	virtual ~AMFInterval();
 
     //iterator
-    iterator begin() {return iterator(*this);};
-    iterator end() {return iterator(*this);};
+    iterator begin() {return iterator(*this, this->from);};
+    iterator end() {return iterator(*this, this->till);};
     
     
 	// query
