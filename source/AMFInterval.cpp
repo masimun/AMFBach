@@ -24,3 +24,11 @@ AMFInterval AMFInterval::fullspace(int n) {
 	SmallBasicSet N = SmallBasicSet::universe(n);
 	return AMFInterval(AMFunction::emptyFunction(),AMFunction::universeFunction(N));
 }
+
+AMFunction AMFInterval::getTop() {
+    return from;
+}
+AMFunction AMFInterval::getBottom() {
+    return till;
+}
+

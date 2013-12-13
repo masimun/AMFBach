@@ -34,6 +34,7 @@ public:
 	map<AMFunction,long> algorithm7(int n, map<AMFunction,long> S);
 
 	// COEFFICIENTS
+    static long long PatricksCoefficient(AMFunction r1, AMFunction r2);
 };
 
 #endif /* SOLVER_H_ */

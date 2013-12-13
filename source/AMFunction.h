@@ -37,6 +37,8 @@ public:
 
 	// query
 	SmallBasicSet span() const;
+    set<AMFunction> reduce(SmallBasicSet sbs);
+    AMFunction project(SmallBasicSet sbs);
 	bool isAntiMonotonic();
 	bool isEmpty() const;
 	set<SmallBasicSet> getSets() const;

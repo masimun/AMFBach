@@ -37,6 +37,26 @@ SmallBasicSet AMFunction::span() const {
 	return span;
 }
 
+set<AMFunction> AMFunction::reduce(SmallBasicSet sbs) {
+    int m = sbs.maximum();
+    SmallBasicSet p = sbs.setdifference(m);
+    set<AMFunction> ret;
+    // insert into ret <= (*this).project(p));
+    AMFunction a1 = (*this);
+    //TODO need implementation rest ()
+    // a1.removeSets(positie 0 in ret);
+    // insert into ret <= a1.project(p));
+    return ret;
+}
+
+AMFunction AMFunction::project(SmallBasicSet sbs) {
+    AMFunction res = AMFunction((*this).universe);
+    for (SmallBasicSet a : (*this).sets) {
+        res.addSetConditional(a.setintersect(sbs));
+    }
+    return res;
+}
+
 bool AMFunction::isAntiMonotonic() {
 	bool amf = true;
 	for (SmallBasicSet a : sets ) {

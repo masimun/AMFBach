@@ -1,8 +1,10 @@
-/*
+^{
+    <#code#>
+}/*
  * Solver.cpp
  *
  *  Created on: 3-dec.-2013
- *      Author: Daan
+ *      Author: Daan, Max
  */
 
 #include "Solver.h"
@@ -78,6 +80,20 @@ bool contains(list<AMFunction> as, AMFunction a) {
 		}
 	}
 	return false;
+}
+
+long long Solver::PatricksCoefficient(AMFunction r1, AMFunction r2) {
+    // trivial case, no solutions unless r1 <= r2
+    if (!r1.leq(r2)) return 0;
+    // trivial case, one solution if r1 == r2
+    if (r1.equals(r2)) return 1;
+    long long rest = 0;
+    // treat the case of empty functions separately (most function in AMFunction and AMFinterval do not apply)
+    if (r1.isEmpty()) {
+        if (r2.isEmpty()) return 1; // (empty, empty)
+        return BigInteger.ONE.add(BigInteger.ONE); // (empty, r2), (r2,empty)
+    }
+    return BigInteger.valueOf(1<<(CountConnected(graph(r1,r2.minus(r1)))));
 }
 /*
 void verynaivededekind() {

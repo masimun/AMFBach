@@ -23,12 +23,31 @@ public:
         public:
             AMFInterval *interval;
             AMFunction amf;
+            SmallBasicSet span = (*interval).getTop().span();
             AMFIterator(AMFInterval intr,AMFunction funct) {interval = &intr; amf = funct;};
             const reference operator*() {return amf;}
-            AMFIterator operator++() { AMFIterator i = *this; return i; }
-            AMFIterator operator++(int junk) { return *this; }
-            bool operator <=(const AMFunction otherAmf) { return amf.leq(otherAmf); }
-            bool operator >(const AMFunction otherAmf) { return !(amf.leq(otherAmf)); }
+            AMFIterator operator++() {
+                if (span.isemptyset()) {
+                    amf = (*interval).getBottom();
+                    if (amf.equals((*interval).getTop())) {
+                        amf = amf.emptyFunction(); // moet null zijn.
+                    }
+                    else {
+                        amf = (*interval).getTop();
+                    }
+                }
+                else {
+                    AMFunction maxSpan = amf.singletonFunction(span.maximum()); // kan lik geen static methodes van een klassse oproepen.
+                    amf = (*interval).getBottom();
+                    //AMFunction[] alfaBottom = amf.reduce(span);
+                    //AMFunction[] alfaTop = (*interval).getTop().reduce(span);
+                    // TODO hier aan verderwerken zie causie code
+                }
+                return (*this);
+            };
+            AMFIterator operator++(int junk) { return *this; };
+            bool operator <=(const AMFunction otherAmf) { return amf.leq(otherAmf); };
+            bool operator >(const AMFunction otherAmf) { return !(amf.leq(otherAmf)); };
         
     };
     
@@ -44,6 +63,10 @@ public:
     iterator begin() {return iterator(*this, this->from);};
     iterator end() {return iterator(*this, this->till);};
     
+    
+    //getters
+    AMFunction getTop();
+    AMFunction getBottom();
     
 	// query
 	string toString();
