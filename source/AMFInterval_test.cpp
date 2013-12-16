@@ -38,6 +38,11 @@ void test_iterator() {
 }
 
 int main() {
-    test_iterator();
+    int[3] ret = ret[3];
+    ret[0] = 5;
+    ret[1] = 6;
+    cout << ret[1] << endl;
+    
+    //test_iterator();
     return 0;
 }

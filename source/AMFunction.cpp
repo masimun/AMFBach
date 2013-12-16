@@ -41,6 +41,7 @@ set<AMFunction> AMFunction::reduce(SmallBasicSet sbs) {
     int m = sbs.maximum();
     SmallBasicSet p = sbs.setdifference(m);
     set<AMFunction> ret;
+    ret.insert((*this).project(p));
     // insert into ret <= (*this).project(p));
     AMFunction a1 = (*this);
     //TODO need implementation rest ()
