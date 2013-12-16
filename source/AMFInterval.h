@@ -37,10 +37,12 @@ public:
                     }
                 }
                 else {
-                    AMFunction maxSpan = amf.singletonFunction(span.maximum()); // kan lik geen static methodes van een klassse oproepen.
+                    AMFunction maxSpan = amf.singletonFunction(span.maximum());
                     amf = (*interval).getBottom();
-                    //AMFunction[] alfaBottom = amf.reduce(span);
-                    //AMFunction[] alfaTop = (*interval).getTop().reduce(span);
+                    vector<AMFunction> alfaBottom = amf.reduce(span);
+                    vector<AMFunction> alfaTop = (*interval).getTop().reduce(span);
+                    vector<AMFunction> alfa (2);
+                    vector<AMFunction> iterator (2);
                     // TODO hier aan verderwerken zie causie code
                 }
                 return (*this);
