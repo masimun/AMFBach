@@ -38,10 +38,19 @@ void test_iterator() {
 }
 
 int main() {
-    //int[3] ret = ret[3];
-    //ret[0] = 5;
-    //ret[1] = 6;
-    //cout << ret[1] << endl;
+    
+    //set<int> *s = new set<int>;
+    //(*s).insert(4);
+    //(*s).insert(6);
+    
+    //cout << *(++(*s).begin());
+    
+    vector<int> vec (5);
+    int* p = vec.data();
+    p[0] = 10;
+    p[1] = 2;
+    
+    cout << vec[1];
     
     //test_iterator();
     return 0;
