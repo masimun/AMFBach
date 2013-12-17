@@ -30,14 +30,14 @@ public:
                 if (span.isemptyset()) {
                     amf = (*interval).getBottom();
                     if (amf.equals((*interval).getTop())) {
-                        amf = amf.emptyFunction(); // moet null zijn.
+                        amf = AMFunction::emptyFunction(); // moet null zijn.
                     }
                     else {
                         amf = (*interval).getTop();
                     }
                 }
                 else {
-                    AMFunction maxSpan = amf.singletonFunction(span.maximum());
+                    AMFunction maxSpan = AMFunction::singletonFunction(span.maximum()); // @MAX: static functions moet je met :: oproepen
                     amf = (*interval).getBottom();
                     vector<AMFunction> alfaBottom = amf.reduce(span);
                     vector<AMFunction> alfaTop = (*interval).getTop().reduce(span);

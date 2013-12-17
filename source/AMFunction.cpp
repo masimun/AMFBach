@@ -37,26 +37,6 @@ SmallBasicSet AMFunction::span() const {
 	return span;
 }
 
-vector<AMFunction> AMFunction::reduce(SmallBasicSet sbs) {
-    int m = sbs.maximum();
-    SmallBasicSet p = sbs.setdifference(m);
-    vector<AMFunction> ret (2);
-    AMFunction *pointer = ret.data();
-    pointer[0] = (*this).project(p);
-    AMFunction a1 = (*this);
-    a1.removeAll(ret[0]);
-    pointer[1] = a1.project(p);
-    return ret;
-}
-
-AMFunction AMFunction::project(SmallBasicSet sbs) {
-    AMFunction res = AMFunction((*this).universe);
-    for (SmallBasicSet a : (*this).sets) {
-        res.addSetConditional(a.setintersect(sbs));
-    }
-    return res;
-}
-
 bool AMFunction::isAntiMonotonic() {
 	bool amf = true;
 	for (SmallBasicSet a : sets ) {
@@ -71,20 +51,21 @@ bool AMFunction::isEmpty() const {
 	return sets.empty();
 }
 
-void AMFunction::makeAntiMonotonic() {
-	list<SmallBasicSet> subsets;
-	for (SmallBasicSet a : sets) {
-		for (SmallBasicSet b : sets) {
-			if (a.hasAsSubset(b)) {
-				subsets.push_front(b);
-			}
-		}
-	}
-	removeSets(subsets);
-}
-
 set<SmallBasicSet> AMFunction::getSets() const {
 	return sets;
+}
+
+/* (!) means not anti-monotonic! */
+string AMFunction::toString() {
+	if (isEmpty()) { return "0"; }
+	string rep = "";
+	for (SmallBasicSet s : sets) {
+		rep += s.toString() + "-";
+	}
+	if (!isAntiMonotonic()) {
+		rep += "(!)";
+	}
+	return rep;
 }
 
 /****************************************************
@@ -116,7 +97,6 @@ void AMFunction::removeSets(list<SmallBasicSet> rs) {
 	}
 }
 
-
 /**
  * Does not break invariants:
  *
@@ -124,7 +104,7 @@ void AMFunction::removeSets(list<SmallBasicSet> rs) {
  * it will still be after adding (s)
  *
  * doesn't add (s) if there is a superset of (s)
- * removes all subsets of (s) uppon adding.
+ * removes all subsets of (s) upon adding.
  */
 
 void AMFunction::addSetConditional(SmallBasicSet s) {
@@ -136,6 +116,18 @@ void AMFunction::addSetConditional(SmallBasicSet s) {
 	removeSets(subsets);
 	sets.insert(s);
 	bugstr = toString();
+}
+
+void AMFunction::makeAntiMonotonic() {
+	list<SmallBasicSet> subsets;
+	for (SmallBasicSet a : sets) {
+		for (SmallBasicSet b : sets) {
+			if (a.hasAsSubset(b)) {
+				subsets.push_front(b);
+			}
+		}
+	}
+	removeSets(subsets);
 }
 
 /****************************************************
@@ -169,19 +161,6 @@ AMFunction AMFunction::meet(AMFunction other) const {
 
 AMFunction AMFunction::operator^(AMFunction other) {
 	return meet(other);
-}
-
-/* (!) means not anti-monotonic! */
-string AMFunction::toString() {
-	if (isEmpty()) { return "0"; }
-	string rep = "";
-	for (SmallBasicSet s : sets) {
-		rep += s.toString() + "-";
-	}
-	if (!isAntiMonotonic()) {
-		rep += "(!)";
-	}
-	return rep;
 }
 
 AMFunction AMFunction::shallowclone() {
@@ -229,6 +208,14 @@ AMFunction AMFunction::times(AMFunction other) const {
 	return res;
 }
 
+AMFunction AMFunction::project(SmallBasicSet sbs) {
+    AMFunction res = AMFunction((*this).universe);
+    for (SmallBasicSet a : (*this).sets) {
+        res.addSetConditional(a.setintersect(sbs));
+    }
+    return res;
+}
+
 /****************************************************
  * COMPARE
  ****************************************************/
@@ -270,9 +257,16 @@ bool AMFunction::leq(AMFunction other) const {
 /****************************************************
  * ALGO
  ****************************************************/
-/*
-unordered_set<vector<int>> AMFunction::symmetry_group() {
-	unordered_set<vector<int>> res;
+
+/**
+ * returns the symmetry group of this AMFunction
+ * result is currently in a treeset,
+ * This needs to be changed to a hashset (unordered_set)
+ * for optimisation purposes. (TODO)
+ * Required: an implementation for a hashfunction for vector<int>
+ */
+set<vector<int>> AMFunction::symmetry_group() {
+	set<vector<int>> res;
 	SmallBasicSet sp = span();
 	int maplen = sp.numberofelements();
 	int max = sp.maximum();
@@ -311,7 +305,18 @@ unordered_set<vector<int>> AMFunction::symmetry_group() {
 	delete[] inversemap;
 	return res;
 }
-*/
+
+vector<AMFunction> AMFunction::reduce(SmallBasicSet sbs) {
+    int m = sbs.maximum();
+    SmallBasicSet p = sbs.setdifference(m);
+    vector<AMFunction> ret (2);
+    AMFunction *pointer = ret.data();
+    pointer[0] = (*this).project(p);
+    AMFunction a1 = (*this);
+    a1.removeAll(ret[0]);
+    pointer[1] = a1.project(p);
+    return ret;
+}
 
 /****************************************************
  * CLASS

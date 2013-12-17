@@ -37,15 +37,12 @@ public:
 
 	// query
 	SmallBasicSet span() const;
-    vector<AMFunction> reduce(SmallBasicSet sbs);
-    AMFunction project(SmallBasicSet sbs);
 	bool isAntiMonotonic();
 	bool isEmpty() const;
 	set<SmallBasicSet> getSets() const;
 	string toString();
 	bool contains(SmallBasicSet s);
-    
-    
+
 	// alter
 	void setSets(set<SmallBasicSet> ss);
 	void addSet(SmallBasicSet s);
@@ -69,9 +66,11 @@ public:
 	AMFunction operator+(AMFunction other); // join
 	AMFunction map(int inverse[]);
 	AMFunction omicron(AMFunction tau, AMFunction alfa);
+    AMFunction project(SmallBasicSet sbs);
+    vector<AMFunction> reduce(SmallBasicSet sbs);
 
 	// algo
-	unordered_set<vector<int>> symmetry_group(); // TODO: implement
+	set<vector<int>> symmetry_group();
     
 	// class
 	static AMFunction emptyFunction();
@@ -82,8 +81,7 @@ public:
 	// debug
 	string bugstr;
 
-    
-    
+
     
 };
 #endif /* AMFUNCTION_H_ */

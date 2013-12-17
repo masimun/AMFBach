@@ -15,11 +15,23 @@ Solver::~Solver() {
 	// TODO Auto-generated destructor stub
 }
 
+/**
+ * Increase the coefficient of A in M by i
+ */
 void mapstore(map<AMFunction, long> M, AMFunction A, long i) {
-	M.insert(make_pair(A,i));
+	map<AMFunction, long>::iterator it = M.find(A);
+	if (it != M.end()) {
+		(*it).second += i;
+	} else {
+		M.insert(make_pair(A,0L));
+	}
 }
+
+/**
+ * Increase the coefficient of A in M by 1
+ */
 void mapstore(map<AMFunction, long> M, AMFunction A) {
-	M.insert(make_pair(A,0L));
+	mapstore(M,A,1L);
 }
 
 /**
@@ -42,26 +54,24 @@ vector<map<AMFunction,long>> Solver::algorithm9(int till) {
 	res.push_back(res0);
 	for (int n = 0; n < till; n++ ) {
 		// calculate AMF(n+1) and add it to res.
-		// res.push_back(algorithm7(n,res.at(n)));
+		res.push_back(algorithm7(n,res.at(n)));
 	}
 	return res;
 }
-/*****
-map<AMFunction,long> algorithm7(int n, map<AMFunction,long> S) {
+
+map<AMFunction,long> Solver::algorithm7(int n, map<AMFunction,long> S) {
 	map<AMFunction,long> S1;
 	AMFunction alfa = AMFunction::universeFunction(n);
 	AMFunction u = AMFunction::universeFunction(n+1);
 	AMFunction l = AMFunction::singletonFunction(n+1);
 	for( pair<AMFunction,long> tpair : S ) {
 		AMFunction t = tpair.first;
-		unordered_set<vector<int>> rtsymm = (t.join(l)).symmetry_group();
+		// set<vector<int>> rtsymm = (t.join(l)).symmetry_group();
 		map<AMFunction, long> St;
 		AMFInterval delta(t.join(l),u.omicron(t,alfa));
-		* TODO: iterate over delta
-		 * for (AMFunction x : delta) {
-		 * 		mapstore(St,x.standard());
-		 * }
-		 *
+//		for( AMFInterval::iterator amfit = delta.begin() ; amfit != delta.end() ; amfit++ ) {
+//			mapstore(St,*amfit);
+//		}
 		for ( pair<AMFunction,long> xpair : St ) {
 			AMFunction x = xpair.first;
 			mapstore(S1,x,(xpair.second)*(tpair.second));
@@ -69,7 +79,6 @@ map<AMFunction,long> algorithm7(int n, map<AMFunction,long> S) {
 	}
 	return S1;
 }
-*/
 
 bool contains(list<AMFunction> as, AMFunction a) {
 	for ( AMFunction b : as ) {
@@ -91,14 +100,8 @@ long long Solver::PatricksCoefficient(AMFunction r1, AMFunction r2) {
         if (r2.isEmpty()) return 1; // (empty, empty)
         return 2; // (empty, r2), (r2,empty)
     }
-    return (1<<(CountConnected(graph(r1,r2.minus(r1)))));
+    // return (1<<(CountConnected(graph(r1,r2.minus(r1)))));
 }
-
-
-
-
-
-
 
 /*
 void verynaivededekind() {
