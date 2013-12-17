@@ -37,16 +37,15 @@ SmallBasicSet AMFunction::span() const {
 	return span;
 }
 
-set<AMFunction> AMFunction::reduce(SmallBasicSet sbs) {
+vector<AMFunction> AMFunction::reduce(SmallBasicSet sbs) {
     int m = sbs.maximum();
     SmallBasicSet p = sbs.setdifference(m);
-    set<AMFunction> ret;
-    ret.insert((*this).project(p));
-    // insert into ret <= (*this).project(p));
+    vector<AMFunction> ret (2);
+    AMFunction *pointer = ret.data();
+    pointer[0] = (*this).project(p);
     AMFunction a1 = (*this);
-    //TODO need implementation rest ()
-    // a1.removeSets(positie 0 in ret);
-    // insert into ret <= a1.project(p));
+    a1.removeAll(ret[0]);
+    pointer[1] = a1.project(p);
     return ret;
 }
 
@@ -104,11 +103,19 @@ void AMFunction::addSet(SmallBasicSet s) {
 	bugstr = toString();
 }
 
+void AMFunction::removeAll(AMFunction amf) {
+    set<SmallBasicSet> rs = amf.sets;
+	for (SmallBasicSet s : rs) {
+		sets.erase(s);
+	}
+}
+
 void AMFunction::removeSets(list<SmallBasicSet> rs) {
 	for (SmallBasicSet s : rs) {
 		sets.erase(s);
 	}
 }
+
 
 /**
  * Does not break invariants:
@@ -342,4 +349,5 @@ AMFunction AMFunction::singletonFunction(int l) {
 	amf.addSet(s);
 	return amf;
 }
+
 

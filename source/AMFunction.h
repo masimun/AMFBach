@@ -37,7 +37,7 @@ public:
 
 	// query
 	SmallBasicSet span() const;
-    set<AMFunction> reduce(SmallBasicSet sbs);
+    vector<AMFunction> reduce(SmallBasicSet sbs);
     AMFunction project(SmallBasicSet sbs);
 	bool isAntiMonotonic();
 	bool isEmpty() const;
@@ -49,7 +49,8 @@ public:
 	// alter
 	void setSets(set<SmallBasicSet> ss);
 	void addSet(SmallBasicSet s);
-	void removeSets(list<SmallBasicSet> rs);
+	void removeAll(AMFunction amf);
+    void removeSets(list<SmallBasicSet> rs);
 	void addSetConditional(SmallBasicSet s);
 	void makeAntiMonotonic();
 
@@ -78,7 +79,6 @@ public:
 	static AMFunction universeFunction(SmallBasicSet N);
 	static AMFunction universeFunction(int n);
 	static AMFunction singletonFunction(int l);
-
 	// debug
 	string bugstr;
 

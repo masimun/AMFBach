@@ -89,11 +89,17 @@ long long Solver::PatricksCoefficient(AMFunction r1, AMFunction r2) {
     // treat the case of empty functions separately (most function in AMFunction and AMFinterval do not apply)
     if (r1.isEmpty()) {
         if (r2.isEmpty()) return 1; // (empty, empty)
-        //return BigInteger.ONE.add(BigInteger.ONE); // (empty, r2), (r2,empty)
+        return 2; // (empty, r2), (r2,empty)
     }
-    //return BigInteger.valueOf(1<<(CountConnected(graph(r1,r2.minus(r1)))));
-    return 0;
+    return (1<<(CountConnected(graph(r1,r2.minus(r1)))));
 }
+
+
+
+
+
+
+
 /*
 void verynaivededekind() {
 	int const n = 4; // works instant up to 4... and 5 takes a while.
