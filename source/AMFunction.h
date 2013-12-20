@@ -16,6 +16,7 @@ using namespace std;
 #include <unordered_set>
 #include <vector>
 #include "PairPermutator.h"
+#include "Toolkit.hpp"
 
 /**
  * This class represents an anti-monotonic function.
@@ -23,12 +24,9 @@ using namespace std;
  * Invariant: isAntiMonotonic()
  */
 class AMFunction {
-    
 private:
 	SmallBasicSet universe; // set of integers on which the function operates
 	set<SmallBasicSet> sets;
-    
-    
 public:
 	AMFunction();
 	AMFunction(SmallBasicSet N);
@@ -68,9 +66,10 @@ public:
 	AMFunction omicron(AMFunction tau, AMFunction alfa);
     AMFunction project(SmallBasicSet sbs);
     vector<AMFunction> reduce(SmallBasicSet sbs);
+    AMFunction standard(perm_t permutations);
 
 	// algo
-	set<vector<int>> symmetry_group();
+	perm_t symmetry_group();
     
 	// class
 	static AMFunction emptyFunction();

@@ -66,11 +66,11 @@ map<AMFunction,long> Solver::algorithm7(int n, map<AMFunction,long> S) {
 	AMFunction l = AMFunction::singletonFunction(n+1);
 	for( pair<AMFunction,long> tpair : S ) {
 		AMFunction t = tpair.first;
-		// set<vector<int>> rtsymm = (t.join(l)).symmetry_group();
+		perm_t rtsymm = (t.join(l)).symmetry_group();
 		map<AMFunction, long> St;
 		AMFInterval delta(t.join(l),u.omicron(t,alfa));
-//		for( AMFInterval::iterator amfit = delta.begin() ; amfit != delta.end() ; amfit++ ) {
-//			mapstore(St,*amfit);
+//		for( AMFInterval::iterator amfit = delta.begin() ; amfit != delta.end() ; ++amfit ) {
+//			mapstore(St,(*amfit).standard(rtsymm));
 //		}
 		for ( pair<AMFunction,long> xpair : St ) {
 			AMFunction x = xpair.first;

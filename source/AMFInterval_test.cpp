@@ -37,7 +37,7 @@ void test_iterator() {
     
 }
 
-int main() {
+/*int main() {
     
     //set<int> *s = new set<int>;
     //(*s).insert(4);
@@ -54,4 +54,4 @@ int main() {
     
     //test_iterator();
     return 0;
-}
+}*/

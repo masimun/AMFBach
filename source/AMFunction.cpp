@@ -265,8 +265,8 @@ bool AMFunction::leq(AMFunction other) const {
  * for optimisation purposes. (TODO)
  * Required: an implementation for a hashfunction for vector<int>
  */
-set<vector<int>> AMFunction::symmetry_group() {
-	set<vector<int>> res;
+set<vector<int>,lex_compare> AMFunction::symmetry_group() {
+	set<vector<int>,lex_compare> res;
 	SmallBasicSet sp = span();
 	int maplen = sp.numberofelements();
 	int max = sp.maximum();
@@ -277,17 +277,18 @@ set<vector<int>> AMFunction::symmetry_group() {
 	int pos = 0;
 	int i = min;
 	int bit = sp.getBit(i);
+	inversemap[0] = 0;
 	while (i < max) {
 		if ((bit & sp.getSet()) != 0) {
 			map[pos] = i;
-			inversemap[pos] = pos;
+			inversemap[i] = pos;
 			pos++;
 		}
 		i++;
 		bit <<= 1;
 	}
 	map[pos] = max;
-	inversemap[pos] = pos;
+	inversemap[i] = pos;
 	// permute
 	PairPermutator perm(map,inversemap,maplen);
 	int* p = new int[maplen+1];
@@ -295,8 +296,8 @@ set<vector<int>> AMFunction::symmetry_group() {
 		perm.permute();
 		AMFunction kand = this->map(inversemap);
 		if ( (*this).equals(kand) ) {
-			vector<int> v;
-			std::copy(inversemap,inversemap+maplen,v.begin());
+			vector<int> v (max+1);
+			std::copy(inversemap,inversemap+max+1,v.begin());
 			res.insert(v);
 		}
 	}
@@ -316,6 +317,17 @@ vector<AMFunction> AMFunction::reduce(SmallBasicSet sbs) {
     a1.removeAll(ret[0]);
     pointer[1] = a1.project(p);
     return ret;
+}
+
+AMFunction AMFunction::standard(perm_t permutations) {
+	AMFunction &best = (*this);
+	for ( vector<int> p : permutations ) {
+		AMFunction kand = this->map(p.data());
+		if (kand < best) {
+			best = kand;
+		}
+	}
+	return best;
 }
 
 /****************************************************

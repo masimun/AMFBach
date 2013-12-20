@@ -20,13 +20,12 @@ using namespace std;
 void test_amfunction();
 void test_times();
 void test_omicron();
-void test_iterator();
+void test_symmetrygroup();
 
-//int main() {
-   
-//	return 0;
-//}
-
+int main() {
+	test_symmetrygroup();
+	return 0;
+}
 
 void test_amfunction() {
 	cout << "# C++ FUNC TESTS - AMFUNCTION #" << endl;
@@ -109,53 +108,39 @@ void test_times() {
 	cout << a3x4.toString() << endl;
 }
 
-/*
-void verynaivededekind() {
-	int const n = 4; // works instant up to 4... and 5 takes a while.
-    int const sbsamount =  pow(2,n);
-    SmallBasicSet sbs[] = new SmallBasicSet[sbsamount];
-	for (int i = 0 ; i < sbsamount ; i++) {
-		sbs[i] = SmallBasicSet(i);
-		cout << sbs[i].toString() << endl;
-	}
-	cout << "----" << endl;
-	int accdede = 1;
-	cout << "lege AMF - 1" << endl;
-	list<AMFunction> amfs;
-	amfs.push_front(AMFunction());
-	int itno = 0;
-	bool set_added = true;
-	while (set_added) {
-		set_added = false;
-		cout << "chains of length " << (itno++)+1 << endl;
-		list<AMFunction> amfs_new;
-		for (AMFunction a : amfs) {
-			for (SmallBasicSet s : sbs) {
-				AMFunction a_new = a.badclone();
-				if (!a_new.contains(s)) {
-					a_new.addSet(s);
-					if (a_new.isAntiMonotonic() && !contains(amfs_new,a_new)) {
-						accdede++;
-						// cout << a_new.toString() << " - " << accdede << endl;
-						if (accdede % 1000 == 0) {cout << "count:" << accdede << endl;}
-						amfs_new.push_front(a_new);
-						set_added = true;
-					}
-				}
-			}
-		}
-		amfs = amfs_new;
-	}
-    delete [] sbs;
-	cout << "Dedekind number for n = " << n << ": " << accdede;
-}
- */
 
-//int main() {
-//	// test_amfunction();
-//	verynaivededekind();
-//	return 0;
-//}
+void test_symmetrygroup() {
+	Parser p;
+
+	AMFunction a = p.parse_amf("{[1234]}");
+	AMFunction b = p.parse_amf("{[1,2],[4]}");
+	AMFunction c = b.standard(a.symmetry_group());
+	cout << c.toString() << endl;
+
+//	int arr[3];
+//	arr[0] = 1;
+//	arr[1] = 4;
+//	arr[2] = 7;
+//
+//	vector<int> v (3);
+//	std::copy(arr,arr+3,v.begin());
+//
+//	for (int i : v) {
+//		cout << i << endl;
+//	}
+
+	// cout << a.toString() << endl;
+	set<vector<int>,lex_compare> svi = a.symmetry_group();
+	for ( vector<int> vi : svi ) {
+		cout << "{";
+		for ( int i : vi ) {
+			cout << i << ",";
+		}
+		cout << "}" << endl;
+		int* p = vi.data();
+		cout << a.map(p).toString() << endl;
+	}
+}
 
 void test_omicron() {
 
