@@ -46,6 +46,9 @@ long Solver::combinations(int n, int i) {
 	return res;
 }
 
+/**
+ * Main algorithm for equivalence class generation
+ */
 vector<map<AMFunction,long>> Solver::algorithm9(int till) {
 	vector<map<AMFunction,long>> res(till);
 	map<AMFunction, long> res0;

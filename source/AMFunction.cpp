@@ -254,6 +254,18 @@ bool AMFunction::leq(AMFunction other) const {
 	return true;
 }
 
+/**
+ *  Check whether this AMFunction is greater or equal to the one with only x as an element
+ */
+bool AMFunction::ge(SmallBasicSet x) const {
+	for ( SmallBasicSet s : sets ) {
+		if (s.hasAsSubset(x)) {
+			return true;
+		}
+	}
+	return false;
+}
+
 /****************************************************
  * ALGO
  ****************************************************/

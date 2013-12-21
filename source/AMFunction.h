@@ -40,6 +40,7 @@ public:
 	set<SmallBasicSet> getSets() const;
 	string toString();
 	bool contains(SmallBasicSet s);
+	bool ge(SmallBasicSet s) const;
 
 	// alter
 	void setSets(set<SmallBasicSet> ss);

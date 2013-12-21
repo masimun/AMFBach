@@ -12,6 +12,8 @@ using namespace std;
 #include <string>
 #include "SmallBasicSet.h"
 #include "AMFunction.h"
+#include "AMFGraph.h"
+#include <utility>
 
 /**
  * A (closed) interval of anti-monotonic functions.
@@ -65,6 +67,8 @@ public:
     iterator begin() {return iterator(*this, this->from);};
     iterator end() {return iterator(*this, this->till);};
     
+    //graph
+    AMFGraph graph();
     
     //getters
     AMFunction getTop();
