@@ -104,6 +104,7 @@ long long Solver::PatricksCoefficient(AMFunction r1, AMFunction r2) {
         return 2; // (empty, r2), (r2,empty)
     }
     // return (1<<(CountConnected(graph(r1,r2.minus(r1)))));
+    return 0;
 }
 
 /*
