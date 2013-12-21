@@ -21,7 +21,7 @@ using namespace std;
 
 class AMFGraph {
 private:
-	set<SmallBasicSet,set<SmallBasicSet>> edges;
+	edges_t edges;
 public:
 	AMFGraph();
 	virtual ~AMFGraph();

@@ -11,6 +11,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
 #include "SmallBasicSet.h"
 using namespace std;
 
@@ -26,6 +27,6 @@ struct lex_compare {
 /* set of permutations (int vectors)*/
 typedef set<vector<int>,lex_compare> perm_t;
 /* edges of an AMFGraph */
-typedef set<SmallBasicSet,set<SmallBasicSet>> edges_t;
+typedef map<SmallBasicSet,set<SmallBasicSet>> edges_t;
 
 #endif /* TOOLKIT_H_ */

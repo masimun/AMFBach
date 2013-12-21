@@ -9,7 +9,7 @@
 
 AMFGraph AMFInterval::graph() {
 	AMFGraph g;
-	const edges_t* edges = g.getEdges();
+	edges_t* edges = g.getEdges();
 	const AMFunction &r1 = this->getBottom();
 	const AMFunction &r2 = this->getTop();
 	for (SmallBasicSet r : r2.getSets()) {
@@ -17,7 +17,7 @@ AMFGraph AMFInterval::graph() {
 		for (SmallBasicSet s : r2.getSets()) {
 			if (!r1.ge(s.setintersect(s))) { cr.insert(s); };
 		}
-		// (*edges).insert(make_pair(r,cr));
+		edges->insert(make_pair(r,cr));
 	}
 	return g;
 }
