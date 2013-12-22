@@ -22,10 +22,10 @@ void test_times();
 void test_omicron();
 void test_symmetrygroup();
 
-int main() {
-	test_symmetrygroup();
-	return 0;
-}
+//int main() {
+//	test_symmetrygroup();
+//	return 0;
+//}
 
 void test_amfunction() {
 	cout << "# C++ FUNC TESTS - AMFUNCTION #" << endl;

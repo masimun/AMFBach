@@ -15,6 +15,7 @@ using namespace std;
 #include <bitset>
 #include <cmath>
 #include <list>
+#include <array>
 #include "AMFInterval.h"
 
 void test_amfinterval() {
@@ -24,20 +25,39 @@ void test_amfinterval() {
 
 void test_iterator() {
     Parser p;
-    AMFInterval amf(p.parse_amf("{[1]}"), p.parse_amf("{}"));
+    AMFInterval amf(p.parse_amf("{[123]}"), p.parse_amf("{}"));
     AMFInterval::AMFIterator freddy = amf.begin();
-    //cout << p.parse_amf("{[1,2,3]}").toString() << endl;
-    AMFunction b = (freddy.amf);
-    cout << (b.toString()) << endl;
+    
     AMFInterval::AMFIterator f2 = freddy++;
-    cout << f2.amf.toString();
+
+
+    //set<AMFInterval::AMFIterator> c;
+    
+    //c.insert(freddy);
+    //c.insert(freddy++);
+        
+    //AMFInterval::AMFIterator* t = v.data();
+    
+    //cout << f2.amf.toString() <<endl;
+
+    
+    
+    //for (AMFInterval::AMFIterator freddy = amf.begin(); freddy.hasNext(); freddy++) {
+    //    AMFunction b = (freddy.amf);
+    //    cout << (b.toString()) << endl;
+    //}
+    //cout << p.parse_amf("{[1,2,3]}").toString() << endl;
+    //AMFunction b = (freddy.amf);
+    //cout << (b.toString()) << endl;
+    ///AMFInterval::AMFIterator f2 = freddy++;
+    //cout << f2.amf.toString();
     
     //cout <<  b.toString();
     //cout << (*amf.end()).toString() << endl;
     
 }
 
-/*int main() {
+int main() {
     
     //set<int> *s = new set<int>;
     //(*s).insert(4);
@@ -45,13 +65,13 @@ void test_iterator() {
     
     //cout << *(++(*s).begin());
     
-    vector<int> vec (5);
-    int* p = vec.data();
-    p[0] = 10;
-    p[1] = 2;
+    //vector<int> vec (5);
+    //int* p = vec.data();
+    //p[0] = 10;
+    //p[1] = 2;
     
-    cout << vec[1];
+    //cout << vec[1];
     
-    //test_iterator();
+    test_iterator();
     return 0;
-}*/
+}

@@ -136,6 +136,10 @@ SmallBasicSet SmallBasicSet::operator/(const SmallBasicSet& other) const {
  * MISC
  *******************************************/
 
+bool SmallBasicSet::isemptyset() {
+    return set==0;
+}
+
 bool SmallBasicSet::equals(SmallBasicSet other) const {
 	return (set == other.set);
 }

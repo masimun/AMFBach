@@ -2,10 +2,79 @@
  * AMFInterval.cpp
  *
  *  Created on: 2-dec.-2013
- *      Author: Daan
+ *      Author: Daan, Max
  */
 
 #include "AMFInterval.h"
+
+
+AMFInterval::AMFIterator::AMFIterator(AMFInterval intr,AMFunction funct) {
+    interval = &intr;
+    amf = funct;
+    span = (*interval).getTop().span();
+}
+
+
+AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
+    if (span.isemptyset()) {
+        amf = (*interval).getBottom();
+        if (amf.equals((*interval).getTop())) {
+            amf = AMFunction::emptyFunction(); // moet null zijn.
+        }
+        else {
+            amf = (*interval).getTop();
+        }
+    }
+    else {
+        AMFunction maxSpan = AMFunction::singletonFunction(span.maximum()); // @MAX: static functions moet je met :: oproepen
+        amf = (*interval).getBottom();
+        span =(*interval).getTop().span();
+        vector<AMFunction> alfaBottom =( amf.reduce(span));
+        vector<AMFunction> alfaTop = ((*interval).getTop().reduce(span));
+        vector<AMFunction> alfa (2);
+        
+        
+        vector<AMFIterator> itr; // KAN LIK GEEN ITERATORS IN DIE VECTOR STOPPEN RAAR MAAR WAAR
+        
+        AMFunction* pAlfaBottom = alfaBottom.data();
+        AMFunction* pAlfaTop = alfaTop.data();
+        AMFunction* pAlfa = alfa.data();
+        
+        AMFIterator* pIterator = itr.data();
+        pIterator[0] = (AMFInterval::AMFInterval(pAlfaBottom[0],pAlfaTop[0]).begin());
+        pAlfa[0] = (pIterator[0]++).amf;
+        pIterator[1] = (AMFInterval::AMFInterval(pAlfaBottom[1],pAlfa[0].meet(pAlfaTop[1])).begin());
+        pAlfa[1] = (pIterator[1]++).amf;
+        
+        AMFunction ret = amf;
+        
+        if(pIterator[1].hasNext()) {
+            pAlfa[1] = (pIterator[1]++).amf;
+            if(pAlfa[1].isEmpty()) {amf = pAlfa[0];}
+            else {amf = pAlfa[0].join(pAlfa[1].times(maxSpan));}
+        }
+        else if (pIterator[0].hasNext()) {
+            pAlfa[0] = (pIterator[0]++).amf;
+            pIterator[1] = (AMFInterval::AMFInterval(pAlfaBottom[1],pAlfa[0].meet(pAlfaTop[1])).begin());
+            if (!pIterator[1].hasNext()) {
+                amf = AMFunction().emptyFunction();
+            }
+            else {
+                pAlfa[1] = (pIterator[1]++).amf;
+                if(pAlfa[1].isEmpty()) {amf = pAlfa[0];}
+                else {amf = pAlfa[0].join(pAlfa[1].times(maxSpan));}
+            }
+        }
+        else {
+            amf =AMFunction().emptyFunction();
+        }
+        amf = ret;
+        
+    }
+    
+    return (*this);
+}
+    
 
 AMFGraph AMFInterval::graph() {
 	AMFGraph g;
