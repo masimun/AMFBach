@@ -41,9 +41,9 @@ AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
         AMFunction* pAlfa = alfa.data();
         
         AMFIterator* pIterator = itr.data();
-        pIterator[0] = (AMFInterval::AMFInterval(pAlfaBottom[0],pAlfaTop[0]).begin());
+        pIterator[0] = (AMFInterval(pAlfaBottom[0],pAlfaTop[0])).begin();
         pAlfa[0] = (pIterator[0]++).amf;
-        pIterator[1] = (AMFInterval::AMFInterval(pAlfaBottom[1],pAlfa[0].meet(pAlfaTop[1])).begin());
+        pIterator[1] = (AMFInterval(pAlfaBottom[1],pAlfa[0].meet(pAlfaTop[1]))).begin();
         pAlfa[1] = (pIterator[1]++).amf;
         
         AMFunction ret = amf;
@@ -55,7 +55,7 @@ AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
         }
         else if (pIterator[0].hasNext()) {
             pAlfa[0] = (pIterator[0]++).amf;
-            pIterator[1] = (AMFInterval::AMFInterval(pAlfaBottom[1],pAlfa[0].meet(pAlfaTop[1])).begin());
+            pIterator[1] = (AMFInterval(pAlfaBottom[1],pAlfa[0].meet(pAlfaTop[1]))).begin();
             if (!pIterator[1].hasNext()) {
                 amf = AMFunction().emptyFunction();
             }
