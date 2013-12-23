@@ -31,21 +31,23 @@ public:
         AMFIterator operator++();
         AMFIterator operator++(int junk) { return operator++(); };
         bool hasNext() {return !(amf.isEmpty());};
-        bool operator <=(const AMFunction otherAmf) { return amf.leq(otherAmf); };
-        bool operator >(const AMFunction otherAmf) { return !(amf.leq(otherAmf));};
-        
-        
+        // bool operator <=(const AMFunction otherAmf) { return amf.leq(otherAmf); };
+        // bool operator >(const AMFunction otherAmf) { return !(amf.leq(otherAmf));};
+        bool operator ==(const AMFIterator other) { return amf.equals(other.amf); }
+        bool operator !=(const AMFIterator other) { return !amf.equals(other.amf); }
+
     };
     
 private:
 	AMFunction from;
 	AMFunction till;
-    typedef AMFIterator iterator;
+
 public:
 	AMFInterval(AMFunction bottom, AMFunction top);
 	virtual ~AMFInterval();
 
     //iterator
+	typedef AMFIterator iterator;
     iterator begin() {return iterator(*this, (*this).from);};
     iterator end() {return iterator(*this, (*this).till);};
     

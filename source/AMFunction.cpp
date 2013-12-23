@@ -277,7 +277,7 @@ bool AMFunction::ge(SmallBasicSet x) const {
  * for optimisation purposes. (TODO)
  * Required: an implementation for a hashfunction for vector<int>
  */
-set<vector<int>,lex_compare> AMFunction::symmetry_group() {
+perm_t AMFunction::symmetry_group() {
 	set<vector<int>,lex_compare> res;
 	SmallBasicSet sp = span();
 	int maplen = sp.numberofelements();

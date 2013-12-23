@@ -72,9 +72,10 @@ map<AMFunction,long> Solver::algorithm7(int n, map<AMFunction,long> S) {
 		perm_t rtsymm = (t.join(l)).symmetry_group();
 		map<AMFunction, long> St;
 		AMFInterval delta(t.join(l),u.omicron(t,alfa));
-//		for( AMFInterval::iterator amfit = delta.begin() ; amfit != delta.end() ; ++amfit ) {
-//			mapstore(St,(*amfit).standard(rtsymm));
-//		}
+		for( AMFInterval::iterator amfit = delta.begin() ; amfit != delta.end() ; ++amfit ) {
+			AMFunction a = (*amfit);
+			mapstore(St,a.standard(rtsymm));
+		}
 		for ( pair<AMFunction,long> xpair : St ) {
 			AMFunction x = xpair.first;
 			mapstore(S1,x,(xpair.second)*(tpair.second));
