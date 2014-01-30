@@ -23,10 +23,10 @@ public:
     class AMFIterator : public iterator<forward_iterator_tag, AMFunction> {
         friend class AMFInterval;
     public:
-        AMFInterval *interval;
+        AMFInterval* interval;
         AMFunction amf;
         SmallBasicSet span;// = (*interval).getTop().span();
-        AMFIterator(AMFInterval intr,AMFunction funct);
+        AMFIterator(AMFInterval* intr,AMFunction funct);
         const reference operator*() {return amf;}
         AMFIterator operator++();
         AMFIterator operator++(int junk) { return operator++(); };
@@ -48,8 +48,8 @@ public:
 
     //iterator
 	typedef AMFIterator iterator;
-    iterator begin() {return iterator(*this, (*this).from);};
-    iterator end() {return iterator(*this, (*this).till);};
+    iterator begin() 	{return iterator(this, this->from);};
+    iterator end() 		{return iterator(this, this->till);};
     
     //graph
     AMFGraph graph();

@@ -25,10 +25,12 @@ void test_amfinterval() {
 
 void test_iterator() {
     Parser p;
-    AMFInterval amf(p.parse_amf("{[123]}"), p.parse_amf("{}"));
+    AMFInterval amf(p.parse_amf("{}"),p.parse_amf("{[123]}"));
     AMFInterval::AMFIterator freddy = amf.begin();
     
-    AMFInterval::AMFIterator f2 = freddy++;
+    ++freddy;
+
+    // AMFInterval::AMFIterator f2 = freddy++;
 
 
     //set<AMFInterval::AMFIterator> c;
