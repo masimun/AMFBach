@@ -8,10 +8,11 @@
 #include "AMFInterval.h"
 
 
-AMFInterval::AMFIterator::AMFIterator(AMFInterval intr,AMFunction funct) {
-    interval = &intr;
+AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr,AMFunction funct) {
+    interval = intr;
     amf = funct;
-    span = (*interval).getTop().span();
+    string test = interval->getTop().toString();
+    span = interval->getTop().span();
 }
 
 
@@ -41,8 +42,12 @@ AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
         AMFunction* pAlfaTop = alfaTop.data();
         AMFunction* pAlfa = alfa.data();
         
+        //debug
+        int debug_alfaBottomsize = alfaBottom.size();
+
         AMFIterator* pIterator = itr.data();
-        pIterator[0] = (AMFInterval(pAlfaBottom[0],pAlfaTop[0])).begin();
+        AMFIterator pIterator0 = (AMFInterval(pAlfaBottom[0],pAlfaTop[0])).begin();
+        pIterator[0] = pIterator0; // nulpointer error!
         pAlfa[0] = (pIterator[0]++).amf;
         pIterator[1] = (AMFInterval(pAlfaBottom[1],pAlfa[0].meet(pAlfaTop[1]))).begin();
         pAlfa[1] = (pIterator[1]++).amf;
@@ -132,10 +137,10 @@ AMFInterval AMFInterval::fullspace(int n) {
 }
 
 AMFunction AMFInterval::getTop() {
-    return from;
+    return till;
 }
 
 AMFunction AMFInterval::getBottom() {
-    return till;
+    return from;
 }
 
