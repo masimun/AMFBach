@@ -36,6 +36,7 @@ AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
         
         vector<AMFIterator> itr; // KAN LIK GEEN ITERATORS IN DIE VECTOR STOPPEN RAAR MAAR WAAR
         
+        
         AMFunction* pAlfaBottom = alfaBottom.data();
         AMFunction* pAlfaTop = alfaTop.data();
         AMFunction* pAlfa = alfa.data();
