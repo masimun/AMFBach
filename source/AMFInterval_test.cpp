@@ -26,24 +26,25 @@ void test_amfinterval() {
 void test_iterator() {
     Parser p;
     AMFInterval amf(p.parse_amf("{}"),p.parse_amf("{[123]}"));
-    AMFInterval::AMFIterator freddy = amf.begin();
+    AMFInterval::AMFIterator freddy = amf.getIterator();
     cout << freddy.amf.toString() << endl;
     //AMFInterval::AMFIterator f2 = freddy++;
     
-<<<<<<< HEAD
-=======
     ++freddy;
 
     // AMFInterval::AMFIterator f2 = freddy++;
->>>>>>> 816033ce8a9e10f2e1abfd7a37b35fa2c69e5b57
-
-    vector<AMFInterval::AMFIterator> c;
-    AMFInterval::AMFIterator * piterator = c.data();
+    
+    vector<AMFInterval::AMFIterator> iter;
+    AMFInterval::AMFIterator *pIterator = iter.data();
+    iter.push_back(freddy) ;
     
     //c.push_back(freddy);
-    piterator[0] = freddy;
+    //piterator[0] = freddy;
     
-    cout << piterator[0].amf.toString();
+    //AMFInterval::AMFIterator pIterator0 = (AMFInterval(pAlfaBottom[0],pAlfaTop[0])).begin();
+    //iter.push_back(pIterator0); // nulpointer error!
+    
+    //cout << pIterator[0].amf.toString();
     
     //c.insert(freddy);
     //c.insert(freddy++);
@@ -83,7 +84,7 @@ int main() {
     //p[1] = 2;
     
     //cout << vec[1];
-    
+
     test_iterator();
     return 0;
 }

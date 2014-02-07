@@ -81,6 +81,7 @@ void test_smallbasicset() {
 	cout << (s2 / s1).numberofelements() << endl; // expected: 2
 	cout << p.parse("[974]",3).minimum() << endl; // expected: 4
 	cout << p.parse("[14286]",5).maximum() << endl; // expected: 8
+    cout << p.parse("[123]",3).maximum() << endl; // expected: 3
 }
 
 void test_smallbasicsetint() {

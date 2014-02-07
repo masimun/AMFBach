@@ -72,7 +72,7 @@ map<AMFunction,long> Solver::algorithm7(int n, map<AMFunction,long> S) {
 		perm_t rtsymm = (t.join(l)).symmetry_group();
 		map<AMFunction, long> St;
 		AMFInterval delta(t.join(l),u.omicron(t,alfa));
-		for( AMFInterval::iterator amfit = delta.begin() ; amfit != delta.end() ; ++amfit ) {
+		for( AMFInterval::iterator amfit = delta.getIterator() ; amfit.hasNext() ; ++amfit ) {
 			AMFunction a = (*amfit);
 			mapstore(St,a.standard(rtsymm));
 		}
@@ -147,4 +147,9 @@ void verynaivededekind() {
 	}
 	cout << "Dedekind number for n = " << n << ": " << accdede;
 }
+
+int main() {
+    verynaivededekind();
+}
+
 */

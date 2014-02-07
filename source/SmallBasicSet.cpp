@@ -119,7 +119,12 @@ SmallBasicSet SmallBasicSet::setunion(SmallBasicSet other) const {
 }
 
 SmallBasicSet SmallBasicSet::setdifference(SmallBasicSet other) const {
-	SmallBasicSet difference(set & ~ other.set);
+    SmallBasicSet difference(set & (~ other.getSet()));
+	return difference;
+}
+
+SmallBasicSet SmallBasicSet::difference(int other) const {
+    SmallBasicSet difference(set & (~ getBit(other)));
 	return difference;
 }
 

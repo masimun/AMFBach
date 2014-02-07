@@ -26,6 +26,19 @@ public:
         AMFInterval* interval;
         AMFunction amf;
         SmallBasicSet span;// = (*interval).getTop().span();
+        AMFunction maxSpan;
+        AMFunction ret;
+        
+        vector<AMFunction> alfaBottom;
+        vector<AMFunction> alfaTop;
+        vector<AMFunction> alfa;
+        vector<AMFIterator> iter;
+        
+        AMFunction* pAlfaBottom = alfaBottom.data();
+        AMFunction* pAlfaTop = alfaTop.data();
+        AMFunction* pAlfa = alfa.data();
+        AMFIterator* pIterator = iter.data();
+        
         AMFIterator(AMFInterval* intr,AMFunction funct);
         const reference operator*() {return amf;}
         AMFIterator operator++();
@@ -48,8 +61,8 @@ public:
 
     //iterator
 	typedef AMFIterator iterator;
-    iterator begin() 	{return iterator(this, this->from);};
-    iterator end() 		{return iterator(this, this->till);};
+    iterator getIterator() 	{return iterator(this, this->till);};
+    //iterator end() 		{return iterator(this, this->till);};
     
     //graph
     AMFGraph graph();

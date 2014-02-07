@@ -7,6 +7,7 @@
  *
  */
 #include "AMFunction.h"
+#include "Parser.h"
 #include <iostream>
 
 AMFunction::AMFunction() {
@@ -321,7 +322,10 @@ perm_t AMFunction::symmetry_group() {
 
 vector<AMFunction> AMFunction::reduce(SmallBasicSet sbs) {
     int m = sbs.maximum();
-    SmallBasicSet p = sbs.setdifference(m);
+    
+    //Doe m moet nog omgezet worden naar een set, nu hebben we alleen het grootste element.
+    
+    SmallBasicSet p = sbs.difference(m);
     vector<AMFunction> ret (2);
     AMFunction *pointer = ret.data();
     pointer[0] = (*this).project(p);

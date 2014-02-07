@@ -48,6 +48,7 @@ public:
 	SmallBasicSet setunion(SmallBasicSet s) const;
 	SmallBasicSet setintersect(SmallBasicSet s) const;
 	SmallBasicSet setdifference(SmallBasicSet s) const;
+    SmallBasicSet difference(int other) const;
 	SmallBasicSet operator/(const SmallBasicSet& other) const;
 	SmallBasicSet map(int table[]) const;
 
