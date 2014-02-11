@@ -41,8 +41,9 @@ public:
         
         AMFIterator(AMFInterval* intr,AMFunction funct);
         const reference operator*() {return amf;}
-        AMFunction operator++();
-        AMFunction operator++(int junk) { return operator++(); };
+        AMFunction next();
+        AMFIterator operator++();
+        AMFIterator operator++(int junk) { return operator++(); };
         bool hasNext() {return !(amf.isEmpty());};
         // bool operator <=(const AMFunction otherAmf) { return amf.leq(otherAmf); };
         // bool operator >(const AMFunction otherAmf) { return !(amf.leq(otherAmf));};

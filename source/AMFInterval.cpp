@@ -51,7 +51,7 @@ AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr,AMFunction funct) {
             
             AMFIterator pIterator0 = (AMFInterval(pAlfaBottom[0],pAlfaTop[0])).getIterator();
             iter.push_back(pIterator0); // nulpointer error!
-            alfa.push_back((iter[0]++));
+            alfa.push_back((iter[0]).next());
             AMFIterator pIterator1 = (AMFInterval(pAlfaBottom[1],(pAlfa[0].meet(pAlfaTop[1])))).getIterator();
             iter.push_back(pIterator1);
             //pAlfa[1] = (iter[1]).amf;
@@ -71,20 +71,24 @@ AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr,AMFunction funct) {
     }
 }
 
-
-AMFunction AMFInterval::AMFIterator::operator++() {
+AMFunction AMFInterval::AMFIterator::next() {
     
     AMFunction ret = amf;
+    
+    //@ DAAN KAN JE KEER KIJKEN NAAR DIE getTop() kijken ik versta nie waarom ik daar iedere keer nulptr exception heb
     if (amf.equals(interval->getTop())) {
-        amf = AMFunction::emptyFunction(); // MOET NULL ZIJN
+        amf = AMFunction::emptyFunction();
     }
     else {
-        amf = interval->getTop();
+       amf = interval->getTop();
     }
     return ret;
     
+}
+
+AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
     
-    //if (this->hasNext()) {
+    if (this->hasNext()) {
         /**
         if (span.isemptyset()) {
             ret = amf;
@@ -130,7 +134,7 @@ AMFunction AMFInterval::AMFIterator::operator++() {
         }
        **/
     
-        /**
+        
         if(pIterator[1].hasNext()) {
             pAlfa[1] = (pIterator[1]++).amf;
             if(pAlfa[1].isEmpty()) {amf = pAlfa[0];}
@@ -162,8 +166,6 @@ AMFunction AMFInterval::AMFIterator::operator++() {
     else {
         throw exception();
     }
-         
-    **/
 }
     
 
