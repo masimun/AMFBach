@@ -1,3 +1,4 @@
+
 /*
  * AMFInterval_test.cpp
  *
