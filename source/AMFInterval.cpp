@@ -15,17 +15,7 @@ AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr,AMFunction funct) {
         amf = funct; //current
         string test = interval->getTop().toString();
         span = interval->getTop().span();
-    }
-    
-    // Geef een lege iterator terug
-    else {
-        amf = AMFunction::emptyFunction();
-    }
-}
-
-
-AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
-    if (this->hasNext()) {
+        
         
         if (span.isemptyset()) {
             ret = amf;
@@ -46,6 +36,78 @@ AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
             alfaBottom = (amf.reduce(span));
             alfaTop = ((*interval).getTop().reduce(span));
             
+            //vector<AMFIterator> pIterator; // KAN LIK GEEN ITERATORS IN DIE VECTOR STOPPEN RAAR MAAR WAAR
+            
+            
+            pAlfaBottom = alfaBottom.data();
+            pAlfaTop = alfaTop.data();
+            pAlfa = alfa.data();
+            pIterator = iter.data();
+            
+            
+            //debug
+            //int debug_alfaBottomsize = alfaBottom.size();
+            
+            
+            AMFIterator pIterator0 = (AMFInterval(pAlfaBottom[0],pAlfaTop[0])).getIterator();
+            iter.push_back(pIterator0); // nulpointer error!
+            alfa.push_back((iter[0]).next());
+            AMFIterator pIterator1 = (AMFInterval(pAlfaBottom[1],(pAlfa[0].meet(pAlfaTop[1])))).getIterator();
+            iter.push_back(pIterator1);
+            //pAlfa[1] = (iter[1]).amf;
+            
+            
+            
+        }
+        
+        
+        
+        
+    }
+    
+    // Geef een lege iterator terug
+    else {
+        amf = AMFunction::emptyFunction();
+    }
+}
+
+AMFunction AMFInterval::AMFIterator::next() {
+    
+    AMFunction ret = amf;
+    
+    //@ DAAN KAN JE KEER KIJKEN NAAR DIE getTop() kijken ik versta nie waarom ik daar iedere keer nulptr exception heb
+    if (amf.equals(interval->getTop())) {
+        amf = AMFunction::emptyFunction();
+    }
+    else {
+       amf = interval->getTop();
+    }
+    return ret;
+    
+}
+
+AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
+    
+    if (this->hasNext()) {
+        /**
+        if (span.isemptyset()) {
+            ret = amf;
+            amf = (*interval).getBottom();
+            if (amf.equals((*interval).getTop())) {
+                amf = AMFunction::emptyFunction(); // moet null zijn.
+            }
+            else {
+                amf = (*interval).getTop();
+            }
+            
+        }
+        else {
+            maxSpan = AMFunction::singletonFunction(span.maximum()); // @Dit geeft lik de verkeerde waarde terug?
+            // We willen hier niet wat het grootste element van de span kan zijn maar wat het grootste is die er in zit.
+            amf = (*interval).getBottom();
+            span =(*interval).getTop().span();
+            alfaBottom = (amf.reduce(span));
+            alfaTop = ((*interval).getTop().reduce(span));
             
             //vector<AMFIterator> pIterator; // KAN LIK GEEN ITERATORS IN DIE VECTOR STOPPEN RAAR MAAR WAAR
             
@@ -54,6 +116,7 @@ AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
             pAlfaTop = alfaTop.data();
             pAlfa = alfa.data();
             pIterator = iter.data();
+            
             
             //debug
             //int debug_alfaBottomsize = alfaBottom.size();
@@ -66,9 +129,12 @@ AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
             iter.push_back(pIterator1);
             pAlfa[1] = (iter[1]).amf;
             
-            
+        
+         
         }
+       **/
     
+        
         if(pIterator[1].hasNext()) {
             pAlfa[1] = (pIterator[1]++).amf;
             if(pAlfa[1].isEmpty()) {amf = pAlfa[0];}
