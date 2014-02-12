@@ -117,27 +117,10 @@ AMFGraph AMFInterval::graph() {
 	}
 	return g;
 }
-	/**
-	 * Compute the graph generated from the interval.
-	 * The vertices of the graph are the  elements of top
-	 * Two vertices A B are connected iff A intersection B is less than bottom
-	 * The vertices
-	 *
-	 * @return sorted map mapping each of the elements in top to the set of immediately connected elements
-	 */
-//	public AMFGraph graph() {
-//		AMFunction r1 = getBottom();
-//		AMFunction r2 = getTop();
-//		SortedMap<SmallBasicSet, SortedSet<SmallBasicSet>> ret = new TreeMap<SmallBasicSet, SortedSet<SmallBasicSet>>();
-//		for (SmallBasicSet r : r2) {
-//			SortedSet<SmallBasicSet> cr = new TreeSet<SmallBasicSet>();
-//			for (SmallBasicSet s : r2) {
-//				if (!r1.ge(r.intersection(s))) cr.add(s);
-//			}
-//			ret.put(r,cr);
-//		}
-//		return new AMFGraph(ret);
-//	}
+
+long long AMFInterval::lattice_size() {
+	return 42; // TODO: implement
+}
 
 AMFInterval::AMFInterval(AMFunction bottom, AMFunction top) {
 	from = bottom;

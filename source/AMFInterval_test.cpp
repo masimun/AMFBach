@@ -70,21 +70,21 @@ void test_iterator() {
     
 }
 
-int main() {
-    
-    //set<int> *s = new set<int>;
-    //(*s).insert(4);
-    //(*s).insert(6);
-    
-    //cout << *(++(*s).begin());
-    
-    //vector<int> vec (5);
-    //int* p = vec.data();
-    //p[0] = 10;
-    //p[1] = 2;
-    
-    //cout << vec[1];
-
-    test_iterator();
-    return 0;
-}
+//int main() {
+//
+//    //set<int> *s = new set<int>;
+//    //(*s).insert(4);
+//    //(*s).insert(6);
+//
+//    //cout << *(++(*s).begin());
+//
+//    //vector<int> vec (5);
+//    //int* p = vec.data();
+//    //p[0] = 10;
+//    //p[1] = 2;
+//
+//    //cout << vec[1];
+//
+//    test_iterator();
+//    return 0;
+//}

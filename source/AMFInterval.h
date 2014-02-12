@@ -66,6 +66,7 @@ public:
     
     //graph
     AMFGraph graph();
+    long long lattice_size();
     
     //getters
     AMFunction getTop();
