@@ -68,6 +68,7 @@ public:
     AMFunction project(SmallBasicSet sbs);
     vector<AMFunction> reduce(SmallBasicSet sbs);
     AMFunction standard(perm_t permutations);
+    AMFunction standard();
 
 	// algo
 	perm_t symmetry_group();

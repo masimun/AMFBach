@@ -196,3 +196,33 @@ SmallBasicSet SmallBasicSet::universe() {
 SmallBasicSet SmallBasicSet::universe(int n) {
 	return SmallBasicSet((1 << n) - 1);
 }
+
+/*******************************************
+ * ITERATOR
+ *******************************************/
+SmallBasicSet::SBSIterator::SBSIterator(SmallBasicSet* set) {
+	sbs = set;
+	current = 1;
+	bit = 1;
+	while ( current <= MAXELEMENT ) {
+		if ((bit & sbs->set) != 0) { break; }
+		bit <<= 1;
+		current++;
+	}
+	prev = current;
+}
+
+SmallBasicSet::SBSIterator SmallBasicSet::SBSIterator::operator ++() {
+	prev = current;
+	bit <<= 1;
+	current++;
+	while(( bit & sbs->set) == 0 && current <= sbs->MAXELEMENT) {
+		bit <<= 1;
+		current++;
+	}
+	return (*this);
+}
+
+bool SmallBasicSet::SBSIterator::hasNext() {
+	return ( current <= (sbs->MAXELEMENT) );
+}

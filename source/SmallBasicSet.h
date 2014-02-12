@@ -24,6 +24,22 @@ class SmallBasicSet {
 	uint_fast16_t set;
 	friend std::ostream& operator<<(std::ostream &strm, const SmallBasicSet &s);
 public:
+	class SBSIterator : public iterator<forward_iterator_tag, int> {
+		friend class SmallBasicSet;
+	public:
+		SmallBasicSet* sbs;
+		int current;
+		int prev;
+		long bit;
+
+		SBSIterator(SmallBasicSet* set);
+		const reference operator*() { return prev; }
+		SBSIterator operator++();
+		bool hasNext();
+	};
+	typedef SBSIterator iterator;
+	iterator getIterator() { return iterator(this); };
+
 	SmallBasicSet();
 	SmallBasicSet(int a[], int asize);
     SmallBasicSet(uint_fast16_t a);

@@ -46,6 +46,64 @@ long Solver::combinations(int n, int i) {
 	return res;
 }
 
+
+/**
+ * Algorithm for calculating the m'th dedekind number
+ * using 2nd degree p-coefficients
+ */
+long long Solver::pc2_dedekind(int m) {
+	int n = m - 2;
+	// generate
+	vector<map<AMFunction,long>> classes = algorithm9(m);
+	map<AMFunction,long> functions;
+
+	// collect
+	for (int i = 0; i < classes.size() ; i++ ) {
+		long coeff = combinations(n, i);
+		for( pair<AMFunction,long> p : classes.at(i)) {
+			mapstore(functions, p.first, p.second*coeff);
+		}
+	}
+
+	AMFunction e = AMFunction::emptyFunction();
+	AMFunction u = AMFunction::universeFunction(n);
+	map<AMFunction, bigint> left_interval_size;
+	map<AMFunction, bigint> right_interval_size;
+	for( pair<AMFunction,long> fpair : functions ) {
+		AMFunction &f = fpair.first;
+		AMFInterval left = AMFInterval(e,f);
+		AMFInterval right = AMFInterval(f,u);
+		left_interval_size.insert(make_pair(f,left.lattice_size()));
+		right_interval_size.insert(make_pair(f,right.lattice_size()));
+	}
+
+	bigint sum = 0L;
+	long evaluations = 0;
+	long possibilities = 0;
+
+	AMFInterval::iterator it2 = AMFInterval(e,u).getIterator();
+	while(it2.hasNext()) {
+		AMFunction r2 = *it2;
+		bigint r2size = right_interval_size.at(r2.standard());
+		bigint sumP = 0L;
+		for (pair<AMFunction,long> r1pair : functions ) {
+			possibilities++;
+			AMFunction &r1 = r1pair.first;
+			if (r1.leq(r2)) {
+				sumP = sumP	+ ( (r1pair.second)
+							 	* (left_interval_size.at(r1))
+							 	* PatricksCoefficient(r1, r2)
+							  );
+				evaluations++;
+			}
+		}
+		sum = sum + (sumP * r2size);
+	}
+
+	return sum;
+
+}
+
 /**
  * Main algorithm for equivalence class generation
  */
@@ -107,6 +165,8 @@ long long Solver::PatricksCoefficient(AMFunction r1, AMFunction r2) {
     // return (1<<(CountConnected(graph(r1,r2.minus(r1)))));
     return 0;
 }
+
+
 
 /*
 void verynaivededekind() {

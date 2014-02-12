@@ -25,11 +25,16 @@ void test_smallbasicsetint();
 double speed_test_smallbasicsetstress();
 void test_speed();
 
-//int main() {
-//	//test_smallbasicset();
-//	test_smallbasicset_map();
-//	return 0;
-//}
+int main() {
+	Parser p;
+	SmallBasicSet s1 = p.parse("[379]", 3);
+	SmallBasicSet::iterator it = s1.getIterator();
+	while (it.hasNext()) {
+		++it;
+		cout << *it << endl;
+	}
+	return 0;
+}
 
 void test_smallbasicset_map() {
 	Parser p;
