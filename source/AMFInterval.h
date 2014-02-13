@@ -41,7 +41,7 @@ public:
         
         AMFIterator(AMFInterval* intr,AMFunction funct);
         const reference operator*() {return amf;}
-        AMFunction next();
+        AMFunction next(AMFunction top);
         AMFIterator operator++();
         AMFIterator operator++(int junk) { return operator++(); };
         bool hasNext() {return !(amf.isEmpty());};

@@ -71,9 +71,9 @@ void test_iterator() {
     
 }
 
-//int main() {
-//
-//    //set<int> *s = new set<int>;
+int main() {
+
+    //set<int> *s = new set<int>;
 //    //(*s).insert(4);
 //    //(*s).insert(6);
 //
@@ -86,6 +86,6 @@ void test_iterator() {
 //
 //    //cout << vec[1];
 //
-//    test_iterator();
-//    return 0;
-//}
+    test_iterator();
+    return 0;
+}
