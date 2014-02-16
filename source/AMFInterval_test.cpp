@@ -71,6 +71,7 @@ void test_iterator() {
     
 }
 
+/*
 int main() {
 
     //set<int> *s = new set<int>;
@@ -89,3 +90,4 @@ int main() {
     test_iterator();
     return 0;
 }
+*/

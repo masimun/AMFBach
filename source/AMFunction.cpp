@@ -347,41 +347,31 @@ AMFunction AMFunction::standard(perm_t permutations) {
 }
 
 AMFunction AMFunction::standard() {
-	// TODO: less messy implementation
 	SmallBasicSet sp = span();
 	int maplen = sp.numberofelements();
 	int max = sp.maximum();
-	int min = sp.minimum();
 	int* map = new int[maplen];
 	int* inversemap = new int[max + 1];
+	for ( int i = 0 ; i < max + 1 ; i++ ) { inversemap[i] = 0; }
 	// iterate over set
 	int pos = 0;
-	int i = min;
-	int bit = sp.getBit(i);
-	inversemap[0] = 0;
-	while (i < max) {
-		if ((bit & sp.getSet()) != 0) {
-			map[pos] = i;
-			inversemap[i] = pos;
-			pos++;
-		}
-		i++;
-		bit <<= 1;
+	SmallBasicSet::iterator it = sp.getIterator();
+	while (it.hasNext()) {
+		++it;
+		map[pos] = *it;
+		inversemap[*it] = pos++;
 	}
-	map[pos] = max;
-	inversemap[i] = pos;
 	// permute
 	AMFunction &best = (*this);
 	PairPermutator perm(map,inversemap,maplen);
-	int* p = new int[maplen+1];
 	while (!perm.finished()) {
 		perm.permute();
 		AMFunction kand = this->map(inversemap);
+		cout << kand.toString() << endl;
 		if ( kand < best ) {
 			best = kand;
 		}
 	}
-	delete[] p;
 	delete[] map;
 	delete[] inversemap;
 	return best;

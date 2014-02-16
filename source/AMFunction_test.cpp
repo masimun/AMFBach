@@ -23,18 +23,18 @@ void test_omicron();
 void test_symmetrygroup();
 void test_standard();
 
-//int main() {
-//	test_standard();
-//	return 0;
-//}
+int main() {
+	test_symmetrygroup();
+	return 0;
+}
 
 void test_standard() { // FAILS!!! TODO
 	cout << "# C++ FUNC TESTS - AMFUNCTION STANDARD #" << endl;
 	Parser p;
 	AMFunction s1 = p.parse_amf("{[1,2],[4]}");
 	AMFunction s2 = p.parse_amf("{[1,2],[3]}");
-	cout << s1.standard().toString() << endl;
-	cout << s2.standard().toString() << endl;
+	cout << "standard:" << s1.standard().toString() << endl;
+	cout << "standard:" << s2.standard().toString() << endl;
 }
 
 void test_amfunction() {

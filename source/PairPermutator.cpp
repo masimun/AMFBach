@@ -20,9 +20,14 @@ PairPermutator::~PairPermutator() {
 }
 
 void PairPermutator::permute() {
-	if (first) { first = false; return; }
+	int copy[length];
+	for (int i = 0 ; i < length ; i++ ) { copy[i] = table[i]; }
 	done = !next_permutation(table,table+length);
-	next_permutation(inverse+1,inverse+1+length);
+	int j = 0;
+	while ( table[j] == copy[j] ) { j++; }
+	int a = inverse[table[j]];
+	inverse[table[j]] = inverse[copy[j]];
+	inverse[copy[j]] = a;
 }
 
 bool PairPermutator::finished() {
