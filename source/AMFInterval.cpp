@@ -8,6 +8,62 @@
 #include "AMFInterval.h"
 
 
+/*******************************************
+ * ITERATOR
+ *******************************************/
+//AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr) {
+//
+//}
+
+
+//AMFInterval::AMFIterator AMFInterval::AMFIterator::operator ++() {
+//
+//}
+
+//bool AMFInterval::AMFIterator::hasNext() {
+//
+//}
+
+/*******************************************
+ * ITERATOR EXCEPTIONALCLOSEDITERATOR
+ *******************************************/
+AMFInterval::AMFExceptionalClosedIterator::AMFExceptionalClosedIterator(AMFInterval* intr ) {
+    bottom = AMFunction();
+    bottom.addSet(SmallBasicSet());
+    virgin = true;
+    //normal = AMFInterval::AMFInterval(bottom,intr->getTop(),true,true).getIterator();
+}
+
+AMFInterval::AMFExceptionalClosedIterator AMFInterval::AMFExceptionalClosedIterator::operator ++() {
+    
+}
+
+bool AMFInterval::AMFExceptionalClosedIterator::hasNext() {
+    
+}
+
+
+/*******************************************
+ * ITERATOR CLOSEDITERATOR
+ *******************************************/
+//AMFInterval::AMFClosedIterator::AMFClosedIterator(AMFInterval* intr) {
+//
+//}
+
+//AMFInterval::AMFClosedIterator AMFInterval::AMFClosedIterator::operator ++() {
+//
+//}
+
+//bool AMFInterval::AMFClosedIterator::hasNext() {
+//
+//}
+
+
+
+/***********************************************************************************************
+ FAST ITERATOR (NOT WORKING)
+ 
+ 
 AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr,AMFunction funct) {
     interval = intr;
     //Geeft een niet lege iterator terug
@@ -52,7 +108,7 @@ AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr,AMFunction funct) {
             AMFIterator pIterator0 = (AMFInterval(pAlfaBottom[0],pAlfaTop[0])).getIterator();
             iter.push_back(pIterator0); // nulpointer error!
             
-            alfa.push_back((iter[0]).next(this->interval->getTop())) ;
+            alfa.push_back((iter[0]).next(this->interval->getTop())); // nest van this of van iter[0] ?
             AMFIterator pIterator1 = (AMFInterval(pAlfaBottom[1],(pAlfa[0].meet(pAlfaTop[1])))).getIterator();
             iter.push_back(pIterator1);
             //pAlfa[1] = (iter[1]).amf;
@@ -76,7 +132,7 @@ AMFunction AMFInterval::AMFIterator::next(AMFunction top) {
     
     AMFunction ret = amf;
     
-    //@ DAAN KAN JE KEER KIJKEN NAAR DIE getTop() kijken ik versta nie waarom ik daar iedere keer nulptr exception heb
+    //@DAAN KAN JE KEER KIJKEN NAAR DIE getTop() kijken ik versta nie waarom ik daar iedere keer nulptr exception heb
     
     if (amf.equals(top)) {
         amf = AMFunction::emptyFunction();
@@ -91,7 +147,7 @@ AMFunction AMFInterval::AMFIterator::next(AMFunction top) {
 AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
     
     if (this->hasNext()) {
-        /**
+        /*
         if (span.isemptyset()) {
             ret = amf;
             amf = (*interval).getBottom();
@@ -134,7 +190,7 @@ AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
         
          
         }
-       **/
+       // * /
     
         
         if(pIterator[1].hasNext()) {
@@ -169,7 +225,8 @@ AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
         throw exception();
     }
 }
-    
+************************************************************************************************************/
+
 
 AMFGraph AMFInterval::graph() {
 	AMFGraph g;
@@ -191,8 +248,18 @@ long long AMFInterval::lattice_size() {
 }
 
 AMFInterval::AMFInterval(AMFunction bottom, AMFunction top) {
+    from = bottom;
+	till = top;
+    closedAtBottom = true;
+    closedAtTop = true;
+    
+}
+
+AMFInterval::AMFInterval(AMFunction bottom, AMFunction top,bool closedTop, bool closedBot) {
 	from = bottom;
 	till = top;
+    closedAtBottom = closedBot;
+    closedAtTop = closedTop;
 }
 
 AMFInterval::~AMFInterval() {
@@ -208,6 +275,11 @@ AMFInterval AMFInterval::fullspace(int n) {
 	return AMFInterval(AMFunction::emptyFunction(),AMFunction::universeFunction(N));
 }
 
+AMFInterval::AMFIterator AMFInterval::getIterator() {
+    
+}
+
+
 AMFunction AMFInterval::getTop() {
     return till;
 }
@@ -216,3 +288,10 @@ AMFunction AMFInterval::getBottom() {
     return from;
 }
 
+bool AMFInterval::isClosedAtBottom() {
+    return closedAtBottom;
+}
+
+bool AMFInterval::isClosedAtTop() {
+    return closedAtTop;
+}
