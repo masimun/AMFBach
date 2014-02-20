@@ -16,6 +16,7 @@ using namespace std;
 #include <unordered_set>
 #include <vector>
 #include "PairPermutator.h"
+#include "MappingPermutator.h"
 #include "Toolkit.hpp"
 
 /**

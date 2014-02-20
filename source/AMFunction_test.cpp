@@ -24,7 +24,7 @@ void test_symmetrygroup();
 void test_standard();
 
 int main() {
-	test_symmetrygroup();
+	test_standard();
 	return 0;
 }
 

@@ -303,9 +303,9 @@ perm_t AMFunction::symmetry_group() {
 	map[pos] = max;
 	inversemap[i] = pos;
 	// permute
-	PairPermutator perm(map,inversemap,maplen);
+	MappingPermutator perm(map,inversemap,maplen);
 	int* p = new int[maplen+1];
-	while (!perm.finished()) {
+	while (perm.has_next()) {
 		perm.permute();
 		AMFunction kand = this->map(inversemap);
 		if ( (*this).equals(kand) ) {
@@ -363,8 +363,8 @@ AMFunction AMFunction::standard() {
 	}
 	// permute
 	AMFunction &best = (*this);
-	PairPermutator perm(map,inversemap,maplen);
-	while (!perm.finished()) {
+	MappingPermutator perm(map,inversemap,maplen);
+	while (perm.has_next()) {
 		perm.permute();
 		AMFunction kand = this->map(inversemap);
 		cout << kand.toString() << endl;

@@ -5,6 +5,9 @@
  *      Author: Daan
  */
 
+/**
+ * DEPECRATED: USE MappingPermutator INSTEAD
+ */
 #include "PairPermutator.h"
 
 PairPermutator::PairPermutator(int* tab, int* inv , int len) {

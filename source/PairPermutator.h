@@ -3,6 +3,8 @@
  *
  *  Created on: 5-dec.-2013
  *      Author: Daan
+ *
+ *  DEPECRATED
  */
 
 #ifndef PAIRPERMUTATOR_H_
@@ -13,6 +15,9 @@
 
 using namespace std;
 
+/**
+ * DEPECRATED: USE MappingPermutator INSTEAD
+ */
 class PairPermutator {
 private:
 	int* table;
