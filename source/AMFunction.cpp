@@ -255,6 +255,10 @@ bool AMFunction::leq(AMFunction other) const {
 	return true;
 }
 
+bool AMFunction::gt(AMFunction other) const {
+	return !(leq(other));
+}
+
 /**
  *  Check whether this AMFunction is greater or equal to the one with only x as an element
  */
@@ -411,6 +415,15 @@ AMFunction AMFunction::singletonFunction(int l) {
 	SmallBasicSet s;
 	s.quickadd(l);
 	amf.addSet(s);
+	return amf;
+}
+
+AMFunction AMFunction::immediate_subsets(SmallBasicSet s) {
+	AMFunction amf;
+	SmallBasicSet::iterator it = s.getIterator();
+	while(it.hasNext()) {
+		amf.addSet(s.difference(*it));
+	}
 	return amf;
 }
 
