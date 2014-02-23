@@ -366,12 +366,11 @@ AMFunction AMFunction::standard() {
 		inversemap[*it] = pos++;
 	}
 	// permute
-	AMFunction &best = (*this);
+	AMFunction best = (*this);
 	MappingPermutator perm(map,inversemap,maplen);
 	while (perm.has_next()) {
 		perm.permute();
 		AMFunction kand = this->map(inversemap);
-		cout << kand.toString() << endl;
 		if ( kand < best ) {
 			best = kand;
 		}
