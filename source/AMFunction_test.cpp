@@ -25,7 +25,7 @@ void test_standard();
 
 int main() {
 	test_standard();
-	return 0;
+	vector<int> v;
 }
 
 void test_standard() {
