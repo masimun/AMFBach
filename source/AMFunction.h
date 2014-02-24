@@ -16,6 +16,7 @@ using namespace std;
 #include <unordered_set>
 #include <vector>
 #include "PairPermutator.h"
+#include "MappingPermutator.h"
 #include "Toolkit.hpp"
 
 /**
@@ -52,6 +53,7 @@ public:
 
 	// compare
 	bool leq(AMFunction other) const;
+	bool gt(AMFunction other) const;
 	bool equals(AMFunction other) const;
 	bool operator<(const AMFunction& other) const;
 	bool operator==(const AMFunction& other) const;
@@ -67,11 +69,11 @@ public:
 	AMFunction omicron(AMFunction tau, AMFunction alfa);
     AMFunction project(SmallBasicSet sbs);
     vector<AMFunction> reduce(SmallBasicSet sbs);
-    AMFunction standard(perm_t permutations);
-    AMFunction standard();
 
 	// algo
 	perm_t symmetry_group();
+	AMFunction standard(perm_t permutations);
+	AMFunction standard();
     
 	// class
 	static AMFunction emptyFunction();
@@ -79,6 +81,8 @@ public:
 	static AMFunction universeFunction(SmallBasicSet N);
 	static AMFunction universeFunction(int n);
 	static AMFunction singletonFunction(int l);
+	static AMFunction immediate_subsets(SmallBasicSet s);
+
 	// debug
 	string bugstr;
 

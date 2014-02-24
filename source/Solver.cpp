@@ -58,7 +58,7 @@ long long Solver::pc2_dedekind(int m) {
 	map<AMFunction,long> functions;
 
 	// collect
-	for (int i = 0; i < classes.size() ; i++ ) {
+	for (int i = 0; i < (int) classes.capacity() ; i++ ) {
 		long coeff = combinations(n, i);
 		for( pair<AMFunction,long> p : classes.at(i)) {
 			mapstore(functions, p.first, p.second*coeff);

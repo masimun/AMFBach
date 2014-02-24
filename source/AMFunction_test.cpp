@@ -24,17 +24,16 @@ void test_symmetrygroup();
 void test_standard();
 
 int main() {
-	test_symmetrygroup();
-	return 0;
+	test_standard();
+	vector<int> v;
 }
 
-void test_standard() { // FAILS!!! TODO
+void test_standard() {
 	cout << "# C++ FUNC TESTS - AMFUNCTION STANDARD #" << endl;
 	Parser p;
 	AMFunction s1 = p.parse_amf("{[1,2],[4]}");
-	AMFunction s2 = p.parse_amf("{[1,2],[3]}");
-	cout << "standard:" << s1.standard().toString() << endl;
-	cout << "standard:" << s2.standard().toString() << endl;
+	AMFunction s2 = p.parse_amf("{[1],[2,3]}");
+	test::ASSERT_EQUAL(s1.standard(),s2.standard());
 }
 
 void test_amfunction() {

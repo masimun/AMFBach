@@ -123,6 +123,9 @@ SmallBasicSet SmallBasicSet::setdifference(SmallBasicSet other) const {
 	return difference;
 }
 
+/**
+ * Return an sbs wich is this sbs without given integer
+ */
 SmallBasicSet SmallBasicSet::difference(int other) const {
     SmallBasicSet difference(set & (~ getBit(other)));
 	return difference;

@@ -7,7 +7,7 @@
 
 using namespace std;
 #include "Solver.h"
-#include "PairPermutator.h"
+#include "MappingPermutator.h"
 #include <iostream>
 #include <unordered_set>
 
@@ -30,6 +30,7 @@ void test_hash() {
 }
 
 void test_permutator() {
+	int count = 1;
 	int a[] = {1,2,3,4,5};
 	int ai[6];
 	ai[0] = 0;
@@ -38,12 +39,12 @@ void test_permutator() {
 	ai[3] = 2;
 	ai[4] = 3;
 	ai[5] = 4;
-	PairPermutator p(a,ai,5);
-	while (!p.finished()) {
+	MappingPermutator p(a,ai,5);
+	while (p.has_next()) {
+		p.permute();
 		printarray(a, 5);
 		printarray(ai, 6);
-		cout << endl;
-		p.permute();
+		cout << " - " << count++ << endl;
 	}
 
 }
