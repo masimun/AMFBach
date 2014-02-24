@@ -43,6 +43,8 @@ public:
 	long get_lattice_size();
 	long get_lattice_size(bool odd);
 	int get_max_level_number();
+	int get_max_level();
+	long get_width();
 	// ...
 
 
