@@ -11,18 +11,18 @@
 /*******************************************
  * ITERATOR
  *******************************************/
-//AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr) {
-//
-//}
+AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr) {
+
+}
 
 
 //AMFInterval::AMFIterator AMFInterval::AMFIterator::operator ++() {
 //
 //}
 
-//bool AMFInterval::AMFIterator::hasNext() {
-//
-//}
+bool AMFInterval::AMFIterator::hasNext() {
+    return (!interval->getBottom().leq(interval->getTop()) || (interval->getBottom().equals(interval->getTop()) && (!interval->isClosedAtBottom() || !interval->isClosedAtTop())));
+}
 
 /*******************************************
  * ITERATOR EXCEPTIONALCLOSEDITERATOR
@@ -31,24 +31,26 @@ AMFInterval::AMFExceptionalClosedIterator::AMFExceptionalClosedIterator(AMFInter
     bottom = AMFunction();
     bottom.addSet(SmallBasicSet());
     virgin = true;
-    //normal = AMFInterval::AMFInterval(bottom,intr->getTop(),true,true).getIterator();
-}
-
-AMFInterval::AMFExceptionalClosedIterator AMFInterval::AMFExceptionalClosedIterator::operator ++() {
+    //AMFIterator normal = *new AMFIterator((AMFInterval(bottom,intr->getTop(),true,true)));
+    //AMFIterator normal = AMFInterval(bottom,intr->getTop(),true,true).getIterator();
     
 }
+
+//AMFInterval::AMFExceptionalClosedIterator AMFInterval::AMFExceptionalClosedIterator::operator ++() {
+    
+//}
 
 bool AMFInterval::AMFExceptionalClosedIterator::hasNext() {
-    
+    return (virgin || normal.hasNext());
 }
 
 
 /*******************************************
  * ITERATOR CLOSEDITERATOR
  *******************************************/
-//AMFInterval::AMFClosedIterator::AMFClosedIterator(AMFInterval* intr) {
-//
-//}
+AMFInterval::AMFClosedIterator::AMFClosedIterator(AMFInterval* intr) {
+
+}
 
 //AMFInterval::AMFClosedIterator AMFInterval::AMFClosedIterator::operator ++() {
 //
@@ -273,10 +275,6 @@ string AMFInterval::toString() {
 AMFInterval AMFInterval::fullspace(int n) {
 	SmallBasicSet N = SmallBasicSet::universe(n);
 	return AMFInterval(AMFunction::emptyFunction(),AMFunction::universeFunction(N));
-}
-
-AMFInterval::AMFIterator AMFInterval::getIterator() {
-    
 }
 
 

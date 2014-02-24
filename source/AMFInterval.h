@@ -68,8 +68,9 @@ public:
     public:
         AMFunction bottom;
         bool virgin;
-        AMFIterator normal ;
         AMFInterval* interval;
+        AMFIterator normal;
+
         
         AMFExceptionalClosedIterator(AMFInterval* intr);
         const reference operator*();
@@ -92,8 +93,7 @@ public:
 	virtual ~AMFInterval();
 
     //iterator
-	typedef AMFIterator iterator;
-    iterator getIterator() 	{return iterator(this);};
+    AMFIterator getIterator() 	{return AMFIterator(this);};
     //iterator end() 		{return iterator(this, this->till);};
     
     //graph

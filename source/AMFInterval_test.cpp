@@ -28,7 +28,7 @@ void test_iterator() {
     Parser p;
     AMFInterval amf(p.parse_amf("{}"),p.parse_amf("{[123]}"));
     AMFInterval::AMFIterator freddy = amf.getIterator();
-    cout << freddy.amf.toString() << endl;
+    //cout << freddy.amf.toString() << endl;
     //AMFInterval::AMFIterator f2 = freddy++;
     
     ++freddy;
