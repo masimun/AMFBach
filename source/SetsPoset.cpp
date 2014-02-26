@@ -107,13 +107,52 @@ bool SetsPoset::is_empty() {
 
 long SetsPoset::get_lattice_size() {
 	if (is_empty()) { return 1; }
-	else { return get_lattice_size((get_max_level_number() % 2) != 1); }
+	else { return get_lattice_size((get_maximal_level_number() % 2) != 1); }
+}
+
+int SetsPoset::get_maximal_level_number() {
+	long max = get_width();
+	for( int i = 1 ; i <= get_max_level() ; i++ ) {
+		if ( get_level(i).size() == max ) {
+			return i;
+		}
+	}
+	return 1;
+}
+
+long SetsPoset::get_width() {
+	long max = 0;
+	for (int i = 1 ; 1 <= get_max_level() ; i++ ) {
+		max = std::max((long) get_level(i).size(), max);
+	}
+	return max;
+}
+
+set<SmallBasicSet> SetsPoset::get_level(int n) {
+	if ( n > level.capacity() ) {
+		return set<SmallBasicSet>();
+	} else {
+		return level[n-1];
+	}
+}
+
+int SetsPoset::get_max_level() {
+	return level.capacity();
 }
 
 long SetsPoset::get_lattice_size(bool odd) {
-	return 1302; // TODO: implement
-}
+	int first_level;
+	int exp;
+	if (odd) {
+		exp = 0;
+	}
+	else {
+		exp = (int) get_level(1).size();
+		first_level = 2;
+	}
 
-int SetsPoset::get_max_level_number() {
-	return 42; // TODO: implement
+	// for all levels firstLevel + 2k, compute the set of predecessors of the predecessors
+	unordered_map<SBS,set<SBS>>* prepredec = new unordered_map<SBS,set<SBS>>();
+
+
 }

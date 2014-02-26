@@ -15,6 +15,8 @@ using namespace std;
 #include <map>
 #include <vector>
 #include <climits>
+#include <unorderd_map>
+#include <unorderd_set>
 
 class SetsPoset {
 private:
@@ -42,12 +44,10 @@ public:
 	// size
 	long get_lattice_size();
 	long get_lattice_size(bool odd);
-	int get_max_level_number();
+	int get_maximal_level_number();
 	int get_max_level();
+	set<SBS> get_level(int i);
 	long get_width();
-	// ...
-
-
 
 };
 
