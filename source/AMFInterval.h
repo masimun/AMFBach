@@ -24,45 +24,76 @@ public:
         friend class AMFInterval;
     public:
         AMFInterval* interval;
-        AMFunction amf;
-        SmallBasicSet span;// = (*interval).getTop().span();
-        AMFunction maxSpan;
-        AMFunction ret;
+        //AMFunction amf;
+        //SmallBasicSet span;// = (*interval).getTop().span();
+        //AMFunction maxSpan;
+        //AMFunction ret;
         
-        vector<AMFunction> alfaBottom;
-        vector<AMFunction> alfaTop;
-        vector<AMFunction> alfa;
-        vector<AMFIterator> iter;
+        //vector<AMFunction> alfaBottom;
+        //vector<AMFunction> alfaTop;
+        //vector<AMFunction> alfa;
+        //vector<AMFIterator> iter;
         
-        AMFunction* pAlfaBottom = alfaBottom.data();
-        AMFunction* pAlfaTop = alfaTop.data();
-        AMFunction* pAlfa = alfa.data();
-        AMFIterator* pIterator = iter.data();
+        //AMFunction* pAlfaBottom = alfaBottom.data();
+        //AMFunction* pAlfaTop = alfaTop.data();
+        //AMFunction* pAlfa = alfa.data();
+        //AMFIterator* pIterator = iter.data();
         
-        AMFIterator(AMFInterval* intr,AMFunction funct);
-        const reference operator*() {return amf;}
-        AMFunction next(AMFunction top);
+        AMFIterator(AMFInterval* intr);
+        const reference operator*();
+        //AMFunction next(AMFunction top);
         AMFIterator operator++();
-        AMFIterator operator++(int junk) { return operator++(); };
-        bool hasNext() {return !(amf.isEmpty());};
+        //AMFIterator operator++(int junk) { return operator++(); };
+        bool hasNext();
         // bool operator <=(const AMFunction otherAmf) { return amf.leq(otherAmf); };
         // bool operator >(const AMFunction otherAmf) { return !(amf.leq(otherAmf));};
-        bool operator ==(const AMFIterator other) { return amf.equals(other.amf); }
-        bool operator !=(const AMFIterator other) { return !amf.equals(other.amf); }
+        //bool operator ==(const AMFIterator other) { return amf.equals(other.amf); }
+        //bool operator !=(const AMFIterator other) { return !amf.equals(other.amf); }
 
     };
     
+    class AMFClosedIterator : public iterator<forward_iterator_tag, AMFunction> {
+        friend class AMFInterval;
+    public:
+        AMFInterval* interval;
+        
+        AMFClosedIterator(AMFInterval* intr);
+        const reference operator*();
+        AMFClosedIterator operator++();
+        bool hasNext();
+    };
+    
+    class AMFExceptionalClosedIterator : public iterator<forward_iterator_tag, AMFunction> {
+        friend class AMFInterval;
+    public:
+        AMFunction bottom;
+        bool virgin;
+        AMFInterval* interval;
+        AMFIterator normal;
+
+        
+        AMFExceptionalClosedIterator(AMFInterval* intr);
+        const reference operator*();
+        AMFExceptionalClosedIterator operator++();
+        bool hasNext();
+    };
+    
+
+
 private:
 	AMFunction from;
 	AMFunction till;
+    bool closedAtTop;
+    bool closedAtBottom;
 
 public:
 	AMFInterval(AMFunction bottom, AMFunction top);
+    AMFInterval(AMFunction bottom, AMFunction top, bool closedTop, bool closedBot);
+
 	virtual ~AMFInterval();
 
     //iterator
-	typedef AMFIterator iterator;
-    iterator getIterator() 	{return iterator(this, this->till);};
+    AMFIterator getIterator() 	{return AMFIterator(this);};
     //iterator end() 		{return iterator(this, this->till);};
     
     //graph
@@ -72,6 +103,8 @@ public:
     //getters
     AMFunction getTop();
     AMFunction getBottom();
+    bool isClosedAtBottom();
+    bool isClosedAtTop();
     
 	// query
 	string toString();
