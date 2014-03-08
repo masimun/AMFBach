@@ -71,7 +71,7 @@ void test_iterator() {
     
 }
 
-/*
+
 int main() {
 
     //set<int> *s = new set<int>;
@@ -87,7 +87,8 @@ int main() {
 //
 //    //cout << vec[1];
 //
-    test_iterator();
+    //test_iterator();
+    cout << SmallBasicSet(3).size();
     return 0;
 }
-*/
+

@@ -30,6 +30,10 @@ AMFunction::~AMFunction() {
 	// do nothing
 }
 
+long AMFunction::size() {
+    return sets.size();
+}
+
 SmallBasicSet AMFunction::span() const {
 	SmallBasicSet span;
 	for (SmallBasicSet s : sets ) {
@@ -425,5 +429,24 @@ AMFunction AMFunction::immediate_subsets(SmallBasicSet s) {
 	}
 	return amf;
 }
+
+/*******************************************
+ * ITERATOR
+ *******************************************/
+//AMFunction::AMFiterator::AMFiterator(AMFunction* set) {
+//    current = 0;
+//    set<SmallBasicSet> theSet = *(set->getSets());
+//    currentSet;
+//}
+
+AMFunction::AMFiterator AMFunction::AMFiterator::operator ++() {
+	current++;
+    
+	return (*this);
+}
+
+//bool AMFunction::::AMFiterator::hasNext() {
+//	return ( current <= (sbs->MAXELEMENT) );
+//}
 
 

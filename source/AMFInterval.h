@@ -25,7 +25,9 @@ public:
     public:
         AMFInterval* interval;
         //AMFunction amf;
-        //SmallBasicSet span;// = (*interval).getTop().span();
+        SmallBasicSet span;// = (*interval).getTop().span();
+        long spanSize = span.size();
+        long pos;
         //AMFunction maxSpan;
         //AMFunction ret;
         
@@ -56,6 +58,8 @@ public:
         friend class AMFInterval;
     public:
         AMFInterval* interval;
+        int pos, last;
+        vector<AMFunction> theList;
         
         AMFClosedIterator(AMFInterval* intr);
         const reference operator*();
@@ -69,7 +73,7 @@ public:
         AMFunction bottom;
         bool virgin;
         AMFInterval* interval;
-        AMFIterator normal;
+        //AMFIterator normal;
 
         
         AMFExceptionalClosedIterator(AMFInterval* intr);

@@ -28,6 +28,19 @@ private:
 	SmallBasicSet universe; // set of integers on which the function operates
 	set<SmallBasicSet> sets;
 public:
+    class AMFiterator : public iterator<forward_iterator_tag, AMFunction> {
+		friend class AMFunction;
+	public:
+		SmallBasicSet* sbs;
+		int current;
+		SmallBasicSet* currentSet;
+
+        
+		AMFiterator(AMFunction* set);
+		//const reference operator*() { return prev; }
+		AMFiterator operator++();
+		bool hasNext();
+	};
 	AMFunction();
 	AMFunction(SmallBasicSet N);
 	AMFunction(SmallBasicSet s[], int size);
@@ -41,6 +54,7 @@ public:
 	string toString();
 	bool contains(SmallBasicSet s);
 	bool ge(SmallBasicSet s) const;
+    long size();
 
 	// alter
 	void setSets(set<SmallBasicSet> ss);

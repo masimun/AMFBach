@@ -12,7 +12,7 @@
  * ITERATOR
  *******************************************/
 AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr) {
-
+    interval = intr;
 }
 
 
@@ -20,37 +20,50 @@ AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr) {
 //
 //}
 
-bool AMFInterval::AMFIterator::hasNext() {
-    return (!interval->getBottom().leq(interval->getTop()) || (interval->getBottom().equals(interval->getTop()) && (!interval->isClosedAtBottom() || !interval->isClosedAtTop())));
-}
+//bool AMFInterval::AMFIterator::hasNext() {
+//    return (!interval->getBottom().leq(interval->getTop()) || (interval->getBottom().equals(interval->getTop()) && (!interval->isClosedAtBottom() || !interval->isClosedAtTop())));
+//}
 
 /*******************************************
  * ITERATOR EXCEPTIONALCLOSEDITERATOR
  *******************************************/
-AMFInterval::AMFExceptionalClosedIterator::AMFExceptionalClosedIterator(AMFInterval* intr ) {
-    bottom = AMFunction();
-    bottom.addSet(SmallBasicSet());
-    virgin = true;
-    //AMFIterator normal = *new AMFIterator((AMFInterval(bottom,intr->getTop(),true,true)));
-    //AMFIterator normal = AMFInterval(bottom,intr->getTop(),true,true).getIterator();
+//AMFInterval::AMFExceptionalClosedIterator::AMFExceptionalClosedIterator(AMFInterval* intr ) {
+//    interval = intr;
+//    bottom = AMFunction();
+//    bottom.addSet(SmallBasicSet());
+//    virgin = true;
+    //AMFIterator* normal = new AMFIterator((AMFInterval(bottom,intr->getTop(),true,true)));
+//    AMFInterval intervaltoit = AMFInterval(bottom,intr->getTop(),true,true);
+//    AMFIterator normal =  intervaltoit.getIterator();
     
-}
+//}
 
 //AMFInterval::AMFExceptionalClosedIterator AMFInterval::AMFExceptionalClosedIterator::operator ++() {
     
 //}
 
-bool AMFInterval::AMFExceptionalClosedIterator::hasNext() {
-    return (virgin || normal.hasNext());
-}
+//bool AMFInterval::AMFExceptionalClosedIterator::hasNext() {
+//    return (virgin || normal.hasNext());
+//}
 
 
 /*******************************************
  * ITERATOR CLOSEDITERATOR
  *******************************************/
-AMFInterval::AMFClosedIterator::AMFClosedIterator(AMFInterval* intr) {
+//AMFInterval::AMFClosedIterator::AMFClosedIterator(AMFInterval* intr) {
+//    interval = intr;
+    
+//    if ( (interval->getBottom().size() ) == 0) { // size could be wrong
+//        pos = 0;
+//    }
+//    else {
+//        for (SmallBasicSet::SBSIterator = interval->getTop()-> ; ) {
+             //list.begin(); it != list.end(); ++list)
+            // iteratre over all the smallbasic sets in top
+//    }
+    
 
-}
+//}
 
 //AMFInterval::AMFClosedIterator AMFInterval::AMFClosedIterator::operator ++() {
 //

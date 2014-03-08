@@ -83,6 +83,7 @@ public:
 
     //getters
     int getBit(int positie) const;
+    int size();
     
     //setters
 
