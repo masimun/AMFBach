@@ -152,7 +152,7 @@ long SetsPoset::get_lattice_size(bool odd) {
 	}
 
 	// for all levels firstLevel + 2k, compute the set of predecessors of the predecessors
-	unordered_map<SBS,set<SBS>>* prepredec = new unordered_map<SBS,set<SBS>>();
+	// unordered_map<SBS,set<SBS>>* prepredec = new unordered_map<SBS,set<SBS>>();
 
 
 }
