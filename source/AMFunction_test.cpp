@@ -23,10 +23,10 @@ void test_omicron();
 void test_symmetrygroup();
 void test_standard();
 
-int main() {
-	test_standard();
-	vector<int> v;
-}
+//int main() {
+//	test_standard();
+//	vector<int> v;
+//}
 
 void test_standard() {
 	cout << "# C++ FUNC TESTS - AMFUNCTION STANDARD #" << endl;

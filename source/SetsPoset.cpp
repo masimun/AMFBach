@@ -113,7 +113,7 @@ long SetsPoset::get_lattice_size() {
 int SetsPoset::get_maximal_level_number() {
 	long max = get_width();
 	for( int i = 1 ; i <= get_max_level() ; i++ ) {
-		if ( get_level(i).size() == max ) {
+		if ( (int) get_level(i).size() == max ) {
 			return i;
 		}
 	}
@@ -129,7 +129,7 @@ long SetsPoset::get_width() {
 }
 
 set<SmallBasicSet> SetsPoset::get_level(int n) {
-	if ( n > level.capacity() ) {
+	if ( n > (int) level.capacity() ) {
 		return set<SmallBasicSet>();
 	} else {
 		return level[n-1];
@@ -153,6 +153,8 @@ long SetsPoset::get_lattice_size(bool odd) {
 
 	// for all levels firstLevel + 2k, compute the set of predecessors of the predecessors
 	// unordered_map<SBS,set<SBS>>* prepredec = new unordered_map<SBS,set<SBS>>();
+
+	return 0; // TODO: stub
 
 
 }
