@@ -188,7 +188,7 @@ uint_fast16_t SmallBasicSet::getSet() const {
 	return set;
 }
 
-int SmallBasicSet::size() {
+int SmallBasicSet::size() const{
     return numberofelements();
 }
 

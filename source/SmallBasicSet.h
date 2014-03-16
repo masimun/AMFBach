@@ -48,7 +48,7 @@ public:
 	// query
 	int maxelement();
     int maxintvalue();
-	int numberofelements();
+	int numberofelements() const;
 	int maximum();
 	int minimum();
 	bool isemptyset();
@@ -83,7 +83,7 @@ public:
 
     //getters
     int getBit(int positie) const;
-    int size();
+    int size() const;
     
     //setters
 

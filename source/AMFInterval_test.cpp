@@ -27,17 +27,17 @@ void test_amfinterval() {
 void test_iterator() {
     Parser p;
     AMFInterval amf(p.parse_amf("{}"),p.parse_amf("{[123]}"));
-    AMFInterval::AMFIterator freddy = amf.getIterator();
+    //AMFInterval::AMFIterator freddy = amf.getIterator();
     //cout << freddy.amf.toString() << endl;
     //AMFInterval::AMFIterator f2 = freddy++;
     
-    ++freddy;
+    //++freddy;
 
     // AMFInterval::AMFIterator f2 = freddy++;
     
-    vector<AMFInterval::AMFIterator> iter;
-    AMFInterval::AMFIterator *pIterator = iter.data();
-    iter.push_back(freddy) ;
+    //vector<AMFInterval::AMFIterator> iter;
+    //AMFInterval::AMFIterator *pIterator = iter.data();
+    //iter.push_back(freddy) ;
     
     //c.push_back(freddy);
     //piterator[0] = freddy;

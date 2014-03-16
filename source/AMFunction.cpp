@@ -73,6 +73,10 @@ string AMFunction::toString() {
 	return rep;
 }
 
+SmallBasicSet AMFunction::getUniverse() {
+    return universe;
+}
+
 /****************************************************
  * ALTER
  ****************************************************/
@@ -217,6 +221,18 @@ AMFunction AMFunction::project(SmallBasicSet sbs) {
     AMFunction res = AMFunction((*this).universe);
     for (SmallBasicSet a : (*this).sets) {
         res.addSetConditional(a.setintersect(sbs));
+    }
+    return res;
+}
+
+AMFunction AMFunction::minus(AMFunction f) {
+    AMFunction res = AMFunction(getUniverse());
+    for (SmallBasicSet x : (*this).sets) {
+        bool found = false;
+        for (SmallBasicSet t : (f).sets) {
+            if (t.hasAsSubset(x)) found = true;
+        }
+        if (!found) res.addSet(x);
     }
     return res;
 }

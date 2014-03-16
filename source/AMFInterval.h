@@ -14,20 +14,64 @@ using namespace std;
 #include "AMFunction.h"
 #include "AMFGraph.h"
 #include <utility>
+#include <stdlib.h>
 
 /**
  * A (closed) interval of anti-monotonic functions.
  */
 class AMFInterval {
 public:
-    class AMFIterator : public iterator<forward_iterator_tag, AMFunction> {
+    
+    class AMFClosedIterator : public iterator<forward_iterator_tag, AMFunction> {
         friend class AMFInterval;
     public:
         AMFInterval* interval;
+        AMFunction current;
+        vector<SmallBasicSet> axes;
+        AMFunction::AMFiterator X;
+        AMFunction::AMFiterator Y;
+        AMFInterval* Xaxis;
+        AMFInterval* Yaxis;
+        AMFunction currentX,currentY;
+        AMFunction::AMFiterator currentIterator;
+        
+        AMFClosedIterator(AMFInterval* intr);
+        AMFunction getCurrent(){return current;}
+        const reference operator*();
+        iterator<forward_iterator_tag, AMFunction> operator++();
+        bool hasNext();
+    };
+    
+    class AMFGeneralClosedIterator : public iterator<forward_iterator_tag, AMFunction> {
+        friend class AMFInterval;
+    public:
+        AMFInterval* interval;
+        AMFunction current;
+        long spanSize;
+        int pos;
+        long minSizeBottom;
+        vector<AMFunction> theList;
+        SmallBasicSet span;
+        
+        AMFGeneralClosedIterator(AMFInterval* intr);
+        AMFunction getCurrent(){return current;}
+        const reference operator*();
+        iterator<forward_iterator_tag, AMFunction> operator++();
+        bool hasNext();
+    };
+    
+    class AMFIterator : public iterator<forward_iterator_tag, AMFunction> {
+        friend class AMFInterval;
+    public:
+        AMFInterval* intr;
+        AMFunction current;
+        bool thereIsNext;
+        AMFClosedIterator theIt = *new AMFClosedIterator(intr);
+        AMFunction nxt;
         //AMFunction amf;
-        SmallBasicSet span;// = (*interval).getTop().span();
-        long spanSize = span.size();
-        long pos;
+        //SmallBasicSet span;// = (*interval).getTop().span();
+        vector<AMFunction> theList;
+        long pos,last;
         //AMFunction maxSpan;
         //AMFunction ret;
         
@@ -42,9 +86,10 @@ public:
         //AMFIterator* pIterator = iter.data();
         
         AMFIterator(AMFInterval* intr);
-        const reference operator*();
+        AMFunction getCurrent(){return current;}
+        //const reference operator*();
         //AMFunction next(AMFunction top);
-        AMFIterator operator++();
+        iterator<forward_iterator_tag, AMFunction> operator++();
         //AMFIterator operator++(int junk) { return operator++(); };
         bool hasNext();
         // bool operator <=(const AMFunction otherAmf) { return amf.leq(otherAmf); };
@@ -54,22 +99,55 @@ public:
 
     };
     
-    class AMFClosedIterator : public iterator<forward_iterator_tag, AMFunction> {
+    class AMFEmptyIterator : public iterator<forward_iterator_tag, AMFunction> {
         friend class AMFInterval;
     public:
         AMFInterval* interval;
         int pos, last;
         vector<AMFunction> theList;
         
-        AMFClosedIterator(AMFInterval* intr);
+        AMFEmptyIterator(AMFInterval* intr);
         const reference operator*();
-        AMFClosedIterator operator++();
+        iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
     };
+    
+    class AMFOneOrTwoIterator : public iterator<forward_iterator_tag, AMFunction> {
+        friend class AMFInterval;
+    public:
+        AMFInterval* interval;
+        AMFunction current;
+        int pos, last;
+        vector<AMFunction> theList;
+        SmallBasicSet span;
+        
+        AMFOneOrTwoIterator(AMFInterval* intr);
+        AMFunction getCurrent(){return current;}
+        const reference operator*();
+        iterator<forward_iterator_tag, AMFunction> operator++();
+        bool hasNext();
+    };
+    
+    class AMFOneElementIterator : public iterator<forward_iterator_tag, AMFunction> {
+        friend class AMFInterval;
+    public:
+        AMFInterval* interval;
+        AMFunction current;
+        bool given = false;
+        
+        AMFOneElementIterator(AMFInterval* intr);
+        AMFunction getCurrent(){return current;}
+        const reference operator*();
+        iterator<forward_iterator_tag, AMFunction> operator++();
+        bool hasNext();
+    };
+    
+    
     
     class AMFExceptionalClosedIterator : public iterator<forward_iterator_tag, AMFunction> {
         friend class AMFInterval;
     public:
+        AMFunction current;
         AMFunction bottom;
         bool virgin;
         AMFInterval* interval;
@@ -77,8 +155,9 @@ public:
 
         
         AMFExceptionalClosedIterator(AMFInterval* intr);
+        AMFunction getCurrent(){return current;}
         const reference operator*();
-        AMFExceptionalClosedIterator operator++();
+        iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
     };
     
@@ -97,8 +176,12 @@ public:
 	virtual ~AMFInterval();
 
     //iterator
-    AMFIterator getIterator() 	{return AMFIterator(this);};
+    iterator<forward_iterator_tag, AMFunction> getIterator();
     //iterator end() 		{return iterator(this, this->till);};
+    
+    //methode
+    vector<SmallBasicSet> bestSplit();
+    SmallBasicSet bestSubset(SmallBasicSet span, long target, AMFunction bottom);
     
     //graph
     AMFGraph graph();
@@ -107,6 +190,7 @@ public:
     //getters
     AMFunction getTop();
     AMFunction getBottom();
+    SmallBasicSet getUniverse();
     bool isClosedAtBottom();
     bool isClosedAtTop();
     

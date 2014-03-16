@@ -11,23 +11,164 @@
 /*******************************************
  * ITERATOR
  *******************************************/
-AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr) {
-    interval = intr;
+AMFInterval::AMFIterator::AMFIterator(AMFInterval* interval) {
+    intr=interval;
+    if (!intr->isClosedAtTop()) ++theIt;
+    if(theIt.hasNext()) {
+        ++theIt;
+        nxt = theIt.getCurrent();
+        thereIsNext = theIt.hasNext();
+    }
+    else thereIsNext = false;
 }
 
 
-//AMFInterval::AMFIterator AMFInterval::AMFIterator::operator ++() {
-//
-//}
+iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFIterator::operator ++() {
+    if (!intr->getBottom().leq(intr->getTop()) ||
+        (intr->getBottom().equals(intr->getTop())
+        && (!intr->isClosedAtBottom() || !intr->isClosedAtTop()))){
+            return *new AMFEmptyIterator(intr);
+    }
+    else if (intr->isClosedAtTop()) {
+        AMFClosedIterator itr = *new AMFClosedIterator(intr);
+        if (!intr->isClosedAtBottom()) ++itr;
+        return itr;
+    }
+    else {
+        AMFunction myNxt = nxt;
+        ++theIt;
+        nxt = (theIt).getCurrent();
+        thereIsNext = theIt.hasNext();
+        current = myNxt;
+        return *this;
+    }
+}
 
-//bool AMFInterval::AMFIterator::hasNext() {
-//    return (!interval->getBottom().leq(interval->getTop()) || (interval->getBottom().equals(interval->getTop()) && (!interval->isClosedAtBottom() || !interval->isClosedAtTop())));
-//}
+bool AMFInterval::AMFIterator::hasNext() {
+    return thereIsNext;
+}
+/*******************************************
+ * ITERATOR One or two element
+ *******************************************/
+AMFInterval::AMFOneOrTwoIterator::AMFOneOrTwoIterator(AMFInterval* intr ) {
+    interval = intr;
+    span = (interval->getTop()).span();
+    if (intr->getBottom().size() == 0) {
+        pos = 0;
+    }
+    else {
+        for (set<SmallBasicSet>::iterator it = ((intr->getBottom()).getSets()).begin() ; it != ((intr->getBottom()).getSets()).end(); ++it){
+            if ((it->size()) == 0) {
+                pos = 1;
+                break;
+            }
+            else pos =2;
+        }
+    }
+    
+    if (intr->getTop().size() == 0) {
+        last = 0;
+    }
+    else {
+        for (set<SmallBasicSet>::iterator it = ((intr->getTop()).getSets()).begin() ; it != ((intr->getTop()).getSets()).end(); ++it){
+            if ((it->size()) == 0) {
+                last = 1;
+                break;
+            }
+            else last =2;
+        }
+        
+    }
+    
+    
+    
+    if (pos <= last) {
+        //theList = new AMFunction[last + 1];
+        if (pos == 0) {
+            AMFunction amf;
+            theList[0] = AMFunction((intr->getTop())); // empty function
+            if (last > 0) {
+                amf = *new AMFunction();
+                amf.addSet(SmallBasicSet::universe()); // empty set
+                theList[1] = amf;
+            }
+            if (last > 1) {
+                amf = *new AMFunction();
+                amf.addSet((intr->getTop()).span()); // set with one element
+                theList[2] = amf;
+            }
+        }
+        else if (pos == 1) {
+            AMFunction amf;
+            if (last > 0) {
+                amf = *new AMFunction();
+                amf.addSet(SmallBasicSet()); // empty set
+                theList[1] = amf;
+            }
+            if (last > 1) {
+                amf = *new AMFunction();
+                amf.addSet((intr->getTop()).span()); // set with one element
+                theList[2] = amf;
+            }
+            
+        }
+        else /* pos == 2 */ {
+            AMFunction amf;
+            if (last > 1) {
+                amf = *new AMFunction();
+                amf.addSet((intr->getTop()).span()); // set with one element
+                theList[2] = amf;
+            }
+        }
+    }
+}
+
+iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFOneOrTwoIterator::operator ++() {
+    current = theList[pos++];
+    return *this;
+}
+
+bool AMFInterval::AMFOneOrTwoIterator::hasNext() {
+    return pos <= last;
+}
+
+
+/*******************************************
+ * ITERATOR One element
+ *******************************************/
+AMFInterval::AMFOneElementIterator::AMFOneElementIterator(AMFInterval* intr ) {
+    interval = intr;
+}
+
+iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFOneElementIterator::operator ++() {
+    given = true;
+    current = interval->getBottom();
+    return *this;
+}
+
+bool AMFInterval::AMFOneElementIterator::hasNext() {
+    return !given;
+}
+
+/*******************************************
+ * ITERATOR Empty
+ *******************************************/
+AMFInterval::AMFEmptyIterator::AMFEmptyIterator(AMFInterval* intr ) {
+    
+}
+
+iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFEmptyIterator::operator ++() {
+    return *this;
+}
+
+bool AMFInterval::AMFEmptyIterator::hasNext() {
+    return false;
+}
 
 /*******************************************
  * ITERATOR EXCEPTIONALCLOSEDITERATOR
  *******************************************/
-//AMFInterval::AMFExceptionalClosedIterator::AMFExceptionalClosedIterator(AMFInterval* intr ) {
+AMFInterval::AMFExceptionalClosedIterator::AMFExceptionalClosedIterator(AMFInterval* intr ) {
 //    interval = intr;
 //    bottom = AMFunction();
 //    bottom.addSet(SmallBasicSet());
@@ -36,42 +177,91 @@ AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr) {
 //    AMFInterval intervaltoit = AMFInterval(bottom,intr->getTop(),true,true);
 //    AMFIterator normal =  intervaltoit.getIterator();
     
-//}
+}
 
-//AMFInterval::AMFExceptionalClosedIterator AMFInterval::AMFExceptionalClosedIterator::operator ++() {
-    
-//}
+iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFExceptionalClosedIterator::operator ++() {
+    return *this;
+}
 
-//bool AMFInterval::AMFExceptionalClosedIterator::hasNext() {
+bool AMFInterval::AMFExceptionalClosedIterator::hasNext() {
+    return false;
 //    return (virgin || normal.hasNext());
-//}
+}
 
 
 /*******************************************
  * ITERATOR CLOSEDITERATOR
  *******************************************/
-//AMFInterval::AMFClosedIterator::AMFClosedIterator(AMFInterval* intr) {
-//    interval = intr;
+AMFInterval::AMFClosedIterator::AMFClosedIterator(AMFInterval* intr) {
+    interval = intr;
+    axes = interval->bestSplit();
     
-//    if ( (interval->getBottom().size() ) == 0) { // size could be wrong
-//        pos = 0;
-//    }
-//    else {
-//        for (SmallBasicSet::SBSIterator = interval->getTop()-> ; ) {
-             //list.begin(); it != list.end(); ++list)
-            // iteratre over all the smallbasic sets in top
-//    }
-    
+}
 
-//}
 
-//AMFInterval::AMFClosedIterator AMFInterval::AMFClosedIterator::operator ++() {
-//
-//}
+iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFClosedIterator::operator ++() {
 
-//bool AMFInterval::AMFClosedIterator::hasNext() {
-//
-//}
+}
+
+bool AMFInterval::AMFClosedIterator::hasNext() {
+
+}
+
+
+
+
+/*******************************************
+ *General ITERATOR CLOSEDITERATOR
+ *******************************************/
+AMFInterval::AMFGeneralClosedIterator::AMFGeneralClosedIterator(AMFInterval* intr) {
+    interval = intr;
+    spanSize = ((interval->getTop()).span()).size();
+    for (set<SmallBasicSet>::iterator it = ((intr->getTop()).getSets()).begin() ; it != ((intr->getTop()).getSets()).end(); ++it){
+        if (it->size() < minSizeBottom) minSizeBottom = it->size();
+    }
+}
+
+
+iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFGeneralClosedIterator::operator ++() {
+    span = (interval->getTop()).span();
+    if (interval->getBottom().size() == 0) {
+        return *new AMFExceptionalClosedIterator(interval);
+    }
+    else if (span.size()<=1) {
+        return *new AMFOneOrTwoIterator(interval);
+    }
+    else if(interval->getTop().equals(interval->getBottom())){
+        return *new AMFOneElementIterator(interval);
+    }
+    else {
+        if (interval->getTop().size() == 1
+            && interval->getBottom().size() == spanSize
+            && minSizeBottom + 1 == spanSize) {
+            
+            pos++;
+            if (pos == 1 ) {
+                current = interval->getBottom();
+                return *this;
+            }
+            if(pos == 2) {
+                current = interval->getTop();
+                return *this;
+            }
+            else {
+                //current = 0 ;
+                //Must return null;
+                return *this;
+            }
+        
+        }
+    }
+    //Remove
+    return *this;
+}
+
+bool AMFInterval::AMFGeneralClosedIterator::hasNext() {
+    return (pos < 2);
+}
 
 
 
@@ -281,6 +471,46 @@ AMFInterval::~AMFInterval() {
 	// TODO Auto-generated destructor stub
 }
 
+vector<SmallBasicSet> AMFInterval::bestSplit() {
+    vector<SmallBasicSet> res;
+    SmallBasicSet best = SmallBasicSet();
+    SmallBasicSet span = getTop().span();
+    long spanSize = span.size();
+    if (getTop().size()>1) {
+        AMFunction difference = (getTop().minus(getBottom()));
+        long value = spanSize;
+        for(SmallBasicSet a : difference.getSets()) {
+            if(abs(a.size() - spanSize/2) < value){
+                value =abs(a.size()-spanSize/2);
+                best = a;
+            }
+        }
+    }
+    else {
+        best = bestSubset(span,spanSize/2,getBottom());
+    }
+    
+    res[0] = best;
+    res[1] = span.setdifference(best);
+    
+    return res;
+}
+
+SmallBasicSet AMFInterval::bestSubset(SmallBasicSet span,long target,AMFunction bottom) {
+    SmallBasicSet best;
+    long value = 2*target;
+    if(!(bottom.ge(span))) {
+        best = span;
+        value = abs(best.size() - target);
+    }
+    if (best == NULL || best.size() <= target) {
+        return best;
+    }
+    for(SmallBasicSet::SBSIterator it= span.getIterator(); it.hasNext() ; ++it) {
+        SmallBasicSet candidate = bestSubset(span.setdifference(*it), target, bottom);
+    }
+}
+
 string AMFInterval::toString() {
 	return "[" + from.toString() + "," + till.toString() + "]";
 }
@@ -290,6 +520,21 @@ AMFInterval AMFInterval::fullspace(int n) {
 	return AMFInterval(AMFunction::emptyFunction(),AMFunction::universeFunction(N));
 }
 
+iterator<forward_iterator_tag, AMFunction> AMFInterval::getIterator() {
+    //if (!this->getBottom().leq(this->getTop()) ||
+    //    (this->getBottom().equals(this->getTop())
+    //     && (!this->isClosedAtBottom() || !this->isClosedAtTop()))){
+    //        return AMFEmptyIterator(this);
+    //    }
+    
+    //if (isClosedAtTop()) {
+     //   AMFClosedIterator itr = *new AMFClosedIterator(this);
+     //   if (!isClosedAtBottom()) ++itr;
+     //   return itr;
+    //}
+
+    return AMFIterator(this);
+}
 
 AMFunction AMFInterval::getTop() {
     return till;
@@ -297,6 +542,10 @@ AMFunction AMFInterval::getTop() {
 
 AMFunction AMFInterval::getBottom() {
     return from;
+}
+
+SmallBasicSet AMFInterval::getUniverse() {
+    return (this->getTop()).getUniverse();
 }
 
 bool AMFInterval::isClosedAtBottom() {

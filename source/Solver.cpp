@@ -141,6 +141,7 @@ map<AMFunction,long> Solver::algorithm7(int n, map<AMFunction,long> S) {
 	}
 	return S1;
 }
+ 
 
 bool contains(list<AMFunction> as, AMFunction a) {
 	for ( AMFunction b : as ) {

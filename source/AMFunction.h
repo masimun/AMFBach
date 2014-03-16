@@ -55,6 +55,7 @@ public:
 	bool contains(SmallBasicSet s);
 	bool ge(SmallBasicSet s) const;
     long size();
+    SmallBasicSet getUniverse();
 
 	// alter
 	void setSets(set<SmallBasicSet> ss);
@@ -63,6 +64,7 @@ public:
     void removeSets(list<SmallBasicSet> rs);
 	void addSetConditional(SmallBasicSet s);
 	void makeAntiMonotonic();
+    
 
 	// compare
 	bool leq(AMFunction other) const;
@@ -82,6 +84,7 @@ public:
 	AMFunction omicron(AMFunction tau, AMFunction alfa);
     AMFunction project(SmallBasicSet sbs);
     vector<AMFunction> reduce(SmallBasicSet sbs);
+    AMFunction minus(AMFunction f);
 
 	// algo
 	perm_t symmetry_group();
