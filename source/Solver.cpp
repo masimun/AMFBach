@@ -81,7 +81,7 @@ long long Solver::pc2_dedekind(int m) {
 	long evaluations = 0;
 	long possibilities = 0;
 
-	AMFInterval::AMFIterator it2 = AMFInterval(e,u).getIterator();
+	AMFInterval::GeneralIterator& it2 = *(AMFInterval(e,u).getIterator());
 	while(it2.hasNext()) {
 		AMFunction r2 = *it2;
 		bigint r2size = right_interval_size.at(r2.standard());
@@ -130,7 +130,7 @@ map<AMFunction,long> Solver::algorithm7(int n, map<AMFunction,long> S) {
 		perm_t rtsymm = (t.join(l)).symmetry_group();
 		map<AMFunction, long> St;
 		AMFInterval delta(t.join(l),u.omicron(t,alfa));
-		for( AMFInterval::AMFIterator amfit = delta.getIterator() ; amfit.hasNext() ; ++amfit ) {
+		for( AMFInterval::GeneralIterator& amfit = *(delta.getIterator()) ; amfit.hasNext() ; ++amfit ) {
 			AMFunction a = (*amfit);
 			mapstore(St,a.standard(rtsymm));
 		}

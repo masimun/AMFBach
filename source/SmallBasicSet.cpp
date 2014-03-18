@@ -25,7 +25,7 @@ SmallBasicSet::~SmallBasicSet() {
 	// destructor
 }
 
-int SmallBasicSet::numberofelements() {
+int SmallBasicSet::numberofelements() const{
 	return bitset<MAXELEMENT>(set).count();
 }
 

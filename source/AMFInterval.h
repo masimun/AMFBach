@@ -21,19 +21,30 @@ using namespace std;
  */
 class AMFInterval {
 public:
+    typedef iterator<forward_iterator_tag, AMFunction> iterator_amf;
     
-    class AMFClosedIterator : public iterator<forward_iterator_tag, AMFunction> {
+    class GeneralIterator : public iterator<forward_iterator_tag, AMFunction> {
         friend class AMFInterval;
     public:
-        AMFInterval* interval;
         AMFunction current;
-        vector<SmallBasicSet> axes;
-        AMFunction::AMFiterator X;
-        AMFunction::AMFiterator Y;
-        AMFInterval* Xaxis;
-        AMFInterval* Yaxis;
-        AMFunction currentX,currentY;
-        AMFunction::AMFiterator currentIterator;
+        
+        bool virtual hasNext() = 0;
+        const reference operator*() {return current;};
+        virtual iterator<forward_iterator_tag, AMFunction> operator++() = 0;
+    };
+        
+    class AMFClosedIterator : public GeneralIterator{
+        friend class AMFInterval;
+    public:
+        //AMFInterval* interval;
+        AMFunction current;
+        //vector<SmallBasicSet> axes;
+        //AMFunction::AMFiterator X;
+        //AMFunction::AMFiterator Y;
+        //AMFInterval* Xaxis;
+        //AMFInterval* Yaxis;
+        //AMFunction currentX,currentY;
+        //AMFunction::AMFiterator currentIterator;
         
         AMFClosedIterator(AMFInterval* intr);
         AMFunction getCurrent(){return current;}
@@ -42,7 +53,7 @@ public:
         bool hasNext();
     };
     
-    class AMFGeneralClosedIterator : public iterator<forward_iterator_tag, AMFunction> {
+    class AMFGeneralClosedIterator : public GeneralIterator {
         friend class AMFInterval;
     public:
         AMFInterval* interval;
@@ -60,7 +71,7 @@ public:
         bool hasNext();
     };
     
-    class AMFIterator : public iterator<forward_iterator_tag, AMFunction> {
+    class AMFIterator : public GeneralIterator {
         friend class AMFInterval;
     public:
         AMFInterval* intr;
@@ -99,7 +110,7 @@ public:
 
     };
     
-    class AMFEmptyIterator : public iterator<forward_iterator_tag, AMFunction> {
+    class AMFEmptyIterator : public GeneralIterator {
         friend class AMFInterval;
     public:
         AMFInterval* interval;
@@ -112,7 +123,7 @@ public:
         bool hasNext();
     };
     
-    class AMFOneOrTwoIterator : public iterator<forward_iterator_tag, AMFunction> {
+    class AMFOneOrTwoIterator : public GeneralIterator {
         friend class AMFInterval;
     public:
         AMFInterval* interval;
@@ -128,7 +139,7 @@ public:
         bool hasNext();
     };
     
-    class AMFOneElementIterator : public iterator<forward_iterator_tag, AMFunction> {
+    class AMFOneElementIterator : public GeneralIterator {
         friend class AMFInterval;
     public:
         AMFInterval* interval;
@@ -144,7 +155,7 @@ public:
     
     
     
-    class AMFExceptionalClosedIterator : public iterator<forward_iterator_tag, AMFunction> {
+    class AMFExceptionalClosedIterator : public GeneralIterator {
         friend class AMFInterval;
     public:
         AMFunction current;
@@ -176,7 +187,7 @@ public:
 	virtual ~AMFInterval();
 
     //iterator
-    iterator<forward_iterator_tag, AMFunction> getIterator();
+    GeneralIterator *getIterator();
     //iterator end() 		{return iterator(this, this->till);};
     
     //methode
