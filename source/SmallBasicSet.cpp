@@ -56,7 +56,7 @@ int SmallBasicSet::maxelement() {
 }
 
 int SmallBasicSet::maxintvalue() {
-	return MAXINT;
+	return MAXSET;
 }
 
 string int_to_string(int a) {
@@ -207,6 +207,7 @@ SmallBasicSet SmallBasicSet::universe(int n) {
 /*******************************************
  * ITERATOR
  *******************************************/
+
 SmallBasicSet::SBSIterator::SBSIterator(SmallBasicSet* set) {
 	sbs = set;
 	current = 1;
@@ -232,4 +233,12 @@ SmallBasicSet::SBSIterator SmallBasicSet::SBSIterator::operator ++() {
 
 bool SmallBasicSet::SBSIterator::hasNext() {
 	return ( current <= (sbs->MAXELEMENT) );
+}
+
+/*******************************************
+ * HASHER
+ *******************************************/
+
+size_t SmallBasicSet::hasher::operator() ( const SmallBasicSet & sbs ) const {
+	return (size_t) (sbs.getSet() % MAXSET);
 }

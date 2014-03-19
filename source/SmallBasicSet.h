@@ -17,13 +17,20 @@ using namespace std;
  */
 class SmallBasicSet {
 	static const int MAXELEMENT = 13;
-    static const int MAXINT = 10000; // sum(1 .. 4096) = 8191
-    //constexpr wordt op compile time berekend en niet op runtime. constexpr static const
+    static const int MAXSET = 10000; // sum(1 .. 4096) = 8191
     int bits[13] = {1,2,4,8,16,32,64,128,256,512,1024,2048,4096};
 	int numberofelem;
 	uint_fast16_t set;
 	friend std::ostream& operator<<(std::ostream &strm, const SmallBasicSet &s);
+
 public:
+
+	SmallBasicSet();
+	SmallBasicSet(int a[], int asize);
+    SmallBasicSet(uint_fast16_t a);
+	virtual ~SmallBasicSet();
+
+	// iterator
 	class SBSIterator : public iterator<forward_iterator_tag, int> {
 		friend class SmallBasicSet;
 	public:
@@ -40,10 +47,11 @@ public:
 	typedef SBSIterator iterator;
 	iterator getIterator() { return iterator(this); };
 
-	SmallBasicSet();
-	SmallBasicSet(int a[], int asize);
-    SmallBasicSet(uint_fast16_t a);
-	virtual ~SmallBasicSet();
+	// hasher
+	struct SBSHasher {
+		size_t operator() ( const SmallBasicSet & sbs ) const;
+	};
+	typedef SBSHasher hasher;
 
 	// query
 	int maxelement();
@@ -55,6 +63,7 @@ public:
 	string toString() const;
 	string toBitString();
 	uint_fast16_t getSet() const;
+    int size() const;
 
 	// class
 	static SmallBasicSet universe();
@@ -71,21 +80,13 @@ public:
 	// comparison
 	bool equals(SmallBasicSet s) const;
 	bool hasAsSubset(SmallBasicSet s) const;
-
-	// template args
 	bool operator<(const SmallBasicSet& other) const;
-
 	bool operator==(const SmallBasicSet& other) const;
     
-	// algo tools
-	void quickadd(int bit); // add an integer a to the set
-	int getNextInSet(int i); // TODO: implement, returns i's successor
-
-    //getters
+	// miscellaneous
+	void quickadd(int bit); // add a number a to the set
+	int getNextInSet(int i); // TODO: implement, returns i's successor (still needed?)
     int getBit(int positie) const;
-    int size() const;
-    
-    //setters
 
 private:
     void setSet(bool elements[]);
