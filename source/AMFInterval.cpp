@@ -15,7 +15,7 @@ AMFInterval::AMFIterator::AMFIterator(AMFInterval* interval) {
     intr=interval;
     if (!intr->isClosedAtTop()) ++theIt;
     if(theIt.hasNext()) {
-        ++theIt;
+        ++(theIt);
         nxt = theIt.getCurrent();
         thereIsNext = theIt.hasNext();
     }
@@ -169,23 +169,30 @@ bool AMFInterval::AMFEmptyIterator::hasNext() {
  * ITERATOR EXCEPTIONALCLOSEDITERATOR
  *******************************************/
 AMFInterval::AMFExceptionalClosedIterator::AMFExceptionalClosedIterator(AMFInterval* intr ) {
-//    interval = intr;
-//    bottom = AMFunction();
-//    bottom.addSet(SmallBasicSet());
-//    virgin = true;
-    //AMFIterator* normal = new AMFIterator((AMFInterval(bottom,intr->getTop(),true,true)));
-//    AMFInterval intervaltoit = AMFInterval(bottom,intr->getTop(),true,true);
-//    AMFIterator normal =  intervaltoit.getIterator();
-    
+    interval = intr;
+    bottom = *(new AMFunction());
+    bottom.addSet(SmallBasicSet());
+    //AMFInterval i = *(new AMFInterval(bottom,intr->getTop(),true,true));
+    normal = new AMFClosedIterator(new AMFInterval(bottom,intr->getTop(),true,true));
+
+    virgin = true;
 }
 
 iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFExceptionalClosedIterator::operator ++() {
-    return *this;
+    if (virgin) {
+        virgin = false;
+        current = interval->getBottom();
+        return *this;
+    }
+    else {
+        ++(*normal);
+        current = normal->getCurrent();
+        return *this;
+    }
 }
 
 bool AMFInterval::AMFExceptionalClosedIterator::hasNext() {
-    return false;
-//    return (virgin || normal.hasNext());
+  return (virgin || normal->hasNext());
 }
 
 
@@ -193,20 +200,62 @@ bool AMFInterval::AMFExceptionalClosedIterator::hasNext() {
  * ITERATOR CLOSEDITERATOR
  *******************************************/
 AMFInterval::AMFClosedIterator::AMFClosedIterator(AMFInterval* intr) {
-    
-    
-    //interval = intr;
-    //axes = interval->bestSplit();
-    
+    interval = intr;
+    axes = interval->bestSplit();
+    Xaxis = new AMFInterval((interval->getBottom()).project(axes[0]),(interval->getTop()).project(axes[0]),true,true);
+    Yaxis = new AMFInterval((interval->getBottom()).project(axes[1]),(interval->getTop()).project(axes[1]),true,true);
+    X = Xaxis->getIterator();
+    Y= Yaxis->getIterator();
+    if (X->hasNext() && Y->hasNext()) {
+        currentX = (X)->getCurrent();
+        currentY = (Y)->getCurrent();
+        currentIterator = (new AMFInterval( (currentX+currentY)+interval->getBottom(),
+                                                 (currentX.times(currentY))^(interval->getTop()),true,true))->getIterator();
+    }
+    else {
+        currentIterator = (new AMFInterval(*new AMFunction(),*new AMFunction(),false,false))->getIterator();
+    }
 }
 
 
 iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFClosedIterator::operator ++() {
+    if (currentIterator->hasNext()) {
+        ++(*currentIterator);
+        current = *(*currentIterator);
+        return *this;
+    }
+    if (X->hasNext()) {
+        ++(*X);
+        currentX = *(*X);
+        currentIterator = (new AMFInterval((currentX+currentY) + (interval->getBottom()),
+                        currentX.times(currentY)^(interval->getTop()),true,true))->getIterator();
+        
+        ++(*currentIterator);
+        current = *(*currentIterator);
+        return *this;
+    }
+    else if (Y->hasNext()) /* should always be true */ {
+        X = Xaxis->getIterator();
+        if (X->hasNext() && Y->hasNext()) {
+            ++(*X);
+            ++(*Y);
+            currentX = *(*X);
+            currentY = *(*Y);
+            currentIterator = (new AMFInterval((currentX +currentY) + (interval->getBottom()),
+                            currentX.times(currentY)^(interval->getTop()),true,true))->getIterator();
+            
+            ++(*currentIterator);
+            current = *(*currentIterator);
+            return *this;
+        }
+    }
+    //should never happen
     return *this;
+    
 }
 
 bool AMFInterval::AMFClosedIterator::hasNext() {
-    return false;
+    return currentIterator->hasNext() || X->hasNext() || Y->hasNext();
 }
 
 
@@ -542,8 +591,31 @@ AMFInterval::GeneralIterator * AMFInterval::getIterator() {
      //   if (!isClosedAtBottom()) ++itr;
      //   return itr;
     //}
+    if (!getBottom().leq(getTop()) ||
+        (getBottom().equals(getTop())
+         && (!isClosedAtBottom() || !isClosedAtTop()))){
+            return new AMFEmptyIterator(this);
+        }
+    else if (closedAtTop) {
+        if (getBottom().size() == 0) {
+            return new AMFExceptionalClosedIterator(this);
+        }
+        else if (getTop().span().size() <= 1) {
+            return new AMFOneOrTwoIterator(this);
+        }
+        else{
+            AMFClosedIterator itr = *new AMFClosedIterator(this);
+            if (!isClosedAtBottom()) {
+                ++itr;
+            }
+            return (&itr);
+        }
+    }
+    else {
+        return new AMFIterator(this);
+    }
 
-    return new AMFIterator(this);
+    
 }
 
 AMFunction AMFInterval::getTop() {

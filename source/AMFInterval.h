@@ -30,25 +30,27 @@ public:
         
         bool virtual hasNext() = 0;
         const reference operator*() {return current;};
+        AMFunction getCurrent() {return current;};
         virtual iterator<forward_iterator_tag, AMFunction> operator++() = 0;
     };
         
     class AMFClosedIterator : public GeneralIterator{
         friend class AMFInterval;
     public:
-        //AMFInterval* interval;
+        AMFInterval* interval;
         AMFunction current;
-        //vector<SmallBasicSet> axes;
-        //AMFunction::AMFiterator X;
-        //AMFunction::AMFiterator Y;
-        //AMFInterval* Xaxis;
-        //AMFInterval* Yaxis;
-        //AMFunction currentX,currentY;
-        //AMFunction::AMFiterator currentIterator;
+        vector<SmallBasicSet> axes;
+        GeneralIterator* X;
+        GeneralIterator* Y;
+        AMFInterval* Xaxis;
+        AMFInterval* Yaxis;
+        AMFunction currentX;
+        AMFunction currentY;
+        GeneralIterator* currentIterator;
         
         AMFClosedIterator(AMFInterval* intr);
         AMFunction getCurrent(){return current;}
-        const reference operator*();
+        const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
     };
@@ -162,7 +164,8 @@ public:
         AMFunction bottom;
         bool virgin;
         AMFInterval* interval;
-        //AMFIterator normal;
+        AMFClosedIterator* normal;
+        
 
         
         AMFExceptionalClosedIterator(AMFInterval* intr);

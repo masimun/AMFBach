@@ -26,7 +26,7 @@ void test_amfinterval() {
 
 void test_iterator() {
     Parser p;
-    AMFInterval amf(p.parse_amf("{}"),p.parse_amf("{[1]}"));
+    AMFInterval amf(p.parse_amf("{}"),p.parse_amf("{[12]}"));
     
     for(AMFInterval::GeneralIterator& amfit = *(amf.getIterator()) ; amfit.hasNext() ; ++amfit ) {
         AMFunction a = (*amfit);
