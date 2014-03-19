@@ -26,7 +26,14 @@ void test_amfinterval() {
 
 void test_iterator() {
     Parser p;
-    AMFInterval amf(p.parse_amf("{}"),p.parse_amf("{[123]}"));
+    AMFInterval amf(p.parse_amf("{}"),p.parse_amf("{[1]}"));
+    
+    for(AMFInterval::GeneralIterator& amfit = *(amf.getIterator()) ; amfit.hasNext() ; ++amfit ) {
+        AMFunction a = (*amfit);
+        cout << "lolololo" << endl;
+        cout << a.toString() << endl;
+    }
+    
     //AMFInterval::AMFIterator freddy = amf.getIterator();
     //cout << freddy.amf.toString() << endl;
     //AMFInterval::AMFIterator f2 = freddy++;
@@ -87,8 +94,8 @@ int main() {
 //
 //    //cout << vec[1];
 //
-    //test_iterator();
-    cout << SmallBasicSet(3).size();
+    test_iterator();
+    //cout << SmallBasicSet(3).size();
     return 0;
 }
 
