@@ -196,7 +196,7 @@ public:
     
     //methode
     vector<SmallBasicSet> bestSplit();
-    SmallBasicSet bestSubset(SmallBasicSet span, long target, AMFunction bottom);
+    SmallBasicSet bestSubset(SmallBasicSet span, long target,AMFunction bottom);
     
     //graph
     AMFGraph graph();

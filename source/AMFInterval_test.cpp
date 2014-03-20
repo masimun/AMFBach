@@ -26,7 +26,7 @@ void test_amfinterval() {
 
 void test_iterator() {
     Parser p;
-    AMFInterval amf(p.parse_amf(""),p.parse_amf("{[1234]}"));
+    AMFInterval amf(p.parse_amf(""),p.parse_amf("{[12345]}"));
     //AMFInterval amf(p.parse_amf("{[12][23]}"),p.parse_amf("{[123]}"));
     long i = 0;
     AMFInterval::GeneralIterator& amfit = (*(amf.getIterator()));
@@ -86,14 +86,19 @@ void test_iterator() {
 }
 
 void test_bestSubSet() {
+    
+    
+    
     Parser p;
     SmallBasicSet span = *new SmallBasicSet(12);
     AMFunction bottom = p.parse_amf("{[]}");
     long spanSize = 1;
     AMFInterval amf(p.parse_amf("{[]}"),p.parse_amf("{[43]}"));
-    SmallBasicSet best = amf.bestSubset(span, spanSize, bottom);
+    //SmallBasicSet best = *amf.bestSubset(span, spanSize, bottom);
     
     vector<SmallBasicSet> split =  amf.bestSplit();
+    cout << split[0].toString() << endl;
+    cout << split[1].toString() << endl;
 }
 
 
@@ -122,8 +127,12 @@ int main() {
     //if(!(candidate == 0)){
     //    cout << "kaka" << endl;
     //}
-    //test_iterator();
-    test_bestSubSet();
+    
+
+    
+    
+    test_iterator();
+    //test_bestSubSet();
     //cout << SmallBasicSet(3).size();
     return 0;
 }
