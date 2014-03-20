@@ -577,8 +577,12 @@ vector<SmallBasicSet> AMFInterval::bestSplit() {
 }
 
 SmallBasicSet AMFInterval::bestSubset(SmallBasicSet span,long target,AMFunction bottom) {
-    SmallBasicSet best = 0;
+    SmallBasicSet best;
     long value = 2*target;
+    //SmallBasicSet* sp = new SmallBasicSet();
+    //AMFunction* bot = new AMFunction();
+    //sp = &span;
+    //bot = &bottom;
     if(!(bottom.ge(span))) {
         best = span;
         value = abs(best.size() - target);
@@ -588,7 +592,9 @@ SmallBasicSet AMFInterval::bestSubset(SmallBasicSet span,long target,AMFunction 
     }
     for(SmallBasicSet::SBSIterator it= span.getIterator(); it.hasNext() ; ++it) {
         SmallBasicSet candidate = 0;
-        candidate = bestSubset(span.setdifference(*it), target, bottom);
+        SmallBasicSet set = *new SmallBasicSet(*it);
+        SmallBasicSet diff = span.setdifference(set);
+        candidate = bestSubset(diff, target, getBottom());
         if(!(candidate == 0)) {
             long newValue= abs(candidate.size() - target);
             if (newValue < value) {

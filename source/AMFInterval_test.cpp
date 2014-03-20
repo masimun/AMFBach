@@ -85,6 +85,17 @@ void test_iterator() {
     
 }
 
+void test_bestSubSet() {
+    Parser p;
+    SmallBasicSet span = *new SmallBasicSet(12);
+    AMFunction bottom = p.parse_amf("{[]}");
+    long spanSize = 1;
+    AMFInterval amf(p.parse_amf("{[]}"),p.parse_amf("{[43]}"));
+    SmallBasicSet best = amf.bestSubset(span, spanSize, bottom);
+    
+    vector<SmallBasicSet> split =  amf.bestSplit();
+}
+
 
 int main() {
 
@@ -111,7 +122,8 @@ int main() {
     //if(!(candidate == 0)){
     //    cout << "kaka" << endl;
     //}
-    test_iterator();
+    //test_iterator();
+    test_bestSubSet();
     //cout << SmallBasicSet(3).size();
     return 0;
 }
