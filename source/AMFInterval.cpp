@@ -538,8 +538,7 @@ long long AMFInterval::lattice_size() {
 			return 0;
 		}
 	} else {
-		SetsPoset poset(this);
-		return poset.get_lattice_size();
+		return SetsPoset(getBottom(),getTop()).get_lattice_size();
 	}
 }
 

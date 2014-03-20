@@ -14,17 +14,17 @@
 /**
  * Builds a poset of sets from an interval of AMF
  */
-SetsPoset::SetsPoset(AMFInterval* const delta) {
-	construct_level(delta);
+SetsPoset::SetsPoset(const AMFunction & bottom, const AMFunction & top) {
+	construct_level(bottom,top);
 	construct_cessors();
 }
 
-void SetsPoset::construct_level(AMFInterval* const delta) {
+void SetsPoset::construct_level(const AMFunction & bottom, const AMFunction & top) {
 	map<long,set<SmallBasicSet>> h_level;
-	AMFunction h = delta->getTop();
+	AMFunction h = top;
 	AMFunction* ph = &h;
 	AMFunction hh;
-	AMFunction g = delta->getBottom();
+	AMFunction g = bottom;
 	if (h.gt(g)) {
 		min_size = INT_MAX;
 		max_size = INT_MIN;

@@ -11,7 +11,6 @@
 using namespace std;
 #include "SmallBasicSet.h"
 #include "AMFunction.h"
-#include "AMFInterval.h"
 #include <set>
 #include <map>
 #include <vector>
@@ -33,9 +32,9 @@ private:
 
 public:
 	// constructing
-	SetsPoset(AMFInterval* const delta);
+	SetsPoset(const AMFunction & bottom, const AMFunction & top);
 	virtual ~SetsPoset();
-	void construct_level(AMFInterval* const delta);
+	void construct_level(const AMFunction & bottom, const AMFunction & top);
 	void construct_cessors();
 	void store(map<long,set<SmallBasicSet>>* h_level, SmallBasicSet s);
 
