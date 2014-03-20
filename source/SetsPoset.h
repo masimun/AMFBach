@@ -10,6 +10,7 @@
 
 using namespace std;
 #include "SmallBasicSet.h"
+#include "AMFunction.h"
 #include "AMFInterval.h"
 #include <set>
 #include <map>
@@ -32,9 +33,9 @@ private:
 
 public:
 	// constructing
-	SetsPoset(AMFInterval* delta);
+	SetsPoset(AMFInterval* const delta);
 	virtual ~SetsPoset();
-	void construct_level(AMFInterval* delta);
+	void construct_level(AMFInterval* const delta);
 	void construct_cessors();
 	void store(map<long,set<SmallBasicSet>>* h_level, SmallBasicSet s);
 
@@ -44,10 +45,33 @@ public:
 	// size
 	long get_lattice_size();
 	long get_lattice_size(bool odd);
+	long get_lattice_size(int exp,
+						  unordered_map<SBS,set<SBS>,SBS::hasher>* prepredec,
+						  set<SBS>* lowerlevel,
+						  int l);
+
 	int get_maximal_level_number();
 	int get_max_level();
 	set<SBS> get_level(int i);
 	long get_width();
+
+	// iterator
+	class SetIterator : public iterator<forward_iterator_tag, SBS> {
+	private:
+		set<SBS> set1;
+		set<SBS> set2;
+		set<SBS>* current_set;
+		set<SBS>* next_set;
+		vector<SBS> elements;
+		set<SBS> res;
+		bool finished;
+	public:
+		SetIterator(const set<SBS> & thislevel);
+		bool has_next();
+		const set<SBS>& operator*() { return res; };
+		SetIterator& operator++();
+	};
+
 
 };
 

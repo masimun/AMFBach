@@ -529,7 +529,18 @@ AMFGraph AMFInterval::graph() {
 }
 
 long long AMFInterval::lattice_size() {
-	return 42; // TODO: implement
+	if (!getBottom().leq(getTop())) {
+		return 0;
+	} else if (getBottom().equals(getTop())) {
+		if (isClosedAtBottom() && isClosedAtTop()) {
+			return 1;
+		} else {
+			return 0;
+		}
+	} else {
+		SetsPoset poset(this);
+		return poset.get_lattice_size();
+	}
 }
 
 AMFInterval::AMFInterval(AMFunction bottom, AMFunction top) {

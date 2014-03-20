@@ -11,6 +11,7 @@
 using namespace std;
 #include <string>
 #include "SmallBasicSet.h"
+#include "SetsPoset.h"
 #include "AMFunction.h"
 #include "AMFGraph.h"
 #include <utility>
