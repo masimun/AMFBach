@@ -26,7 +26,7 @@ void test_amfinterval() {
 
 void test_iterator() {
     Parser p;
-    AMFInterval amf(p.parse_amf(""),p.parse_amf("{[12345]}"));
+    AMFInterval amf(p.parse_amf(""),p.parse_amf("{[123456]}"));
     //AMFInterval amf(p.parse_amf("{[12][23]}"),p.parse_amf("{[123]}"));
     long i = 0;
     AMFInterval::GeneralIterator& amfit = (*(amf.getIterator()));
@@ -35,7 +35,7 @@ void test_iterator() {
         i++;
         (++amfit);
         AMFunction a = (*amfit);
-        cout << a.toString() << endl;
+        //cout << a.toString() << endl;
     }
     cout << i << endl;
     
@@ -130,8 +130,10 @@ int main() {
     
 
     
-    
+    const clock_t begin_time = clock();
+    // do something
     test_iterator();
+    std::cout << float( clock () - begin_time ) /  CLOCKS_PER_SEC;
     //test_bestSubSet();
     //cout << SmallBasicSet(3).size();
     return 0;
