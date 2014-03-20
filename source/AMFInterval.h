@@ -26,11 +26,10 @@ public:
     class GeneralIterator : public iterator<forward_iterator_tag, AMFunction> {
         friend class AMFInterval;
     public:
-        AMFunction current;
         
         bool virtual hasNext() = 0;
-        const reference operator*() {return current;};
-        AMFunction getCurrent() {return current;};
+        virtual const reference operator*()= 0;
+        //virtual AMFunction getCurrent() = 0;
         virtual iterator<forward_iterator_tag, AMFunction> operator++() = 0;
     };
         
@@ -67,8 +66,8 @@ public:
         SmallBasicSet span;
         
         AMFGeneralClosedIterator(AMFInterval* intr);
-        AMFunction getCurrent(){return current;}
-        const reference operator*();
+        AMFunction getCurrent() {return current;}
+        const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
     };
@@ -79,7 +78,7 @@ public:
         AMFInterval* intr;
         AMFunction current;
         bool thereIsNext;
-        AMFClosedIterator theIt = *new AMFClosedIterator(intr);
+        GeneralIterator* theIt;
         AMFunction nxt;
         //AMFunction amf;
         //SmallBasicSet span;// = (*interval).getTop().span();
@@ -100,7 +99,7 @@ public:
         
         AMFIterator(AMFInterval* intr);
         AMFunction getCurrent(){return current;}
-        //const reference operator*();
+        const reference operator*() {return current;};
         //AMFunction next(AMFunction top);
         iterator<forward_iterator_tag, AMFunction> operator++();
         //AMFIterator operator++(int junk) { return operator++(); };
@@ -118,9 +117,10 @@ public:
         AMFInterval* interval;
         int pos, last;
         vector<AMFunction> theList;
+        AMFunction current;
         
         AMFEmptyIterator(AMFInterval* intr);
-        const reference operator*();
+        const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
     };
@@ -136,7 +136,7 @@ public:
         
         AMFOneOrTwoIterator(AMFInterval* intr);
         AMFunction getCurrent(){return current;}
-        const reference operator*();
+        const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
     };
@@ -150,7 +150,7 @@ public:
         
         AMFOneElementIterator(AMFInterval* intr);
         AMFunction getCurrent(){return current;}
-        const reference operator*();
+        const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
     };
@@ -164,13 +164,13 @@ public:
         AMFunction bottom;
         bool virgin;
         AMFInterval* interval;
-        AMFClosedIterator* normal;
+        GeneralIterator* normal;
         
 
         
         AMFExceptionalClosedIterator(AMFInterval* intr);
         AMFunction getCurrent(){return current;}
-        const reference operator*();
+        const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
     };
@@ -191,6 +191,7 @@ public:
 
     //iterator
     GeneralIterator *getIterator();
+    GeneralIterator *getClosedIterator();
     //iterator end() 		{return iterator(this, this->till);};
     
     //methode

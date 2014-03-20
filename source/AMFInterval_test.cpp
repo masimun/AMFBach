@@ -26,13 +26,20 @@ void test_amfinterval() {
 
 void test_iterator() {
     Parser p;
-    AMFInterval amf(p.parse_amf("{}"),p.parse_amf("{[12]}"));
-    
-    for(AMFInterval::GeneralIterator& amfit = *(amf.getIterator()) ; amfit.hasNext() ; ++amfit ) {
+    AMFInterval amf(p.parse_amf(""),p.parse_amf("{[1234]}"));
+    //AMFInterval amf(p.parse_amf("{[12][23]}"),p.parse_amf("{[123]}"));
+    long i = 0;
+    AMFInterval::GeneralIterator& amfit = (*(amf.getIterator()));
+    //for( AMFInterval::GeneralIterator& amfit = (*(amf.getIterator()));amfit.hasNext();++amfit ) {
+    while(amfit.hasNext()) {
+        i++;
+        (++amfit);
         AMFunction a = (*amfit);
-        cout << "lolololo" << endl;
         cout << a.toString() << endl;
     }
+    cout << i << endl;
+    
+
     
     //AMFInterval::AMFIterator freddy = amf.getIterator();
     //cout << freddy.amf.toString() << endl;
@@ -93,7 +100,17 @@ int main() {
 //    //p[1] = 2;
 //
 //    //cout << vec[1];
+    
 //
+    //AMFunction i = *new AMFunction();
+    //cout << i.bugstr << endl;
+    //AMFunction v = *new AMFunction(*new SmallBasicSet());
+   // cout << v.bugstr << endl;
+    
+    //SmallBasicSet candidate = *new SmallBasicSet(1);
+    //if(!(candidate == 0)){
+    //    cout << "kaka" << endl;
+    //}
     test_iterator();
     //cout << SmallBasicSet(3).size();
     return 0;
