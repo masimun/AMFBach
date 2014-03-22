@@ -25,24 +25,12 @@ AMFInterval::AMFIterator::AMFIterator(AMFInterval* interval) {
 
 
 iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFIterator::operator ++() {
-    //if (!intr->getBottom().leq(intr->getTop()) ||
-    //    (intr->getBottom().equals(intr->getTop())
-    //   && (!intr->isClosedAtBottom() || !intr->isClosedAtTop()))){
-    //        return *new AMFEmptyIterator(intr);
-    //}
-    //else if (intr->isClosedAtTop()) {
-    //    AMFClosedIterator itr = *new AMFClosedIterator(intr);
-    //    if (!intr->isClosedAtBottom()) ++itr;
-    //    return itr;
-    //}
-    //else {
-        AMFunction myNxt = nxt;
-        ++(*theIt);
-        nxt = *(*theIt);
-        thereIsNext = theIt->hasNext();
-        current = myNxt;
-        return *this;
-    //}
+    AMFunction myNxt = nxt;
+    ++(*theIt);
+    nxt = *(*theIt);
+    thereIsNext = theIt->hasNext();
+    current = myNxt;
+    return *this;
 }
 
 bool AMFInterval::AMFIterator::hasNext() {
@@ -60,7 +48,6 @@ AMFInterval::AMFOneOrTwoIterator::AMFOneOrTwoIterator(AMFInterval* intr ) {
         pos = 0;
     }
     else {
-        //for (set<SmallBasicSet>::iterator it = ((intr->getBottom()).getSets()).begin() ; it != ((intr->getBottom()).getSets()).end(); ++it){
         for (SmallBasicSet sbs : (intr->getBottom()).getSets() ) {
             if ((sbs.size()) == 0) {
                 pos = 1;
@@ -176,17 +163,13 @@ AMFInterval::AMFExceptionalClosedIterator::AMFExceptionalClosedIterator(AMFInter
     interval = intr;
     bottom = *(new AMFunction());
     bottom.addSet(SmallBasicSet());
-    //AMFInterval i = *(new AMFInterval(bottom,intr->getTop(),true,true));
     normal = ((new AMFInterval(bottom,intr->getTop(),true,true))->getClosedIterator());
-    
-    //current = *new AMFunction();
     virgin = true;
 }
 
 iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFExceptionalClosedIterator::operator ++() {
     if (virgin) {
         virgin = false;
-        //current = bottom;
         return *this;
     }
     else {
@@ -303,39 +286,18 @@ AMFInterval::AMFGeneralClosedIterator::AMFGeneralClosedIterator(AMFInterval* int
 
 
 iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFGeneralClosedIterator::operator ++() {
-    //span = (interval->getTop()).span();
-    //if (interval->getBottom().size() == 0) {
-    //    return *new AMFExceptionalClosedIterator(interval);
-    //}
-    //else if (span.size()<=1) {
-    //    return *new AMFOneOrTwoIterator(interval);
-    //}
-    //else if(interval->getTop().equals(interval->getBottom())){
-    //    return *new AMFOneElementIterator(interval);
-    //}
-    //else {
-    //    if (interval->getTop().size() == 1
-    //        && interval->getBottom().size() == spanSize
-    //        && minSizeBottom + 1 == spanSize) {
-            
-            pos++;
-            if (pos == 1 ) {
-                current = interval->getBottom();
-                return *this;
-            }
-            if(pos == 2) {
-                current = interval->getTop();
-                return *this;
-            }
-            else {
-                //current = 0 ;
-                //Must return null;
-                return *this;
-            }
-        
-    //    }
-    //}
-    //Remove
+    pos++;
+    if (pos == 1 ) {
+        current = interval->getBottom();
+        return *this;
+    }
+    if(pos == 2) {
+        current = interval->getTop();
+        return *this;
+    }
+    else {
+        return *this;
+    }
     return *this;
 }
 
@@ -345,172 +307,81 @@ bool AMFInterval::AMFGeneralClosedIterator::hasNext() {
 
 
 
-/***********************************************************************************************
- FAST ITERATOR (NOT WORKING)
- 
- 
-AMFInterval::AMFIterator::AMFIterator(AMFInterval* intr,AMFunction funct) {
+
+/*******************************************
+ *Fast Non Empty iterator
+ *******************************************/
+AMFInterval::AMFFastNonEmptyIterator::AMFFastNonEmptyIterator(AMFInterval* intr) {
     interval = intr;
-    //Geeft een niet lege iterator terug
-    if ((interval->getBottom()).leq(interval->getTop())) {
-        amf = funct; //current
-        string test = interval->getTop().toString();
-        span = interval->getTop().span();
-        
-        
-        if (span.isemptyset()) {
-            ret = amf;
-            amf = (*interval).getBottom();
-            if (amf.equals((*interval).getTop())) {
-                amf = AMFunction::emptyFunction(); // moet null zijn.
-            }
-            else {
-                amf = (*interval).getTop();
-            }
-            
-        }
-        else {
-            maxSpan = AMFunction::singletonFunction(span.maximum()); // @Dit geeft lik de verkeerde waarde terug?
-            // We willen hier niet wat het grootste element van de span kan zijn maar wat het grootste is die er in zit.
-            amf = (*interval).getBottom();
-            span =(*interval).getTop().span();
-            alfaBottom = (amf.reduce(span));
-            alfaTop = ((*interval).getTop().reduce(span));
-            
-            //vector<AMFIterator> pIterator; // KAN LIK GEEN ITERATORS IN DIE VECTOR STOPPEN RAAR MAAR WAAR
-            
-            
-            pAlfaBottom = alfaBottom.data();
-            pAlfaTop = alfaTop.data();
-            pAlfa = alfa.data();
-            pIterator = iter.data();
-            
-            
-            //debug
-            //int debug_alfaBottomsize = alfaBottom.size();
-            
-            
-            AMFIterator pIterator0 = (AMFInterval(pAlfaBottom[0],pAlfaTop[0])).getIterator();
-            iter.push_back(pIterator0); // nulpointer error!
-            
-            alfa.push_back((iter[0]).next(this->interval->getTop())); // nest van this of van iter[0] ?
-            AMFIterator pIterator1 = (AMFInterval(pAlfaBottom[1],(pAlfa[0].meet(pAlfaTop[1])))).getIterator();
-            iter.push_back(pIterator1);
-            //pAlfa[1] = (iter[1]).amf;
-            
-            
-            
-        }
-        
-        
-        
-        
-    }
+    span = interval->getTop().span();
+    maxSpan = AMFunction::singletonFunction(span.maximum());
+    current = interval->getBottom();
+    alfaBottom = current.reduce(span);
+    alfaTop = interval->getTop().reduce(span);
     
-    // Geef een lege iterator terug
-    else {
-        amf = AMFunction::emptyFunction();
-    }
+    
+    itr0 = ((new AMFInterval(alfaBottom[0],alfaTop[0]))->getFastIterator());
+    ++(*itr0);
+    alfa0 = *(*itr0);
+    itr1 = ((new AMFInterval(alfaBottom[1],alfa0.meet(alfaTop[1])))->getFastIterator());
+    ++(*itr1);
+    alfa1 = *(*itr1);
 }
 
-AMFunction AMFInterval::AMFIterator::next(AMFunction top) {
-    
-    AMFunction ret = amf;
-    
-    //@DAAN KAN JE KEER KIJKEN NAAR DIE getTop() kijken ik versta nie waarom ik daar iedere keer nulptr exception heb
-    
-    if (amf.equals(top)) {
-        amf = AMFunction::emptyFunction();
-    }
-    else {
-       amf = top;
-    }
-    return ret;
-    
+AMFunction AMFInterval::AMFFastNonEmptyIterator::nextCurrent() {
+    if (alfa1.isEmpty()) return alfa0;
+    else return alfa0.join(alfa1.times(maxSpan));
 }
 
-AMFInterval::AMFIterator AMFInterval::AMFIterator::operator++() {
-    
-    if (this->hasNext()) {
-        /*
-        if (span.isemptyset()) {
-            ret = amf;
-            amf = (*interval).getBottom();
-            if (amf.equals((*interval).getTop())) {
-                amf = AMFunction::emptyFunction(); // moet null zijn.
-            }
-            else {
-                amf = (*interval).getTop();
-            }
-            
-        }
-        else {
-            maxSpan = AMFunction::singletonFunction(span.maximum()); // @Dit geeft lik de verkeerde waarde terug?
-            // We willen hier niet wat het grootste element van de span kan zijn maar wat het grootste is die er in zit.
-            amf = (*interval).getBottom();
-            span =(*interval).getTop().span();
-            alfaBottom = (amf.reduce(span));
-            alfaTop = ((*interval).getTop().reduce(span));
-            
-            //vector<AMFIterator> pIterator; // KAN LIK GEEN ITERATORS IN DIE VECTOR STOPPEN RAAR MAAR WAAR
-            
-            
-            pAlfaBottom = alfaBottom.data();
-            pAlfaTop = alfaTop.data();
-            pAlfa = alfa.data();
-            pIterator = iter.data();
-            
-            
-            //debug
-            //int debug_alfaBottomsize = alfaBottom.size();
-            
-            
-            AMFIterator pIterator0 = (AMFInterval(pAlfaBottom[0],pAlfaTop[0])).getIterator();
-            iter.push_back(pIterator0); // nulpointer error!
-            pAlfa[0] = (iter[0]).amf;
-            AMFIterator pIterator1 = (AMFInterval(pAlfaBottom[1],pAlfa[0].meet(pAlfaTop[1]))).getIterator();
-            iter.push_back(pIterator1);
-            pAlfa[1] = (iter[1]).amf;
-            
-        
-         
-        }
-       // * /
-    
-        
-        if(pIterator[1].hasNext()) {
-            pAlfa[1] = (pIterator[1]++).amf;
-            if(pAlfa[1].isEmpty()) {amf = pAlfa[0];}
-            else {amf = pAlfa[0].join(pAlfa[1].times(maxSpan));}
-        }
-        else if (pIterator[0].hasNext()) {
-            pAlfa[0] = (pIterator[0]++).amf;
-            pIterator[1] = (AMFInterval(pAlfaBottom[1],pAlfa[0].meet(pAlfaTop[1]))).getIterator();
-            if (!pIterator[1].hasNext()) {
-                amf = AMFunction().emptyFunction();
-            }
-            else {
-                pAlfa[1] = (pIterator[1]++).amf;
-                if(pAlfa[1].isEmpty()) {amf = pAlfa[0];}
-                else {amf = pAlfa[0].join(pAlfa[1].times(maxSpan));}
-            }
-        }
-        else {
-            amf = AMFunction().emptyFunction();
-        }
-        amf = ret;
-        
-    
-    
-        return (*this);
-        
+iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFFastNonEmptyIterator::operator ++() {
+    ret = current;
+    if (itr1->hasNext()) {
+        ++(*itr1);
+        alfa1 = *(*itr1);
+        current = nextCurrent();
     }
-    
-    else {
-        throw exception();
+    else if (itr0->hasNext()) {
+        ++(*itr0);
+        alfa0 = *(*itr0);
+        itr1 = ((new AMFInterval(alfaBottom[1],alfa0.meet(alfaTop[1])))->getFastIterator());
+        if (!itr1->hasNext()) isFinished = true;
+        else {
+            ++(*itr1);
+            alfa1 = *(*itr1);
+            current = nextCurrent();
+        }
     }
+    else isFinished = true;
+    return *this;
 }
-************************************************************************************************************/
+bool AMFInterval::AMFFastNonEmptyIterator::hasNext() {
+    return !isFinished;
+}
+
+
+
+
+/*******************************************
+ *Fast Empty span iterator
+ *******************************************/
+AMFInterval::AMFFastEmptySpanIterator::AMFFastEmptySpanIterator(AMFInterval* intr) {
+    interval = intr;
+    current = interval->getBottom();
+    nxt = interval->getBottom();
+}
+iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFFastEmptySpanIterator::operator ++() {
+    AMFunction ret = nxt;
+    if(nxt.equals(interval->getTop())) isFinished = true;
+    else nxt = interval->getTop();
+    current = ret;
+    return *this;
+}
+
+bool AMFInterval::AMFFastEmptySpanIterator::hasNext() {
+    return !isFinished;
+}
+
+
 
 
 AMFGraph AMFInterval::graph() {
@@ -589,10 +460,6 @@ vector<SmallBasicSet> AMFInterval::bestSplit() {
 SmallBasicSet AMFInterval::bestSubset(SmallBasicSet span,long target,AMFunction bottom) {
     SmallBasicSet best;
     long value = 2*target;
-    //SmallBasicSet* sp = new SmallBasicSet();
-    //AMFunction* bot = new AMFunction();
-    //sp = &span;
-    //bot = &bottom;
     if(!(bottom.ge(span))) {
         best = span;
         value = abs(best.size() - target);
@@ -604,8 +471,6 @@ SmallBasicSet AMFInterval::bestSubset(SmallBasicSet span,long target,AMFunction 
     for(SmallBasicSet::SBSIterator it= span.getIterator(); it.hasNext() ; ++it) {
         SmallBasicSet candidate;
         SmallBasicSet diff = span.difference(*it);
-        //cout << diff.toString() << endl;
-        //cout << bottom.toString() << endl;
         candidate = bestSubset(diff, target, bottom);
         if(!(candidate == 0)) {
             long newValue= abs(candidate.size() - target);
@@ -628,17 +493,6 @@ AMFInterval AMFInterval::fullspace(int n) {
 }
 
 AMFInterval::GeneralIterator * AMFInterval::getIterator() {
-    //if (!this->getBottom().leq(this->getTop()) ||
-    //    (this->getBottom().equals(this->getTop())
-    //     && (!this->isClosedAtBottom() || !this->isClosedAtTop()))){
-    //        return AMFEmptyIterator(this);
-    //    }
-    
-    //if (isClosedAtTop()) {
-    //    AMFClosedIterator itr = *new AMFClosedIterator(this);
-    //    if (!isClosedAtBottom()) ++itr;
-    //    return itr;
-    //}
     if (!getBottom().leq(getTop()) ||
         (getBottom().equals(getTop())
          && (!isClosedAtBottom() || !isClosedAtTop()))){
@@ -683,6 +537,22 @@ AMFInterval::GeneralIterator * AMFInterval::getClosedIterator() {
         return new AMFClosedIterator(this);
     }
 
+}
+
+AMFInterval::GeneralIterator * AMFInterval::getFastIterator() {
+    if (getBottom().leq(getTop())){
+        SmallBasicSet span = getTop().span();
+        if (span.isemptyset()) {
+            return new AMFFastEmptySpanIterator(this);
+        }
+        else {
+            return new AMFFastNonEmptyIterator(this);
+        }
+        
+    }
+    else {
+        return new AMFEmptyIterator(this);
+    }
 }
 
 AMFunction AMFInterval::getTop() {

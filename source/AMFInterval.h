@@ -30,7 +30,6 @@ public:
         
         bool virtual hasNext() = 0;
         virtual const reference operator*()= 0;
-        //virtual AMFunction getCurrent() = 0;
         virtual iterator<forward_iterator_tag, AMFunction> operator++() = 0;
     };
         
@@ -49,7 +48,6 @@ public:
         GeneralIterator* currentIterator;
         
         AMFClosedIterator(AMFInterval* intr);
-        AMFunction getCurrent(){return current;}
         const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
@@ -81,34 +79,11 @@ public:
         bool thereIsNext;
         GeneralIterator* theIt;
         AMFunction nxt;
-        //AMFunction amf;
-        //SmallBasicSet span;// = (*interval).getTop().span();
-        vector<AMFunction> theList;
-        long pos,last;
-        //AMFunction maxSpan;
-        //AMFunction ret;
-        
-        //vector<AMFunction> alfaBottom;
-        //vector<AMFunction> alfaTop;
-        //vector<AMFunction> alfa;
-        //vector<AMFIterator> iter;
-        
-        //AMFunction* pAlfaBottom = alfaBottom.data();
-        //AMFunction* pAlfaTop = alfaTop.data();
-        //AMFunction* pAlfa = alfa.data();
-        //AMFIterator* pIterator = iter.data();
         
         AMFIterator(AMFInterval* intr);
-        AMFunction getCurrent(){return current;}
         const reference operator*() {return current;};
-        //AMFunction next(AMFunction top);
         iterator<forward_iterator_tag, AMFunction> operator++();
-        //AMFIterator operator++(int junk) { return operator++(); };
         bool hasNext();
-        // bool operator <=(const AMFunction otherAmf) { return amf.leq(otherAmf); };
-        // bool operator >(const AMFunction otherAmf) { return !(amf.leq(otherAmf));};
-        //bool operator ==(const AMFIterator other) { return amf.equals(other.amf); }
-        //bool operator !=(const AMFIterator other) { return !amf.equals(other.amf); }
 
     };
     
@@ -116,8 +91,6 @@ public:
         friend class AMFInterval;
     public:
         AMFInterval* interval;
-        int pos, last;
-        vector<AMFunction> theList;
         AMFunction current;
         
         AMFEmptyIterator(AMFInterval* intr);
@@ -136,7 +109,6 @@ public:
         SmallBasicSet span;
         
         AMFOneOrTwoIterator(AMFInterval* intr);
-        AMFunction getCurrent(){return current;}
         const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
@@ -150,7 +122,6 @@ public:
         bool given = false;
         
         AMFOneElementIterator(AMFInterval* intr);
-        AMFunction getCurrent(){return current;}
         const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
@@ -170,12 +141,52 @@ public:
 
         
         AMFExceptionalClosedIterator(AMFInterval* intr);
-        AMFunction getCurrent(){return current;}
         const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
     };
     
+    
+    class AMFFastNonEmptyIterator : public GeneralIterator {
+        friend class AMFInterval;
+    public:
+        AMFInterval* interval;
+        AMFunction current;
+        SmallBasicSet span;
+        AMFunction maxSpan;
+        bool isFinished = false;
+        AMFunction ret;
+        GeneralIterator* itr0;
+        GeneralIterator* itr1;
+        AMFunction alfa0;
+        AMFunction alfa1;
+        
+        vector<AMFunction> alfaBottom;
+        vector<AMFunction> alfaTop;
+        
+        
+        
+        AMFFastNonEmptyIterator(AMFInterval* intr);
+        const reference operator*() {return ret;};
+        iterator<forward_iterator_tag, AMFunction> operator++();
+        AMFunction nextCurrent();
+        bool hasNext();
+        
+    };
+    
+    class AMFFastEmptySpanIterator : public GeneralIterator {
+        friend class AMFInterval;
+    public:
+        AMFunction current;
+        AMFunction nxt;
+        AMFInterval* interval;
+        bool isFinished = false;
+        
+        AMFFastEmptySpanIterator(AMFInterval* intr);
+        const reference operator*() {return current;};
+        iterator<forward_iterator_tag, AMFunction> operator++();
+        bool hasNext();
+    };
 
 
 private:
@@ -193,7 +204,8 @@ public:
     //iterator
     GeneralIterator *getIterator();
     GeneralIterator *getClosedIterator();
-    //iterator end() 		{return iterator(this, this->till);};
+    GeneralIterator *getFastIterator();
+
     
     //methode
     vector<SmallBasicSet> bestSplit();
