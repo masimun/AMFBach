@@ -305,6 +305,12 @@ bool AMFInterval::AMFGeneralClosedIterator::hasNext() {
     return (pos < 2);
 }
 
+/*
+    Cp.']'.
+ */
+AMFInterval::GeneralFastIterator::~GeneralFastIterator() {
+    
+}
 
 
 
@@ -319,11 +325,10 @@ AMFInterval::AMFFastNonEmptyIterator::AMFFastNonEmptyIterator(AMFInterval* intr)
     alfaBottom = current.reduce(span);
     alfaTop = interval->getTop().reduce(span);
     
-    
-    itr0 = ((new AMFInterval(alfaBottom[0],alfaTop[0]))->getFastIterator());
+    itr0 = (new AMFInterval(alfaBottom[0],alfaTop[0]))->getFastIterator();
     ++(*itr0);
     alfa0 = *(*itr0);
-    itr1 = ((new AMFInterval(alfaBottom[1],alfa0.meet(alfaTop[1])))->getFastIterator());
+    itr1 = (new AMFInterval(alfaBottom[1],alfa0.meet(alfaTop[1])))->getFastIterator();
     ++(*itr1);
     alfa1 = *(*itr1);
 }
@@ -341,6 +346,7 @@ iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFFastNonEmptyIterator:
         current = nextCurrent();
     }
     else if (itr0->hasNext()) {
+        //delete[] itr1;
         ++(*itr0);
         alfa0 = *(*itr0);
         itr1 = ((new AMFInterval(alfaBottom[1],alfa0.meet(alfaTop[1])))->getFastIterator());
@@ -351,11 +357,28 @@ iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFFastNonEmptyIterator:
             current = nextCurrent();
         }
     }
-    else isFinished = true;
+    else {
+        //delete[] itr0;
+        //delete[] itr1;
+        //delete[] interval;
+        isFinished = true;
+    }
     return *this;
 }
 bool AMFInterval::AMFFastNonEmptyIterator::hasNext() {
-    return !isFinished;
+    if (isFinished){
+        //delete[] itr0;
+        //delete[] itr1;
+        //delete[] interval;
+        return false;
+    }
+    return true;
+}
+
+AMFInterval::AMFFastNonEmptyIterator::~AMFFastNonEmptyIterator() {
+    delete[] interval;
+    delete[] itr0;
+    delete[] itr1;
 }
 
 
@@ -381,8 +404,28 @@ bool AMFInterval::AMFFastEmptySpanIterator::hasNext() {
     return !isFinished;
 }
 
+AMFInterval::AMFFastEmptySpanIterator::~AMFFastEmptySpanIterator() {
+    delete[] interval;
+}
 
+/*******************************************
+ * ITERATOR Fast Empty
+ *******************************************/
+AMFInterval::AMFFastEmptyIterator::AMFFastEmptyIterator() {
+    
+}
 
+iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFFastEmptyIterator::operator ++() {
+    return *this;
+}
+
+bool AMFInterval::AMFFastEmptyIterator::hasNext() {
+    return false;
+}
+
+AMFInterval::AMFFastEmptyIterator::~AMFFastEmptyIterator() {
+    delete[] this;
+}
 
 AMFGraph AMFInterval::graph() {
 	AMFGraph g;
@@ -511,7 +554,7 @@ AMFInterval::GeneralIterator * AMFInterval::getIterator() {
 
 
 }
-AMFInterval::GeneralIterator * AMFInterval::getClosedIterator() {
+AMFInterval::GeneralIterator* AMFInterval::getClosedIterator() {
     if(getBottom().size() == 0){
         return new AMFExceptionalClosedIterator(this);
     }
@@ -539,7 +582,7 @@ AMFInterval::GeneralIterator * AMFInterval::getClosedIterator() {
 
 }
 
-AMFInterval::GeneralIterator * AMFInterval::getFastIterator() {
+AMFInterval::GeneralFastIterator * AMFInterval::getFastIterator() {
     if (getBottom().leq(getTop())){
         SmallBasicSet span = getTop().span();
         if (span.isemptyset()) {
@@ -551,7 +594,7 @@ AMFInterval::GeneralIterator * AMFInterval::getFastIterator() {
         
     }
     else {
-        return new AMFEmptyIterator(this);
+        return new AMFFastEmptyIterator();
     }
 }
 

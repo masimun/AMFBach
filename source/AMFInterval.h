@@ -32,7 +32,17 @@ public:
         virtual const reference operator*()= 0;
         virtual iterator<forward_iterator_tag, AMFunction> operator++() = 0;
     };
+    
+    class GeneralFastIterator : public iterator<forward_iterator_tag, AMFunction> {
+        friend class AMFInterval;
+    public:
         
+        bool virtual hasNext() = 0;
+        virtual const reference operator*()= 0;
+        virtual iterator<forward_iterator_tag, AMFunction> operator++() = 0;
+        virtual ~GeneralFastIterator();
+    };
+    
     class AMFClosedIterator : public GeneralIterator{
         friend class AMFInterval;
     public:
@@ -51,6 +61,7 @@ public:
         const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
+
     };
     
     class AMFGeneralClosedIterator : public GeneralIterator {
@@ -69,6 +80,7 @@ public:
         const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
+
     };
     
     class AMFIterator : public GeneralIterator {
@@ -85,6 +97,7 @@ public:
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
 
+
     };
     
     class AMFEmptyIterator : public GeneralIterator {
@@ -97,6 +110,7 @@ public:
         const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
+
     };
     
     class AMFOneOrTwoIterator : public GeneralIterator {
@@ -112,6 +126,7 @@ public:
         const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
+
     };
     
     class AMFOneElementIterator : public GeneralIterator {
@@ -125,6 +140,7 @@ public:
         const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
+
     };
     
     
@@ -144,10 +160,11 @@ public:
         const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
+
     };
     
     
-    class AMFFastNonEmptyIterator : public GeneralIterator {
+    class AMFFastNonEmptyIterator : public GeneralFastIterator {
         friend class AMFInterval;
     public:
         AMFInterval* interval;
@@ -156,8 +173,8 @@ public:
         AMFunction maxSpan;
         bool isFinished = false;
         AMFunction ret;
-        GeneralIterator* itr0;
-        GeneralIterator* itr1;
+        GeneralFastIterator* itr0;
+        GeneralFastIterator* itr1;
         AMFunction alfa0;
         AMFunction alfa1;
         
@@ -171,10 +188,11 @@ public:
         iterator<forward_iterator_tag, AMFunction> operator++();
         AMFunction nextCurrent();
         bool hasNext();
+        virtual ~AMFFastNonEmptyIterator();
         
     };
     
-    class AMFFastEmptySpanIterator : public GeneralIterator {
+    class AMFFastEmptySpanIterator : public GeneralFastIterator {
         friend class AMFInterval;
     public:
         AMFunction current;
@@ -186,6 +204,19 @@ public:
         const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
+        virtual ~AMFFastEmptySpanIterator();
+    };
+    
+    class AMFFastEmptyIterator : public GeneralFastIterator {
+        friend class AMFInterval;
+    public:
+        AMFunction current;
+        
+        AMFFastEmptyIterator();
+        const reference operator*() {return current;};
+        iterator<forward_iterator_tag, AMFunction> operator++();
+        bool hasNext();
+        virtual ~AMFFastEmptyIterator();
     };
 
 
@@ -204,7 +235,7 @@ public:
     //iterator
     GeneralIterator *getIterator();
     GeneralIterator *getClosedIterator();
-    GeneralIterator *getFastIterator();
+    GeneralFastIterator *getFastIterator();
 
     
     //methode

@@ -27,11 +27,11 @@ void test_fastiterator(){
     Parser p;
     AMFInterval amf(p.parse_amf(""),p.parse_amf("{[12345]}"));
     long i = 0;
-    AMFInterval::GeneralIterator& amfit = (*(amf.getFastIterator()));
+    AMFInterval::GeneralFastIterator& amfit = (*(amf.getFastIterator()));
     while(amfit.hasNext()) {
         i++;
         (++amfit);
-        AMFunction a = (*amfit);
+        //AMFunction a = (*amfit);
         //cout  <<i << " \t " << a.toString() << endl;
         
     }
