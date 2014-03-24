@@ -116,18 +116,18 @@ void test_graph() {
 }
 
 
-int main() {
+//int main() {
 
 
     
-    const clock_t begin_time = clock();
+  //  const clock_t begin_time = clock();
     // do something
     //test_iterator();
-    test_fastiterator();
+   // test_fastiterator();
     //test_bestSubSet();
-    std::cout << float( clock () - begin_time ) /  CLOCKS_PER_SEC;
+   // std::cout << float( clock () - begin_time ) /  CLOCKS_PER_SEC;
     //test_bestSubSet();
     //cout << SmallBasicSet(3).size();
-    return 0;
-}
+   // return 0;
+//}
 

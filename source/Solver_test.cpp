@@ -50,7 +50,7 @@ void test_permutator() {
 }
 
 void test_algo9() {
-	int n = 5;
+	int n = 6;
 	// generate
 	vector<map<AMFunction,long>> classes = Solver::algorithm9(n);
 	map<AMFunction,long> functions;
