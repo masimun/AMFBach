@@ -49,8 +49,30 @@ void test_permutator() {
 
 }
 
-//int main() {
-//	test_permutator();
-//	return 0;
-//}
+void test_algo9() {
+	int n = 5;
+	// generate
+	vector<map<AMFunction,long>> classes = Solver::algorithm9(n);
+	map<AMFunction,long> functions;
+
+	// collect
+	for (int i = 0; i < (int) classes.capacity() ; i++ ) {
+		long coeff = Solver::combinations(n, i);
+		for( pair<AMFunction,long> p : classes.at(i)) {
+			Solver::mapstore(functions, p.first, p.second * coeff);
+		}
+	}
+
+	// count
+	long long sum = 0;
+	for ( pair<AMFunction,long> p : functions ) {
+		sum += p.second;
+	}
+	cout << sum << endl;
+}
+
+int main() {
+	test_algo9();
+	return 0;
+}
 

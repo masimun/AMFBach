@@ -40,7 +40,7 @@ public:
 		long bit;
 
 		SBSIterator(SmallBasicSet* set);
-		const reference operator*() { return current; }
+		const reference operator*() { return prev; }
 		SBSIterator operator++();
 		bool hasNext();
 	};

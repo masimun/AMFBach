@@ -25,15 +25,14 @@ void test_amfinterval() {
 
 void test_fastiterator(){
     Parser p;
-    AMFInterval amf(p.parse_amf(""),p.parse_amf("{[12345]}"));
+    AMFInterval amf(p.parse_amf(""),p.parse_amf("{[123456]}"));
     long i = 0;
     AMFInterval::GeneralFastIterator& amfit = (*(amf.getFastIterator()));
     while(amfit.hasNext()) {
         i++;
         (++amfit);
-        //AMFunction a = (*amfit);
-        //cout  <<i << " \t " << a.toString() << endl;
-        
+        AMFunction a = (*amfit);
+        cout  <<i << " \t " << a.toString() << endl;
     }
     cout << i << endl;
 }
@@ -50,7 +49,7 @@ void test_iterator() {
         i++;
         (++amfit);
         AMFunction a = (*amfit);
-        //cout  <<i << " \t " << a.toString() << endl;
+        cout  <<i << " \t " << a.toString() << endl;
     }
     cout << i << endl;
     
@@ -153,7 +152,7 @@ void test_split() {
     
 }
 
-
+/*
 int main() {
 
     //set<int> *s = new set<int>;
@@ -192,4 +191,4 @@ int main() {
     //cout << SmallBasicSet(3).size();
     return 0;
 }
-
+*/

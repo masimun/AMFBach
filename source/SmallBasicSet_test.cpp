@@ -24,18 +24,18 @@ void test_smallbasicset_map();
 void test_smallbasicsetint();
 double speed_test_smallbasicsetstress();
 void test_speed();
-/*
-int main() {
+
+/*int main() {
 	Parser p;
 	SmallBasicSet s1 = p.parse("[379]", 3);
 	SmallBasicSet::iterator it = s1.getIterator();
-	while (it.hasNext()) {
+	while(it.hasNext()) {
 		++it;
 		cout << *it << endl;
 	}
 	return 0;
-}
-*/
+}*/
+
 void test_smallbasicset_map() {
 	Parser p;
 	int inv1[] = {0,0,1,2,3,4};
