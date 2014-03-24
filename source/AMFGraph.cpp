@@ -15,6 +15,12 @@ AMFGraph::~AMFGraph() {
 	// TODO Auto-generated destructor stub
 }
 
+void AMFGraph::doNode(map<SmallBasicSet, set<SmallBasicSet> > g, SmallBasicSet n, set<SmallBasicSet> had) {
+    for (<#initialization#>; <#condition#>; <#increment#>) {
+
+    }
+}
+
 /* return a pointer to the edges */
 edges_t* AMFGraph::getEdges() {
 	return &edges;

@@ -25,6 +25,7 @@ public:
 	AMFGraph();
 	virtual ~AMFGraph();
 
+    void doNode(map<SmallBasicSet,set<SmallBasicSet>> g, SmallBasicSet n, set<SmallBasicSet> had);
 	long count_connected();
 	edges_t* getEdges();
 };

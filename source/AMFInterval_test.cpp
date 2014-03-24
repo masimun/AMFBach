@@ -56,48 +56,6 @@ void test_iterator() {
     
 
     
-    //AMFInterval::AMFIterator freddy = amf.getIterator();
-    //cout << freddy.amf.toString() << endl;
-    //AMFInterval::AMFIterator f2 = freddy++;
-    
-    //++freddy;
-
-    // AMFInterval::AMFIterator f2 = freddy++;
-    
-    //vector<AMFInterval::AMFIterator> iter;
-    //AMFInterval::AMFIterator *pIterator = iter.data();
-    //iter.push_back(freddy) ;
-    
-    //c.push_back(freddy);
-    //piterator[0] = freddy;
-    
-    //AMFInterval::AMFIterator pIterator0 = (AMFInterval(pAlfaBottom[0],pAlfaTop[0])).begin();
-    //iter.push_back(pIterator0); // nulpointer error!
-    
-    //cout << pIterator[0].amf.toString();
-    
-    //c.insert(freddy);
-    //c.insert(freddy++);
-        
-    //AMFInterval::AMFIterator* t = v.data();
-    
-    //cout << f2.amf.toString() <<endl;
-
-    
-    
-    //for (AMFInterval::AMFIterator freddy = amf.begin(); freddy.hasNext(); freddy++) {
-    //    AMFunction b = (freddy.amf);
-    //    cout << (b.toString()) << endl;
-    //}
-    //cout << p.parse_amf("{[1,2,3]}").toString() << endl;
-    //AMFunction b = (freddy.amf);
-    //cout << (b.toString()) << endl;
-    ///AMFInterval::AMFIterator f2 = freddy++;
-    //cout << f2.amf.toString();
-    
-    //cout <<  b.toString();
-    //cout << (*amf.end()).toString() << endl;
-    
 }
 
 void test_bestSubSet() {
@@ -153,33 +111,13 @@ void test_split() {
     
 }
 
+void test_graph() {
+    
+}
+
 
 int main() {
 
-    //set<int> *s = new set<int>;
-//    //(*s).insert(4);
-//    //(*s).insert(6);
-//
-//    //cout << *(++(*s).begin());
-//
-//    //vector<int> vec (5);
-//    //int* p = vec.data();
-//    //p[0] = 10;
-//    //p[1] = 2;
-//
-//    //cout << vec[1];
-    
-//
-    //AMFunction i = *new AMFunction();
-    //cout << i.bugstr << endl;
-    //AMFunction v = *new AMFunction(*new SmallBasicSet());
-   // cout << v.bugstr << endl;
-    
-    //SmallBasicSet candidate = *new SmallBasicSet(1);
-    //if(!(candidate == 0)){
-    //    cout << "kaka" << endl;
-    //}
-    
 
     
     const clock_t begin_time = clock();

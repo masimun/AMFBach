@@ -325,6 +325,7 @@ AMFInterval::AMFFastNonEmptyIterator::AMFFastNonEmptyIterator(AMFInterval* intr)
     alfaBottom = current.reduce(span);
     alfaTop = interval->getTop().reduce(span);
     
+    
     itr0 = (new AMFInterval(alfaBottom[0],alfaTop[0]))->getFastIterator();
     ++(*itr0);
     alfa0 = *(*itr0);
