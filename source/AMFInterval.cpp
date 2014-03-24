@@ -512,7 +512,9 @@ SmallBasicSet AMFInterval::bestSubset(SmallBasicSet span,long target,AMFunction 
         return best;
     }
     
-    for(SmallBasicSet::SBSIterator it= span.getIterator(); it.hasNext() ; ++it) {
+    SmallBasicSet::iterator it = span.getIterator();
+    while (it.hasNext()) {
+    	++it;
         SmallBasicSet candidate;
         SmallBasicSet diff = span.difference(*it);
         candidate = bestSubset(diff, target, bottom);

@@ -29,11 +29,13 @@ public:
 	typedef long long bigint;
 	static long combinations(int n, int i);
 	static long comb(int n, int i);
+	static void mapstore(map<AMFunction, long>& M, AMFunction A, long i);
+	static void mapstore(map<AMFunction, long>& M, AMFunction A);
 
 	// ALGORITHMS
-	vector<map<AMFunction,long>> algorithm9(int n);
-	vector<map<AMFunction,long>> equivalence_classes(int n); // == algorithm 9
-	map<AMFunction,long> algorithm7(int n, map<AMFunction,long> S);
+	static vector<map<AMFunction,long>> algorithm9(int n);
+	static vector<map<AMFunction,long>> equivalence_classes(int n); // == algorithm 9
+	static map<AMFunction,long> algorithm7(int n, map<AMFunction,long> S);
 	long long pc2_dedekind(int n);
 
 	// COEFFICIENTS

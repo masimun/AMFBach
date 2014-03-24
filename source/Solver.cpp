@@ -18,19 +18,19 @@ Solver::~Solver() {
 /**
  * Increase the coefficient of A in M by i
  */
-void mapstore(map<AMFunction, long> M, AMFunction A, long i) {
+void Solver::mapstore(map<AMFunction, long>& M, AMFunction A, long i) {
 	map<AMFunction, long>::iterator it = M.find(A);
 	if (it != M.end()) {
 		(*it).second += i;
 	} else {
-		M.insert(make_pair(A,0L));
+		M.insert(make_pair(A,i));
 	}
 }
 
 /**
  * Increase the coefficient of A in M by 1
  */
-void mapstore(map<AMFunction, long> M, AMFunction A) {
+void Solver::mapstore(map<AMFunction, long>& M, AMFunction A) {
 	mapstore(M,A,1L);
 }
 
@@ -54,7 +54,7 @@ long Solver::combinations(int n, int i) {
 long long Solver::pc2_dedekind(int m) {
 	int n = m - 2;
 	// generate
-	vector<map<AMFunction,long>> classes = algorithm9(m);
+	vector<map<AMFunction,long>> classes = algorithm9(n);
 	map<AMFunction,long> functions;
 
 	// collect
@@ -108,14 +108,14 @@ long long Solver::pc2_dedekind(int m) {
  * Main algorithm for equivalence class generation
  */
 vector<map<AMFunction,long>> Solver::algorithm9(int till) {
-	vector<map<AMFunction,long>> res(till);
+	vector<map<AMFunction,long>> res(till+1);
 	map<AMFunction, long> res0;
 	mapstore(res0,AMFunction::emptyFunction());
 	mapstore(res0,AMFunction::emptySetFunction());
-	res.push_back(res0);
+	res[0] = res0;
 	for (int n = 0; n < till; n++ ) {
 		// calculate AMF(n+1) and add it to res.
-		res.push_back(algorithm7(n,res.at(n)));
+		res[n+1] = (algorithm7(n,res.at(n)));
 	}
 	return res;
 }
@@ -130,7 +130,9 @@ map<AMFunction,long> Solver::algorithm7(int n, map<AMFunction,long> S) {
 		perm_t rtsymm = (t.join(l)).symmetry_group();
 		map<AMFunction, long> St;
 		AMFInterval delta(t.join(l),u.omicron(t,alfa));
-		for( AMFInterval::GeneralIterator& amfit = *(delta.getIterator()) ; amfit.hasNext() ; ++amfit ) {
+		AMFInterval::GeneralFastIterator& amfit = *(delta.getFastIterator());
+		while( amfit.hasNext() ) {
+			++amfit;
 			AMFunction a = (*amfit);
 			mapstore(St,a.standard(rtsymm));
 		}
