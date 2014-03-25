@@ -32,17 +32,19 @@ long AMFGraph::countConnected(edges_t g){
         if ((had.find(b.first)) == had.end()) {
             ret++;
             had.insert(b.first);
-            doNode(g, b.first, had);
+            doNode(&g, &b.first, &had);
         }
     }
+
     return ret;
+
 }
 
-void AMFGraph::doNode(edges_t g, SmallBasicSet n, set<SmallBasicSet> had) {
-    set<SmallBasicSet> set = (*(g.find(n))).second;
+void AMFGraph::doNode(edges_t* g, SmallBasicSet* n, set<SmallBasicSet>* had) {
+    set<SmallBasicSet> set = (*(g->find(*n))).second;
     for (SmallBasicSet b : set) {
-        if (had.insert(b).second) {
-            doNode(g, b, had);
+        if (had->insert(b).second) {
+            doNode(g, &b, had);
         }
     }
 }

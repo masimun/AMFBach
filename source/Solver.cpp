@@ -104,13 +104,13 @@ long long Solver::pc2_dedekind(int m) {
 	}
 	cout << "---------------------------------------------" << endl;
 
-	return 0; //STOP
+	//return 0; //STOP
 
 	bigint sum = 0L;
 	long evaluations = 0;
 	long possibilities = 0;
 
-	AMFInterval::GeneralIterator& it2 = *(AMFInterval(e,u).getIterator());
+	AMFInterval::GeneralFastIterator& it2 = *(AMFInterval(e,u).getFastIterator());
 	while(it2.hasNext()) {
 		++it2;
 		AMFunction r2 = *it2;
@@ -120,10 +120,7 @@ long long Solver::pc2_dedekind(int m) {
 			possibilities++;
 			AMFunction &r1 = r1pair.first;
 			if (r1.leq(r2)) {
-				sumP = sumP	+ ( (r1pair.second)
-							 	* (left_interval_size.at(r1))
-							 	* PatricksCoefficient(r1, r2)
-							  );
+				sumP = sumP	+ ((r1pair.second) * (left_interval_size.at(r1)) * PatricksCoefficient(r1, r2));
 				evaluations++;
 			}
 		}
@@ -188,11 +185,16 @@ edges_t Solver::graph(AMFunction r1, AMFunction r2) {
     return AMFInterval(r1,r2).edges();
 }
 
+
 long long Solver::PatricksCoefficient(AMFunction r1, AMFunction r2) {
     // trivial case, no solutions unless r1 <= r2
-    if (!r1.leq(r2)) return 0;
+    if (!r1.leq(r2)) {
+       return 0;
+    }
     // trivial case, one solution if r1 == r2
-    if (r1.equals(r2)) return 1;
+    if (r1.equals(r2)){
+        return 1;
+    }
     long long rest = 0;
     // treat the case of empty functions separately (most function in AMFunction and AMFinterval do not apply)
     if (r1.isEmpty()) {
@@ -202,6 +204,7 @@ long long Solver::PatricksCoefficient(AMFunction r1, AMFunction r2) {
     return (1<<(AMFGraph::countConnected(graph(r1,r2.minus(r1)))));
 
 }
+
 
 
 
