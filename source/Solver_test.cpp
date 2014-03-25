@@ -72,7 +72,10 @@ void test_algo9() {
 }
 
 int main() {
+    const clock_t begin_time = clock();
 	test_algo9();
+    std::cout << float( clock () - begin_time ) /  CLOCKS_PER_SEC;
+
 	return 0;
 }
 
