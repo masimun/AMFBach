@@ -184,6 +184,10 @@ bool contains(list<AMFunction> as, AMFunction a) {
 	return false;
 }
 
+static edges_t graph(AMFunction r1, AMFunction r2) {
+    return AMFInterval(r1,r2).edges();
+}
+
 long long Solver::PatricksCoefficient(AMFunction r1, AMFunction r2) {
     // trivial case, no solutions unless r1 <= r2
     if (!r1.leq(r2)) return 0;
@@ -195,9 +199,9 @@ long long Solver::PatricksCoefficient(AMFunction r1, AMFunction r2) {
         if (r2.isEmpty()) return 1; // (empty, empty)
         return 2; // (empty, r2), (r2,empty)
     }
-    // return (1<<(CountConnected(graph(r1,r2.minus(r1)))));
-    return 0;
+    return (1<<(AMFGraph::countConnected(graph(r1,r2.minus(r1)))));
 }
+
 
 
 

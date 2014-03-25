@@ -2,7 +2,7 @@
  * AMFGraph.h
  *
  *  Created on: 21-dec.-2013
- *      Author: Daan
+ *      Author: Daan, Max
  */
 
 #ifndef AMFGRAPH_H_
@@ -12,6 +12,7 @@ using namespace std;
 #include <set>
 #include <list>
 #include "SmallBasicSet.h"
+#include "AMFunction.h"
 #include <iostream>
 #include <utility>
 #include <unordered_set>
@@ -22,11 +23,17 @@ class AMFGraph {
 private:
 	edges_t edges;
 public:
-	AMFGraph();
+    AMFGraph();
+	//AMFGraph(AMFunction r1,AMFunction r2);
+    AMFGraph(edges_t);
+    
 	virtual ~AMFGraph();
 
-    void doNode(map<SmallBasicSet,set<SmallBasicSet>> g, SmallBasicSet n, set<SmallBasicSet> had);
+    
 	long count_connected();
+    static long countConnected(edges_t g);
+    AMFGraph transitiveClosure();
+    static void doNode(edges_t g, SmallBasicSet n, set<SmallBasicSet> had);
 	edges_t* getEdges();
 };
 

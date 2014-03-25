@@ -13,6 +13,7 @@
 #include "SmallBasicSet.h"
 #include "AMFunction.h"
 #include "AMFInterval.h"
+#include "AMFGraph.h"
 #include <iostream>
 #include <map>
 #include <vector>
@@ -31,6 +32,7 @@ public:
 	static long comb(int n, int i);
 	static void mapstore(map<AMFunction, long>& M, AMFunction A, long i);
 	static void mapstore(map<AMFunction, long>& M, AMFunction A);
+    static edges_t graph(AMFunction r1, AMFunction r2);
 
 	// ALGORITHMS
 	static vector<map<AMFunction,long>> algorithm9(int n);
