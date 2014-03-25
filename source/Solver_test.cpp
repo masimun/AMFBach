@@ -71,8 +71,15 @@ void test_algo9() {
 	cout << sum << endl;
 }
 
+void test_pc2_dedekind() {
+	int m = 2+2;
+	int d = Solver::pc2_dedekind(m);
+	cout << d << endl;
+}
+
 int main() {
-	test_algo9();
+	test_pc2_dedekind();
+	//Solver::verynaivededekind();
 	return 0;
 }
 

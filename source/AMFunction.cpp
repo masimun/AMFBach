@@ -441,6 +441,7 @@ AMFunction AMFunction::immediate_subsets(SmallBasicSet s) {
 	AMFunction amf;
 	SmallBasicSet::iterator it = s.getIterator();
 	while(it.hasNext()) {
+		++it;
 		amf.addSet(s.difference(*it));
 	}
 	return amf;

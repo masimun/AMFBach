@@ -30,7 +30,7 @@ void SetsPoset::construct_level(const AMFunction & bottom, const AMFunction & to
 		max_size = INT_MIN;
 		while (!(*ph).equals(g)) {
 			AMFunction* hh = new AMFunction();
-			for (SBS a : h.getSets()) {
+			for (SBS a : (*ph).getSets()) {
 				if(g.contains(a)) {
 					hh->addSetConditional(a);
 				} else {
@@ -42,11 +42,11 @@ void SetsPoset::construct_level(const AMFunction & bottom, const AMFunction & to
 					}
 				}
 			}
-			delete[] ph;
+			// delete ph;
 			ph = hh;
 		}
-		delete[] ph;
-		level.reserve(max_size - min_size + 1);
+		// delete ph;
+		level.resize(max_size - min_size + 1);
 		for (long k = min_size ; k <= max_size ; k++ ) {
 			if ( h_level.find(k) != h_level.end() ) {
 				level[k - min_size] = h_level.find(k)->second;
@@ -87,7 +87,7 @@ SetsPoset::~SetsPoset() {
 
 void SetsPoset::store(map<long,set<SmallBasicSet>>* h_level, SmallBasicSet s) {
 	int size = s.numberofelements();
-	if ( h_level->find(size) != h_level->end() ) {
+	if ( h_level->find(size) == h_level->end() ) {
 		h_level->insert(make_pair(size,set<SBS>()));
 	}
 	h_level->find(size)->second.insert(s);
@@ -122,14 +122,14 @@ int SetsPoset::get_maximal_level_number() {
 
 long SetsPoset::get_width() {
 	long max = 0;
-	for (int i = 1 ; 1 <= get_max_level() ; i++ ) {
+	for (int i = 1 ; i <= get_max_level() ; i++ ) {
 		max = std::max((long) get_level(i).size(), max);
 	}
 	return max;
 }
 
 set<SmallBasicSet> SetsPoset::get_level(int n) {
-	if ( n > (int) level.capacity() ) {
+	if ( n > (int) level.size() ) {
 		return set<SmallBasicSet>();
 	} else {
 		return level[n-1];
@@ -137,7 +137,7 @@ set<SmallBasicSet> SetsPoset::get_level(int n) {
 }
 
 int SetsPoset::get_max_level() {
-	return level.capacity();
+	return level.size();
 }
 
 long SetsPoset::get_lattice_size(bool odd) {
@@ -145,6 +145,7 @@ long SetsPoset::get_lattice_size(bool odd) {
 	int exp;
 	if (odd) {
 		exp = 0;
+		first_level = 1;
 	}
 	else {
 		exp = (int) get_level(1).size();

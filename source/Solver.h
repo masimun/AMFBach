@@ -36,10 +36,13 @@ public:
 	static vector<map<AMFunction,long>> algorithm9(int n);
 	static vector<map<AMFunction,long>> equivalence_classes(int n); // == algorithm 9
 	static map<AMFunction,long> algorithm7(int n, map<AMFunction,long> S);
-	long long pc2_dedekind(int n);
+	static long long pc2_dedekind(int n);
 
 	// COEFFICIENTS
     static long long PatricksCoefficient(AMFunction r1, AMFunction r2);
+
+    // OTHER
+    static void verynaivededekind();
 };
 
 #endif /* SOLVER_H_ */

@@ -53,9 +53,17 @@ long Solver::combinations(int n, int i) {
  */
 long long Solver::pc2_dedekind(int m) {
 	int n = m - 2;
+
+	clock_t begin = clock();
+	cout << "started generating equivalence classes" << endl;
+
 	// generate
 	vector<map<AMFunction,long>> classes = algorithm9(n);
 	map<AMFunction,long> functions;
+
+	clock_t end_classes = clock();
+	cout << "finished generating equivalence classes" << endl;
+	cout << "@ " << (double) (end_classes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 
 	// collect
 	for (int i = 0; i < (int) classes.capacity() ; i++ ) {
@@ -64,6 +72,10 @@ long long Solver::pc2_dedekind(int m) {
 			mapstore(functions, p.first, p.second*coeff);
 		}
 	}
+
+	clock_t end_collect = clock();
+	cout << "finished collecting equivalence classes" << endl;
+	cout << "@ " << (double) (end_collect - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 
 	AMFunction e = AMFunction::emptyFunction();
 	AMFunction u = AMFunction::universeFunction(n);
@@ -76,6 +88,20 @@ long long Solver::pc2_dedekind(int m) {
 		left_interval_size.insert(make_pair(f,left.lattice_size()));
 		right_interval_size.insert(make_pair(f,right.lattice_size()));
 	}
+
+	clock_t end_isizes = clock();
+	cout << "finished generating interval sizes" << endl;
+	cout << "@ " << (double) (end_isizes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+
+	cout << "Test: interval sizes for n = " << n << endl;
+	cout << "---------------------------------------------" << endl;
+	for ( pair<AMFunction,long> fpair : functions ) {
+		AMFunction& a = fpair.first;
+		long l = left_interval_size.find(a)->second;
+		long r = right_interval_size.find(a)->second;
+		cout << a.toString() << "\t\tL:" << l << "\t\tR:" << r << endl;
+	}
+	cout << "---------------------------------------------" << endl;
 
 	bigint sum = 0L;
 	long evaluations = 0;
@@ -171,10 +197,13 @@ long long Solver::PatricksCoefficient(AMFunction r1, AMFunction r2) {
 
 
 
-/*
-void verynaivededekind() {
+
+void Solver::verynaivededekind() {
 	int const n = 4; // works instant up to 4... and 5 takes a while.
-	int const sbsamount = pow(2,n);
+	int sbsamount = 1;
+	for( int i = 0 ; i < n ; i++) {
+		sbsamount *= 2;
+	}
 	SmallBasicSet sbs[sbsamount];
 	for (int i = 0 ; i < sbsamount ; i++) {
 		sbs[i] = SmallBasicSet(i);
@@ -210,7 +239,7 @@ void verynaivededekind() {
 	}
 	cout << "Dedekind number for n = " << n << ": " << accdede;
 }
-
+/*
 int main() {
     verynaivededekind();
 }
