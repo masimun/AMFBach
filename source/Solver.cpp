@@ -197,7 +197,7 @@ long long Solver::PatricksCoefficient(AMFunction r1, AMFunction r2) {
 
 
 
-
+/*
 void Solver::verynaivededekind() {
 	int const n = 4; // works instant up to 4... and 5 takes a while.
 	int sbsamount = 1;
@@ -239,6 +239,7 @@ void Solver::verynaivededekind() {
 	}
 	cout << "Dedekind number for n = " << n << ": " << accdede;
 }
+*/
 /*
 int main() {
     verynaivededekind();
