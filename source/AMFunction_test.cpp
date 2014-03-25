@@ -25,14 +25,15 @@ void test_standard();
 
 //int main() {
 //	test_standard();
-//	vector<int> v;
 //}
 
 void test_standard() {
 	cout << "# C++ FUNC TESTS - AMFUNCTION STANDARD #" << endl;
 	Parser p;
-	AMFunction s1 = p.parse_amf("{[1,2],[4]}");
+	AMFunction s1 = p.parse_amf("{[1,2],[3]}");
 	AMFunction s2 = p.parse_amf("{[1],[2,3]}");
+	cout << s1.standard().toString() << endl;
+	cout << s2.standard().toString() << endl;
 	test::ASSERT_EQUAL(s1.standard(),s2.standard());
 }
 

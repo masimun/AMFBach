@@ -173,7 +173,7 @@ long pow(long exp) {
 }
 
 bool contains_all(const set<SmallBasicSet> & a , const set<SmallBasicSet> & b) {
-	for ( SmallBasicSet s : a ) {
+	for ( SmallBasicSet s : b ) {
 		if ( a.find(s) == a.end() ) {
 			return false;
 		}
@@ -202,7 +202,8 @@ long SetsPoset::get_lattice_size(int exp,
 		SetIterator it(thislevel);
 		long res = 0L;
 		while(it.has_next()) {
-			set<SBS> alfa = *(++it);
+			++it;
+			set<SBS> alfa = *it;
 			good_successors.clear();
 			if ( l + 1 <= this->get_max_level() ) {
 				set<SBS> level_above = this->get_level(l+1);

@@ -76,6 +76,7 @@ long long Solver::pc2_dedekind(int m) {
 	clock_t end_collect = clock();
 	cout << "finished collecting equivalence classes" << endl;
 	cout << "@ " << (double) (end_collect - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+	cout << "Amount of functions:" << functions.size() << endl;
 
 	AMFunction e = AMFunction::emptyFunction();
 	AMFunction u = AMFunction::universeFunction(n);
@@ -99,9 +100,11 @@ long long Solver::pc2_dedekind(int m) {
 		AMFunction& a = fpair.first;
 		long l = left_interval_size.find(a)->second;
 		long r = right_interval_size.find(a)->second;
-		cout << a.toString() << "\t\tL:" << l << "\t\tR:" << r << endl;
+		cout << a.toString() << "\t\tN:" << fpair.second << "\t\tL:" << l << "\t\tR:" << r << endl;
 	}
 	cout << "---------------------------------------------" << endl;
+
+	return 0; //STOP
 
 	bigint sum = 0L;
 	long evaluations = 0;
@@ -109,6 +112,7 @@ long long Solver::pc2_dedekind(int m) {
 
 	AMFInterval::GeneralIterator& it2 = *(AMFInterval(e,u).getIterator());
 	while(it2.hasNext()) {
+		++it2;
 		AMFunction r2 = *it2;
 		bigint r2size = right_interval_size.at(r2.standard());
 		bigint sumP = 0L;
@@ -153,14 +157,14 @@ map<AMFunction,long> Solver::algorithm7(int n, map<AMFunction,long> S) {
 	AMFunction l = AMFunction::singletonFunction(n+1);
 	for( pair<AMFunction,long> tpair : S ) {
 		AMFunction t = tpair.first;
-		perm_t rtsymm = (t.join(l)).symmetry_group();
+		// perm_t rtsymm = (t.join(l)).symmetry_group();
 		map<AMFunction, long> St;
 		AMFInterval delta(t.join(l),u.omicron(t,alfa));
 		AMFInterval::GeneralFastIterator& amfit = *(delta.getFastIterator());
 		while( amfit.hasNext() ) {
 			++amfit;
 			AMFunction a = (*amfit);
-			mapstore(St,a.standard(rtsymm));
+			mapstore(St,a.standard());
 		}
 		for ( pair<AMFunction,long> xpair : St ) {
 			AMFunction x = xpair.first;

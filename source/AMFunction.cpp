@@ -62,11 +62,13 @@ set<SmallBasicSet> AMFunction::getSets() const {
 
 /* (!) means not anti-monotonic! */
 string AMFunction::toString() {
-	if (isEmpty()) { return "0"; }
-	string rep = "";
+	if (isEmpty()) { return "[]"; }
+	string rep = "[";
 	for (SmallBasicSet s : sets) {
-		rep += s.toString() + "-";
+		rep += s.toString() + ",";
 	}
+	rep.pop_back();
+	rep += "]";
 	if (!isAntiMonotonic()) {
 		rep += "(!)";
 	}

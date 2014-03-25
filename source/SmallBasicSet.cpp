@@ -67,9 +67,12 @@ string int_to_string(int a) {
 }
 
 string SmallBasicSet::toString() const {
+	if ( numberofelements() == 0 ) {
+		return "0";
+	}
 	stringstream ss;
     int copyset = set;
-	ss << "{";
+	//ss << "{";
 	for (int i = MAXELEMENT ; i >= 0 ; i-- ) {
         int temp = copyset - getBit(i);
 		if (temp >= 0) {
@@ -77,7 +80,7 @@ string SmallBasicSet::toString() const {
             copyset = temp;
 		}
 	}
-	ss << "}";
+	//ss << "}";
 	return ss.str();
 }
 
