@@ -428,9 +428,24 @@ AMFInterval::AMFFastEmptyIterator::~AMFFastEmptyIterator() {
     delete[] this;
 }
 
-AMFGraph AMFInterval::graph() {
-	AMFGraph g;
-	edges_t* edges = g.getEdges();
+//AMFGraph AMFInterval::graph() {
+//	AMFGraph g;
+//	edges_t* edges = g.getEdges();
+//	const AMFunction &r1 = this->getBottom();
+//	const AMFunction &r2 = this->getTop();
+//	for (SmallBasicSet r : r2.getSets()) {
+//		set<SmallBasicSet> cr;
+//		for (SmallBasicSet s : r2.getSets()) {
+//			if (!r1.ge(s.setintersect(s))) { cr.insert(s); };
+//		}
+//		edges->insert(make_pair(r,cr));
+//	}
+//	return g;
+//}
+
+edges_t AMFInterval::edges() {
+//	AMFGraph g;
+	edges_t edges;
 	const AMFunction &r1 = this->getBottom();
 	const AMFunction &r2 = this->getTop();
 	for (SmallBasicSet r : r2.getSets()) {
@@ -438,9 +453,9 @@ AMFGraph AMFInterval::graph() {
 		for (SmallBasicSet s : r2.getSets()) {
 			if (!r1.ge(s.setintersect(s))) { cr.insert(s); };
 		}
-		edges->insert(make_pair(r,cr));
+		edges.insert(make_pair(r,cr));
 	}
-	return g;
+	return edges;
 }
 
 long long AMFInterval::lattice_size() {

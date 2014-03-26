@@ -13,6 +13,7 @@ using namespace std;
 #include "SmallBasicSet.h"
 #include "SetsPoset.h"
 #include "AMFunction.h"
+#include "AMFInterval.h"
 #include "AMFGraph.h"
 #include <utility>
 #include <stdlib.h>
@@ -243,7 +244,8 @@ public:
     SmallBasicSet bestSubset(SmallBasicSet span, long target,AMFunction bottom);
     
     //graph
-    AMFGraph graph();
+    //AMFGraph graph();
+    edges_t edges();
     long long lattice_size();
     
     //getters
