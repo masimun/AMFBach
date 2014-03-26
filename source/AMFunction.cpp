@@ -362,7 +362,7 @@ vector<AMFunction> AMFunction::reduce(SmallBasicSet sbs) {
 }
 
 AMFunction AMFunction::standard(perm_t permutations) {
-	AMFunction &best = (*this);
+	AMFunction best = (*this);
 	for ( vector<int> p : permutations ) {
 		AMFunction kand = this->map(p.data());
 		if (kand < best) {

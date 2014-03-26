@@ -72,7 +72,7 @@ void test_algo9() {
 }
 
 void test_pc2_dedekind() {
-	int m = 5+2;
+	int m = 4+2;
 	int d = Solver::pc2_dedekind(m);
 	cout << d << endl;
 }
