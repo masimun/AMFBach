@@ -121,7 +121,7 @@ long long Solver::pc2_dedekind(int m) {
 			AMFunction &r1 = r1pair.first;
 			if (r1.leq(r2)) {
 				sumP = sumP	+ ((r1pair.second) * (left_interval_size.at(r1)) * PatricksCoefficient(r1, r2));
-                cout <<PatricksCoefficient(r1, r2) << endl;
+                //cout <<PatricksCoefficient(r1, r2) << endl;
 				evaluations++;
 			}
 		}
