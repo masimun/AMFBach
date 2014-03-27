@@ -53,6 +53,7 @@ long Solver::combinations(int n, int i) {
  */
 long long Solver::pc2_dedekind(int m) {
 	int n = m - 2;
+	long REPORT = 20000;
 
 	clock_t begin = clock();
 	cout << "started generating equivalence classes" << endl;
@@ -73,10 +74,10 @@ long long Solver::pc2_dedekind(int m) {
 		}
 	}
 
-	clock_t end_collect = clock();
-	cout << "finished collecting equivalence classes" << endl;
-	cout << "@ " << (double) (end_collect - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
-	cout << "Amount of functions:" << functions.size() << endl;
+//	clock_t end_collect = clock();
+//	cout << "finished collecting equivalence classes" << endl;
+//	cout << "@ " << (double) (end_collect - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+	cout << "Amount of representatives:" << functions.size() << endl;
 
 	AMFunction e = AMFunction::emptyFunction();
 	AMFunction u = AMFunction::universeFunction(n);
@@ -94,15 +95,15 @@ long long Solver::pc2_dedekind(int m) {
 	cout << "finished generating interval sizes" << endl;
 	cout << "@ " << (double) (end_isizes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 
-	cout << "Test: interval sizes for n = " << n << endl;
-	cout << "---------------------------------------------" << endl;
-	for ( pair<AMFunction,long> fpair : functions ) {
-		AMFunction& a = fpair.first;
-		long l = left_interval_size.find(a)->second;
-		long r = right_interval_size.find(a)->second;
-		cout << a.toString() << "\t\tN:" << fpair.second << "\t\tL:" << l << "\t\tR:" << r << endl;
-	}
-	cout << "---------------------------------------------" << endl;
+//	cout << "Test: interval sizes for n = " << n << endl;
+//	cout << "---------------------------------------------" << endl;
+//	for ( pair<AMFunction,long> fpair : functions ) {
+//		AMFunction& a = fpair.first;
+//		long l = left_interval_size.find(a)->second;
+//		long r = right_interval_size.find(a)->second;
+//		cout << a.toString() << "\t\tN:" << fpair.second << "\t\tL:" << l << "\t\tR:" << r << endl;
+//	}
+//	cout << "---------------------------------------------" << endl;
 
 	//return 0; //STOP
 
@@ -122,10 +123,18 @@ long long Solver::pc2_dedekind(int m) {
 			if (r1.leq(r2)) {
 				sumP = sumP	+ ((r1pair.second) * (left_interval_size.at(r1)) * PatricksCoefficient(r1, r2));
                 evaluations++;
+                if ( evaluations % REPORT == 0 ) {
+                	cout << "partial sum: " << sum << " (" << evaluations << " evaluations)" << endl;
+                }
 			}
 		}
 		sum = sum + (sumP * r2size);
 	}
+
+	clock_t end_algo = clock();
+	cout << "finished: " << evaluations << " evaluations" << endl;
+	cout << "@ " << (double) (end_algo - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+
 	return sum;
 
 }
