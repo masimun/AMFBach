@@ -15,10 +15,11 @@ using namespace std;
 #include "AMFunction.h"
 #include <iostream>
 #include <utility>
+#include <map>
 #include <unordered_set>
 #include <vector>
-#include "Toolkit.hpp"
 
+typedef map<SmallBasicSet,set<SmallBasicSet>> edges_t;
 class AMFGraph {
 private:
 	edges_t edges;

@@ -298,13 +298,9 @@ bool AMFunction::ge(SmallBasicSet x) const {
  ****************************************************/
 
 /**
- * returns the symmetry group of this AMFunction
- * result is currently in a treeset,
- * This needs to be changed to a hashset (unordered_set)
- * for optimisation purposes. (TODO)
- * Required: an implementation for a hashfunction for vector<int>
+ * returns the symmetry group of this AMFunction (treeset)
  */
-perm_t AMFunction::symmetry_group() {
+AMFunction::perm_t AMFunction::symmetry_group() {
 	set<vector<int>,lex_compare> res;
 	SmallBasicSet sp = span();
 	int maplen = sp.numberofelements();

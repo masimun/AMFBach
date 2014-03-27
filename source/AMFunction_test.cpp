@@ -140,7 +140,7 @@ void test_symmetrygroup() {
 //	}
 
 	// cout << a.toString() << endl;
-	set<vector<int>,lex_compare> svi = a.symmetry_group();
+	set<vector<int>,AMFunction::lex_compare> svi = a.symmetry_group();
 	for ( vector<int> vi : svi ) {
 		cout << "{";
 		for ( int i : vi ) {

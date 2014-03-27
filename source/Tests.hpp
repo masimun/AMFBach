@@ -19,7 +19,6 @@ using namespace std;
 #include "SmallBasicSet.h"
 #include "AMFInterval.h"
 #include "AMFunction.h"
-//#include "PairPermutator.h"
 #include "Parser.h"
 
 namespace test {

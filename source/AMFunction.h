@@ -16,7 +16,6 @@ using namespace std;
 #include <unordered_set>
 #include <vector>
 #include "MappingPermutator.h"
-#include "Toolkit.hpp"
 
 /**
  * This class represents an anti-monotonic function.
@@ -41,6 +40,17 @@ public:
 		AMFiterator operator++();
 		bool hasNext();
 	};
+
+    struct lex_compare {
+    	bool operator() (const vector<int>& lhs, const vector<int>& rhs) const {
+    		stringstream s1,s2;
+    		for ( int a : lhs ) { s1 << a; }
+    		for ( int b : rhs ) { s2 << b; }
+    		return s1.str() < s2.str();
+    	}
+    };
+    typedef set<vector<int>,lex_compare> perm_t;
+
 	AMFunction();
 	AMFunction(SmallBasicSet N);
 	AMFunction(SmallBasicSet s[], int size);
@@ -86,7 +96,7 @@ public:
     vector<AMFunction> reduce(SmallBasicSet sbs);
     AMFunction minus(AMFunction f);
 
-	// algo
+	// standard
 	perm_t symmetry_group();
 	AMFunction standard(perm_t permutations);
 	AMFunction standard();
@@ -101,8 +111,7 @@ public:
 
 	// debug
 	string bugstr;
-
-
     
 };
+
 #endif /* AMFUNCTION_H_ */
