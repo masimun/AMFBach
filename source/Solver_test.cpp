@@ -73,13 +73,12 @@ void test_algo9() {
 
 void test_pc2_dedekind() {
 	int m = 5+2;
-	int d = Solver::pc2_dedekind(m);
+	long long d = Solver::pc2_dedekind(m);
 	cout << d << endl;
 }
 
 int main() {
-	test_pc2_dedekind();
-	//Solver::verynaivededekind();
+    test_pc2_dedekind();
 	return 0;
 }
 

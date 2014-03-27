@@ -7,10 +7,6 @@
 
 #include "AMFGraph.h"
 
-//AMFGraph::AMFGraph(AMFunction r1,AMFunction r2) {
-//    edges = (AMFInterval(r1, r2)).graph().getEdges;
-//}
-
 AMFGraph::AMFGraph(edges_t g) {
     edges = g;
 }
@@ -30,9 +26,9 @@ long AMFGraph::countConnected(edges_t g){
     long ret =0;
     for (pair<SmallBasicSet, set<SmallBasicSet> > b : g) {
         if ((had.find(b.first)) == had.end()) {
-            ret++;
+            ++ret;
             had.insert(b.first);
-            doNode(&g, &b.first, &had);
+            doNode(&g, &(b.first), &had);
         }
     }
 
@@ -41,7 +37,7 @@ long AMFGraph::countConnected(edges_t g){
 }
 
 void AMFGraph::doNode(edges_t* g, SmallBasicSet* n, set<SmallBasicSet>* had) {
-    set<SmallBasicSet> set = (*(g->find(*n))).second;
+    set<SmallBasicSet>& set = (*(g->find(*n))).second;
     for (SmallBasicSet b : set) {
         if (had->insert(b).second) {
             doNode(g, &b, had);
