@@ -190,8 +190,8 @@ void pc2_dedekind_multi(int m) {
 }
 
 
-int main(){
-    pc2_dedekind_multi(4+2);
-	return 0;
-}
+//int main(){
+//    pc2_dedekind_multi(4+2);
+//	return 0;
+//}
 

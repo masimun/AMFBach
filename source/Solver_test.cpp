@@ -77,8 +77,8 @@ void test_pc2_dedekind() {
 	cout << d << endl;
 }
 
-//int main() {
-//    test_pc2_dedekind();
-//	return 0;
-//}
+int main() {
+    test_pc2_dedekind();
+	return 0;
+}
 

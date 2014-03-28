@@ -368,9 +368,9 @@ iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFFastNonEmptyIterator:
 }
 bool AMFInterval::AMFFastNonEmptyIterator::hasNext() {
     if (isFinished){
-        //delete[] itr0;
-        //delete[] itr1;
-        //delete[] interval;
+        delete[] itr0;
+        delete[] itr1;
+        delete[] interval;
         return false;
     }
     return true;
