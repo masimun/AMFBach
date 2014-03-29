@@ -50,9 +50,8 @@ void MappingPermutator::permute() {
 			if (next_insertion > 0) { swap(length-1, next_insertion-1); }
 			swap(length-1,next_insertion);
 			next_insertion++;
-			// delete[] sub_permutator;
-			sub_permutator = new MappingPermutator(map,inverse,length-1); // TODO: memory leak
-			// sub_permutator->reset();
+			delete sub_permutator;
+			sub_permutator = new MappingPermutator(map,inverse,length-1);
 			sub_permutator->permute();
 		}
 	}
