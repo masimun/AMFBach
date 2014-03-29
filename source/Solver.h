@@ -34,9 +34,9 @@ public:
     static edges_t graph(AMFunction r1, AMFunction r2);
 
 	// ALGORITHMS
-	static vector<map<AMFunction,long>> algorithm9(int n);
-	static vector<map<AMFunction,long>> equivalence_classes(int n); // == algorithm 9
-	static map<AMFunction,long> algorithm7(int n, map<AMFunction,long> S);
+	static vector<map<AMFunction,long>*>* algorithm9(int n);
+	static vector<map<AMFunction,long>*>* equivalence_classes(int n); // == algorithm 9
+	static map<AMFunction,long>* algorithm7(int n, const map<AMFunction,long>* const S);
 	static long long pc2_dedekind(int n);
 
 	// COEFFICIENTS

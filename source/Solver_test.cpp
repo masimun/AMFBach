@@ -52,13 +52,13 @@ void test_permutator() {
 void test_algo9() {
 	int n = 6;
 	// generate
-	vector<map<AMFunction,long>> classes = Solver::algorithm9(n);
+	vector<map<AMFunction,long>*>* classes = Solver::algorithm9(n);
 	map<AMFunction,long> functions;
 
 	// collect
-	for (int i = 0; i < (int) classes.capacity() ; i++ ) {
+	for (int i = 0; i < (int) classes->capacity() ; i++ ) {
 		long coeff = Solver::combinations(n, i);
-		for( pair<AMFunction,long> p : classes.at(i)) {
+		for( pair<AMFunction,long> p : *classes->at(i)) {
 			Solver::mapstore(functions, p.first, p.second * coeff);
 		}
 	}

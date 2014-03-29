@@ -59,7 +59,7 @@ long long Solver::pc2_dedekind(int m) {
 	cout << "started generating equivalence classes" << endl;
 
 	// generate
-	vector<map<AMFunction,long>> classes = algorithm9(n);
+	vector<map<AMFunction,long>*>* classes = algorithm9(n);
 	map<AMFunction,long> functions;
 
 	clock_t end_classes = clock();
@@ -67,12 +67,15 @@ long long Solver::pc2_dedekind(int m) {
 	cout << "@ " << (double) (end_classes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 
 	// collect
-	for (int i = 0; i < (int) classes.capacity() ; i++ ) {
+	for (int i = 0; i < (int) classes->capacity() ; i++ ) {
 		long coeff = combinations(n, i);
-		for( pair<AMFunction,long> p : classes.at(i)) {
+		for( pair<AMFunction,long> p : *classes->at(i)) {
 			mapstore(functions, p.first, p.second*coeff);
 		}
+		delete classes->at(i);
 	}
+	delete classes;
+
 
 //	clock_t end_collect = clock();
 //	cout << "finished collecting equivalence classes" << endl;
@@ -142,25 +145,25 @@ long long Solver::pc2_dedekind(int m) {
 /**
  * Main algorithm for equivalence class generation
  */
-vector<map<AMFunction,long>> Solver::algorithm9(int till) {
-	vector<map<AMFunction,long>> res(till+1);
-	map<AMFunction, long> res0;
-	mapstore(res0,AMFunction::emptyFunction());
-	mapstore(res0,AMFunction::emptySetFunction());
-	res[0] = res0;
+vector<map<AMFunction,long>*>* Solver::algorithm9(int till) {
+	vector<map<AMFunction,long>*>* res = new vector<map<AMFunction,long>*>(till+1);
+	map<AMFunction, long>* res0 = new map<AMFunction, long>();
+	mapstore(*res0,AMFunction::emptyFunction());
+	mapstore(*res0,AMFunction::emptySetFunction());
+	(*res)[0] = res0;
 	for (int n = 0; n < till; n++ ) {
 		// calculate AMF(n+1) and add it to res.
-		res[n+1] = (algorithm7(n,res.at(n)));
+		(*res)[n+1] = algorithm7(n,(*res)[n]);
 	}
 	return res;
 }
 
-map<AMFunction,long> Solver::algorithm7(int n, map<AMFunction,long> S) {
-	map<AMFunction,long> S1;
+map<AMFunction,long>* Solver::algorithm7(int n, const map<AMFunction,long>* const S) {
+	map<AMFunction,long>* S1 = new map<AMFunction,long>();
 	AMFunction alfa = AMFunction::universeFunction(n);
 	AMFunction u = AMFunction::universeFunction(n+1);
 	AMFunction l = AMFunction::singletonFunction(n+1);
-	for( pair<AMFunction,long> tpair : S ) {
+	for( pair<AMFunction,long> tpair : *S ) {
 		AMFunction t = tpair.first;
 		AMFunction::perm_t rtsymm = (t.join(l)).symmetry_group();
 		map<AMFunction, long> St;
@@ -173,7 +176,7 @@ map<AMFunction,long> Solver::algorithm7(int n, map<AMFunction,long> S) {
 		}
 		for ( pair<AMFunction,long> xpair : St ) {
 			AMFunction x = xpair.first;
-			mapstore(S1,x.standard(),(xpair.second)*(tpair.second));
+			mapstore(*S1,x.standard(),(xpair.second)*(tpair.second));
 		}
 	}
 	return S1;
