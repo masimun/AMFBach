@@ -41,6 +41,7 @@ public:
         bool virtual hasNext() = 0;
         virtual const reference operator*()= 0;
         virtual iterator<forward_iterator_tag, AMFunction> operator++() = 0;
+        virtual void clearData() = 0;
         virtual ~GeneralFastIterator();
     };
     
@@ -168,7 +169,6 @@ public:
     class AMFFastNonEmptyIterator : public GeneralFastIterator {
         friend class AMFInterval;
     public:
-        AMFInterval* interval;
         AMFunction current;
         SmallBasicSet span;
         AMFunction maxSpan;
@@ -176,6 +176,7 @@ public:
         AMFunction ret;
         GeneralFastIterator* itr0;
         GeneralFastIterator* itr1;
+        
         AMFunction alfa0;
         AMFunction alfa1;
         
@@ -190,6 +191,7 @@ public:
         AMFunction nextCurrent();
         bool hasNext();
         virtual ~AMFFastNonEmptyIterator();
+        void clearData();
         
     };
     
@@ -198,13 +200,14 @@ public:
     public:
         AMFunction current;
         AMFunction nxt;
-        AMFInterval* interval;
+        AMFunction top;
         bool isFinished = false;
         
         AMFFastEmptySpanIterator(AMFInterval* intr);
         const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
+        void clearData();
         virtual ~AMFFastEmptySpanIterator();
     };
     
@@ -217,6 +220,7 @@ public:
         const reference operator*() {return current;};
         iterator<forward_iterator_tag, AMFunction> operator++();
         bool hasNext();
+        void clearData();
         virtual ~AMFFastEmptyIterator();
     };
 
@@ -237,6 +241,7 @@ public:
     GeneralIterator *getIterator();
     GeneralIterator *getClosedIterator();
     GeneralFastIterator *getFastIterator();
+    void fastIterator();
 
     
     //methode

@@ -21,7 +21,6 @@ using namespace std;
 #include <map>
 #include <vector>
 #include <unordered_set>
-#include "Toolkit.hpp"
 
 #define NUM_THREADS     2
 
