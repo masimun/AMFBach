@@ -7,45 +7,38 @@
 
 #include "AMFGraph.h"
 
-AMFGraph::AMFGraph(edges_t g) {
-    edges = g;
+AMFGraph::AMFGraph(const AMFunction & r1, const AMFunction & r2) {
+	for (SmallBasicSet r : r2.getSets()) {
+		set<SmallBasicSet> cr;
+		for (SmallBasicSet s : r2.getSets()) {
+			if (!r1.ge(r.setintersect(s))) { cr.insert(s); };
+		}
+		edges.insert(make_pair(r,cr));
+	}
 }
-
-AMFGraph::AMFGraph() {
-    //nothing
-}
-
-
 
 AMFGraph::~AMFGraph() {
 	// TODO Auto-generated destructor stub
 }
 
-long AMFGraph::countConnected(edges_t g){
+long AMFGraph::count_connected() {
     set<SmallBasicSet> had;
-    long ret =0;
-    for (pair<SmallBasicSet, set<SmallBasicSet> > b : g) {
+    long ret = 0;
+    for (pair<SmallBasicSet, set<SmallBasicSet> > b : edges) {
         if ((had.find(b.first)) == had.end()) {
             ++ret;
             had.insert(b.first);
-            doNode(&g, &(b.first), &had);
+            do_node(&(b.first), &had);
         }
     }
-
     return ret;
-
 }
 
-void AMFGraph::doNode(edges_t* g, SmallBasicSet* n, set<SmallBasicSet>* had) {
-    set<SmallBasicSet>& set = (*(g->find(*n))).second;
+void AMFGraph::do_node(SmallBasicSet* n, set<SmallBasicSet>* had) {
+    set<SmallBasicSet>& set = (*(edges.find(*n))).second;
     for (SmallBasicSet b : set) {
         if (had->insert(b).second) {
-            doNode(g, &b, had);
+            do_node(&b, had);
         }
     }
-}
-
-/* return a pointer to the edges */
-edges_t* AMFGraph::getEdges() {
-	return &edges;
 }

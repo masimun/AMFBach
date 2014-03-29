@@ -30,7 +30,7 @@ AMFunction::~AMFunction() {
 	// do nothing
 }
 
-long AMFunction::size() {
+long AMFunction::size() const {
     return sets.size();
 }
 
@@ -42,7 +42,7 @@ SmallBasicSet AMFunction::span() const {
 	return span;
 }
 
-bool AMFunction::isAntiMonotonic() {
+bool AMFunction::isAntiMonotonic() const {
 	bool amf = true;
 	for (SmallBasicSet a : sets ) {
 		for (SmallBasicSet b : sets ) {
@@ -90,7 +90,7 @@ void AMFunction::setSets(set<SmallBasicSet> ss) {
 /**
  * May break invariants
  */
-void AMFunction::addSet(SmallBasicSet s) {
+void AMFunction::addSet(const SmallBasicSet & s) {
 	sets.insert(s);
 	bugstr = toString();
 }
@@ -118,7 +118,7 @@ void AMFunction::removeSets(list<SmallBasicSet> rs) {
  * removes all subsets of (s) upon adding.
  */
 
-void AMFunction::addSetConditional(SmallBasicSet s) {
+void AMFunction::addSetConditional(const SmallBasicSet & s) {
 	list<SmallBasicSet> subsets;
 	for (SmallBasicSet a : sets ) {
 		if (s.hasAsSubset(a)) { subsets.push_front(a); } // found a subset --> REMOVE
@@ -145,7 +145,7 @@ void AMFunction::makeAntiMonotonic() {
  * OPERATIONS
  ****************************************************/
 
-AMFunction AMFunction::join(AMFunction other) const {
+AMFunction AMFunction::join(const AMFunction & other) const {
 	AMFunction a;
 	for (SmallBasicSet s1 : sets ) {
 		a.addSetConditional(s1);
@@ -156,11 +156,11 @@ AMFunction AMFunction::join(AMFunction other) const {
 	return a;
 }
 
-AMFunction AMFunction::operator+(AMFunction other) {
+AMFunction AMFunction::operator+(const AMFunction & other) const {
 	return join(other);
 }
 
-AMFunction AMFunction::meet(AMFunction other) const {
+AMFunction AMFunction::meet(const AMFunction & other) const {
 	AMFunction a;
 	for (SmallBasicSet s1 : sets ) {
 		for (SmallBasicSet s2 : other.getSets() ) {
@@ -170,7 +170,7 @@ AMFunction AMFunction::meet(AMFunction other) const {
 	return a;
 }
 
-AMFunction AMFunction::operator^(AMFunction other) {
+AMFunction AMFunction::operator^(const AMFunction & other) const {
 	return meet(other);
 }
 
@@ -182,7 +182,7 @@ AMFunction AMFunction::shallowclone() {
 	return clone;
 }
 
-AMFunction AMFunction::map(int inverse[]) {
+AMFunction AMFunction::map(int inverse[]) const {
 	AMFunction res(universe);
 	for (SmallBasicSet s : sets) {
 		res.addSet(s.map(inverse));
@@ -190,10 +190,10 @@ AMFunction AMFunction::map(int inverse[]) {
 	return res;
 }
 
-AMFunction AMFunction::omicron(AMFunction tau, AMFunction alfa) {
+AMFunction AMFunction::omicron(const AMFunction & tau, const AMFunction & alfa) const {
 	if ( tau.isEmpty() ) {
 		if ( alfa.isEmpty() ) { return *this; }
-		else { return AMFunction::emptyFunction(); }
+		else { return AMFunction::empty_function(); }
 	}
 	AMFunction res(universe);
 	res.addSet(span().setdifference(alfa.span()));
@@ -205,7 +205,7 @@ AMFunction AMFunction::omicron(AMFunction tau, AMFunction alfa) {
 	return res.meet(*this);
 }
 
-AMFunction AMFunction::times(AMFunction other) const {
+AMFunction AMFunction::times(const AMFunction & other) const {
 	if (isEmpty()) { return other; }
 	else if (other.isEmpty()) { return (*this); }
 	SmallBasicSet a = span();
@@ -219,16 +219,16 @@ AMFunction AMFunction::times(AMFunction other) const {
 	return res;
 }
 
-AMFunction AMFunction::project(SmallBasicSet sbs) {
-    AMFunction res = AMFunction((*this).universe);
-    for (SmallBasicSet a : (*this).sets) {
+AMFunction AMFunction::project(const SmallBasicSet & sbs) const {
+    AMFunction res = AMFunction(this->universe);
+    for (SmallBasicSet a : this->sets) {
         res.addSetConditional(a.setintersect(sbs));
     }
     return res;
 }
 
-AMFunction AMFunction::minus(AMFunction f) {
-    AMFunction res = AMFunction(getUniverse());
+AMFunction AMFunction::minus(const AMFunction & f) const {
+    AMFunction res = AMFunction(universe);
     for (SmallBasicSet x : (*this).sets) {
         bool found = false;
         for (SmallBasicSet t : (f).sets) {
@@ -243,15 +243,12 @@ AMFunction AMFunction::minus(AMFunction f) {
  * COMPARE
  ****************************************************/
 
-bool AMFunction::contains(SmallBasicSet s) {
-	for (SmallBasicSet i : sets) {
-		if (i.equals(s)) { return true; }
-	}
-	return false;
+bool AMFunction::contains(const SmallBasicSet & s) const {
+	return sets.find(s) != sets.end();
 }
 
 /* relies on ordered set */
-bool AMFunction::equals(AMFunction other) const {
+bool AMFunction::equals(const AMFunction & other) const {
 	return sets == other.getSets();
 }
 
@@ -266,7 +263,7 @@ bool AMFunction::operator==(const AMFunction& other) const {
 /**
  * Checks whether the AMFunction is less than or equal to other.
  */
-bool AMFunction::leq(AMFunction other) const {
+bool AMFunction::leq(const AMFunction & other) const {
 	for ( SmallBasicSet s1 : sets ) {
 		bool contained = false;
 		for ( SmallBasicSet s2 : other.getSets() ) {
@@ -277,14 +274,14 @@ bool AMFunction::leq(AMFunction other) const {
 	return true;
 }
 
-bool AMFunction::gt(AMFunction other) const {
+bool AMFunction::gt(const AMFunction & other) const {
 	return !(leq(other));
 }
 
 /**
  *  Check whether this AMFunction is greater or equal to the one with only x as an element
  */
-bool AMFunction::ge(SmallBasicSet x) const {
+bool AMFunction::ge(const SmallBasicSet & x) const {
 	for ( SmallBasicSet s : sets ) {
 		if (s.hasAsSubset(x)) {
 			return true;
@@ -300,7 +297,7 @@ bool AMFunction::ge(SmallBasicSet x) const {
 /**
  * returns the symmetry group of this AMFunction (treeset)
  */
-AMFunction::perm_t AMFunction::symmetry_group() {
+AMFunction::perm_t AMFunction::symmetry_group() const {
 	set<vector<int>,lex_compare> res;
 	SmallBasicSet sp = span();
 	int maplen = sp.numberofelements();
@@ -311,7 +308,7 @@ AMFunction::perm_t AMFunction::symmetry_group() {
 	// iterate over set
 	int pos = 0;
 	int i = min;
-	int bit = sp.getBit(i);
+	int bit = sp.get_bit(i);
 	inversemap[0] = 0;
 	while (i < max) {
 		if ((bit & sp.getSet()) != 0) {
@@ -326,7 +323,6 @@ AMFunction::perm_t AMFunction::symmetry_group() {
 	inversemap[i] = pos;
 	// permute
 	MappingPermutator perm(map,inversemap,maplen);
-	int* p = new int[maplen+1];
 	while (perm.has_next()) {
 		perm.permute();
 		AMFunction kand = this->map(inversemap);
@@ -336,28 +332,24 @@ AMFunction::perm_t AMFunction::symmetry_group() {
 			res.insert(v);
 		}
 	}
-	delete[] p;
 	delete[] map;
 	delete[] inversemap;
 	return res;
 }
 
-vector<AMFunction> AMFunction::reduce(SmallBasicSet sbs) {
+vector<AMFunction> AMFunction::reduce(const SmallBasicSet & sbs) const {
     int m = sbs.maximum();
-    
-    //Doe m moet nog omgezet worden naar een set, nu hebben we alleen het grootste element.
-    
     SmallBasicSet p = sbs.difference(m);
     vector<AMFunction> ret (2);
-    AMFunction *pointer = ret.data();
-    pointer[0] = (*this).project(p);
+    AMFunction* pointer = ret.data();
+    pointer[0] = this->project(p);
     AMFunction a1 = (*this);
     a1.removeAll(ret[0]);
     pointer[1] = a1.project(p);
     return ret;
 }
 
-AMFunction AMFunction::standard(perm_t permutations) {
+AMFunction AMFunction::standard(const perm_t & permutations) const {
 	AMFunction best = (*this);
 	for ( vector<int> p : permutations ) {
 		AMFunction kand = this->map(p.data());
@@ -368,7 +360,7 @@ AMFunction AMFunction::standard(perm_t permutations) {
 	return best;
 }
 
-AMFunction AMFunction::lexi_standard() {
+AMFunction AMFunction::lexi_standard() const {
 	AMFunction res;
 	SmallBasicSet sp = span();
 	int size = sp.numberofelements();
@@ -388,7 +380,7 @@ AMFunction AMFunction::lexi_standard() {
 	return res;
 }
 
-AMFunction AMFunction::standard() {
+AMFunction AMFunction::standard() const {
 	SmallBasicSet sp = span();
 	int maplen = sp.numberofelements();
 	int max = sp.maximum();
@@ -423,31 +415,31 @@ AMFunction AMFunction::standard() {
  ****************************************************/
 
 /* N = universe */
-AMFunction AMFunction::emptyFunction() {
+AMFunction AMFunction::empty_function() {
 	return AMFunction();
 }
 
 /* N = universe */
-AMFunction AMFunction::emptySetFunction() {
+AMFunction AMFunction::empty_set_function() {
 	AMFunction amf = AMFunction();
 	amf.addSet(SmallBasicSet());
 	return amf;
 }
 
 /* N = universe */
-AMFunction AMFunction::universeFunction(int n) {
+AMFunction AMFunction::universe_function(int n) {
 	SmallBasicSet N = SmallBasicSet::universe(n);
-	return universeFunction(N);
+	return universe_function(N);
 }
 
 /* N = universe */
-AMFunction AMFunction::universeFunction(SmallBasicSet N) {
+AMFunction AMFunction::universe_function(const SmallBasicSet & N) {
 	AMFunction amf = AMFunction(N);
 	amf.addSet(N);
 	return amf;
 }
 
-AMFunction AMFunction::singletonFunction(int l) {
+AMFunction AMFunction::singleton_function(int l) {
 	AMFunction amf;
 	SmallBasicSet s;
 	s.quickadd(l);
@@ -455,7 +447,7 @@ AMFunction AMFunction::singletonFunction(int l) {
 	return amf;
 }
 
-AMFunction AMFunction::immediate_subsets(SmallBasicSet s) {
+AMFunction AMFunction::immediate_subsets(const SmallBasicSet & s) {
 	AMFunction amf;
 	SmallBasicSet::iterator it = s.getIterator();
 	while(it.hasNext()) {
@@ -466,22 +458,14 @@ AMFunction AMFunction::immediate_subsets(SmallBasicSet s) {
 }
 
 /*******************************************
- * ITERATOR
+ * HASHER
  *******************************************/
-//AMFunction::AMFiterator::AMFiterator(AMFunction* set) {
-//    current = 0;
-//    set<SmallBasicSet> theSet = *(set->getSets());
-//    currentSet;
-//}
 
-AMFunction::AMFiterator AMFunction::AMFiterator::operator ++() {
-	current++;
-    
-	return (*this);
+size_t AMFunction::hasher::operator() (const AMFunction & amf ) const {
+	uint_fast16_t hash = 0;
+	for ( SmallBasicSet s : amf.getSets() ) {
+		hash ^= s.getSet();
+	}
+	return hash;
 }
-
-//bool AMFunction::::AMFiterator::hasNext() {
-//	return ( current <= (sbs->MAXELEMENT) );
-//}
-
 

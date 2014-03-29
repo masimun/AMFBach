@@ -24,18 +24,11 @@ class AMFGraph {
 private:
 	edges_t edges;
 public:
-    AMFGraph();
-	//AMFGraph(AMFunction r1,AMFunction r2);
-    AMFGraph(edges_t);
-    
+	AMFGraph(const AMFunction & r1, const AMFunction & r2);
 	virtual ~AMFGraph();
 
-    
 	long count_connected();
-    static long countConnected(edges_t g);
-    AMFGraph transitiveClosure();
-    static void doNode(edges_t* g, SmallBasicSet* n, set<SmallBasicSet>* had);
-	edges_t* getEdges();
+    void do_node(SmallBasicSet* n, set<SmallBasicSet>* had);
 };
 
 #endif /* AMFGRAPH_H_ */

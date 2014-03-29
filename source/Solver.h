@@ -40,7 +40,7 @@ public:
 	static long long pc2_dedekind(int n);
 
 	// COEFFICIENTS
-    static long long PatricksCoefficient(AMFunction r1, AMFunction r2);
+    static long long PatricksCoefficient(const AMFunction & r1, const AMFunction & r2);
 
     // OTHER
     static void verynaivededekind();

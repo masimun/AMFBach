@@ -27,19 +27,10 @@ private:
 	SmallBasicSet universe; // set of integers on which the function operates
 	set<SmallBasicSet> sets;
 public:
-    class AMFiterator : public iterator<forward_iterator_tag, AMFunction> {
-		friend class AMFunction;
-	public:
-		SmallBasicSet* sbs;
-		int current;
-		SmallBasicSet* currentSet;
-
-        
-		AMFiterator(AMFunction* set);
-		//const reference operator*() { return prev; }
-		AMFiterator operator++();
-		bool hasNext();
+	struct AMFHasher {
+		size_t operator() (const AMFunction & amf) const;
 	};
+	typedef AMFHasher hasher;
 
     struct lex_compare {
     	bool operator() (const vector<int>& lhs, const vector<int>& rhs) const {
@@ -64,57 +55,56 @@ public:
 
 	// query
 	SmallBasicSet span() const;
-	bool isAntiMonotonic();
+	bool isAntiMonotonic() const;
 	bool isEmpty() const;
 	set<SmallBasicSet> getSets() const;
 	string toString();
-	bool contains(SmallBasicSet s);
-	bool ge(SmallBasicSet s) const;
-    long size();
+	bool contains(const SmallBasicSet & s) const;
+    long size() const;
     SmallBasicSet getUniverse();
 
 	// alter
 	void setSets(set<SmallBasicSet> ss);
-	void addSet(SmallBasicSet s);
+	void addSet(const SmallBasicSet & s);
 	void removeAll(AMFunction amf);
     void removeSets(list<SmallBasicSet> rs);
-	void addSetConditional(SmallBasicSet s);
+	void addSetConditional(const SmallBasicSet & s);
 	void makeAntiMonotonic();
-    
 
 	// compare
-	bool leq(AMFunction other) const;
-	bool gt(AMFunction other) const;
-	bool equals(AMFunction other) const;
+	bool leq(const AMFunction & other) const;
+	bool gt(const AMFunction & other) const;
+	bool ge(const SmallBasicSet & s) const;
+	bool equals(const AMFunction & other) const;
 	bool operator<(const AMFunction& other) const;
 	bool operator==(const AMFunction& other) const;
 
 	// operations
 	AMFunction shallowclone();
-	AMFunction join(AMFunction other) const;
-	AMFunction meet(AMFunction other) const;
-	AMFunction times(AMFunction other) const;
-	AMFunction operator^(AMFunction other); // meet
-	AMFunction operator+(AMFunction other); // join
-	AMFunction map(int inverse[]);
-	AMFunction omicron(AMFunction tau, AMFunction alfa);
-    AMFunction project(SmallBasicSet sbs);
-    vector<AMFunction> reduce(SmallBasicSet sbs);
-    AMFunction minus(AMFunction f);
+	AMFunction join(const AMFunction & other) const;
+	AMFunction meet(const AMFunction & other) const;
+	AMFunction times(const AMFunction & other) const;
+	AMFunction operator^(const AMFunction & other) const; // meet
+	AMFunction operator+(const AMFunction & other) const; // join
+	AMFunction map(int inverse[]) const;
+	AMFunction omicron(const AMFunction & tau, const AMFunction & alfa) const;
+    AMFunction project(const SmallBasicSet & sbs) const;
+    vector<AMFunction> reduce(const SmallBasicSet & sbs) const;
+    AMFunction minus(const AMFunction & f) const;
 
 	// standard
-	perm_t symmetry_group();
-	AMFunction standard(perm_t permutations);
-	AMFunction standard();
-	AMFunction lexi_standard();
+	perm_t symmetry_group() const;
+	AMFunction standard(const perm_t & permutations) const;
+	AMFunction standard() const;
+	AMFunction lexi_standard() const;
     
 	// class
-	static AMFunction emptyFunction();
-	static AMFunction emptySetFunction();
-	static AMFunction universeFunction(SmallBasicSet N);
-	static AMFunction universeFunction(int n);
-	static AMFunction singletonFunction(int l);
-	static AMFunction immediate_subsets(SmallBasicSet s);
+	static AMFunction empty_function();
+	static AMFunction empty_set_function();
+	static AMFunction universe_function(const SmallBasicSet & N);
+	static AMFunction universe_function(int n);
+	static AMFunction singleton_function(int l);
+	static AMFunction immediate_subsets(const SmallBasicSet & s);
 
 	// debug
 	string bugstr;

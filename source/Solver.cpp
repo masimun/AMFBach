@@ -77,13 +77,13 @@ long long Solver::pc2_dedekind(int m) {
 	delete classes;
 
 
-//	clock_t end_collect = clock();
-//	cout << "finished collecting equivalence classes" << endl;
-//	cout << "@ " << (double) (end_collect - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+	clock_t end_collect = clock();
+	cout << "finished collecting equivalence classes" << endl;
+	cout << "@ " << (double) (end_collect - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 	cout << "Amount of representatives:" << functions.size() << endl;
 
-	AMFunction e = AMFunction::emptyFunction();
-	AMFunction u = AMFunction::universeFunction(n);
+	AMFunction e = AMFunction::empty_function();
+	AMFunction u = AMFunction::universe_function(n);
 	map<AMFunction, bigint> left_interval_size;
 	map<AMFunction, bigint> right_interval_size;
 	for( pair<AMFunction,long> fpair : functions ) {
@@ -117,12 +117,12 @@ long long Solver::pc2_dedekind(int m) {
 	AMFInterval::GeneralFastIterator& it2 = *(AMFInterval(e,u).getFastIterator());
 	while(it2.hasNext()) {
 		++it2;
-		AMFunction r2 = *it2;
-		bigint r2size = right_interval_size.at(r2.standard());
-		bigint sumP = 0L;
+		AMFunction & r2 = *it2;
+		long long r2size = right_interval_size.at(r2.standard());
+		long long sumP = 0L;
 		for (pair<AMFunction,long> r1pair : functions ) {
 			possibilities++;
-			AMFunction &r1 = r1pair.first;
+			AMFunction & r1 = r1pair.first;
 			if (r1.leq(r2)) {
 				sumP = sumP	+ ((r1pair.second) * (left_interval_size.at(r1)) * PatricksCoefficient(r1, r2));
                 evaluations++;
@@ -148,8 +148,8 @@ long long Solver::pc2_dedekind(int m) {
 vector<map<AMFunction,long>*>* Solver::algorithm9(int till) {
 	vector<map<AMFunction,long>*>* res = new vector<map<AMFunction,long>*>(till+1);
 	map<AMFunction, long>* res0 = new map<AMFunction, long>();
-	mapstore(*res0,AMFunction::emptyFunction());
-	mapstore(*res0,AMFunction::emptySetFunction());
+	mapstore(*res0,AMFunction::empty_function());
+	mapstore(*res0,AMFunction::empty_set_function());
 	(*res)[0] = res0;
 	for (int n = 0; n < till; n++ ) {
 		// calculate AMF(n+1) and add it to res.
@@ -160,9 +160,9 @@ vector<map<AMFunction,long>*>* Solver::algorithm9(int till) {
 
 map<AMFunction,long>* Solver::algorithm7(int n, const map<AMFunction,long>* const S) {
 	map<AMFunction,long>* S1 = new map<AMFunction,long>();
-	AMFunction alfa = AMFunction::universeFunction(n);
-	AMFunction u = AMFunction::universeFunction(n+1);
-	AMFunction l = AMFunction::singletonFunction(n+1);
+	AMFunction alfa = AMFunction::universe_function(n);
+	AMFunction u = AMFunction::universe_function(n+1);
+	AMFunction l = AMFunction::singleton_function(n+1);
 	for( pair<AMFunction,long> tpair : *S ) {
 		AMFunction t = tpair.first;
 		AMFunction::perm_t rtsymm = (t.join(l)).symmetry_group();
@@ -192,12 +192,7 @@ bool contains(list<AMFunction> as, AMFunction a) {
 	return false;
 }
 
-edges_t Solver::graph(AMFunction r1, AMFunction r2) {
-    return AMFInterval(r1,r2).edges();
-}
-
-
-long long Solver::PatricksCoefficient(AMFunction r1, AMFunction r2) {
+long long Solver::PatricksCoefficient(const AMFunction & r1, const AMFunction & r2) {
     // trivial case, no solutions unless r1 <= r2
     if (!r1.leq(r2)) {
        return 0;
@@ -211,8 +206,7 @@ long long Solver::PatricksCoefficient(AMFunction r1, AMFunction r2) {
         if (r2.isEmpty()) return 1; // (empty, empty)
         return 2; // (empty, r2), (r2,empty)
     }
-    return (1<<(AMFGraph::countConnected(graph(r1,r2.minus(r1)))));
-
+    return (1<<(AMFGraph(r1,r2.minus(r1)).count_connected()));
 }
 
 

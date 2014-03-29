@@ -54,14 +54,14 @@ public:
 	typedef SBSHasher hasher;
 
 	// query
-	int maxelement();
-    int maxintvalue();
+	int maxelement() const;
+    int maxintvalue() const;
 	int numberofelements() const;
-	int maximum();
-	int minimum();
-	bool isemptyset();
+	int maximum() const;
+	int minimum() const;
+	bool isemptyset() const;
 	string toString() const;
-	string toBitString();
+	string toBitString() const;
 	uint_fast16_t getSet() const;
     int size() const;
 
@@ -70,9 +70,9 @@ public:
 	static SmallBasicSet universe(int n);
 
 	// operation
-	SmallBasicSet setunion(SmallBasicSet s) const;
-	SmallBasicSet setintersect(SmallBasicSet s) const;
-	SmallBasicSet setdifference(SmallBasicSet s) const;
+	SmallBasicSet setunion(const SmallBasicSet & s) const;
+	SmallBasicSet setintersect(const SmallBasicSet & s) const;
+	SmallBasicSet setdifference(const SmallBasicSet & s) const;
     SmallBasicSet difference(int other) const;
 	SmallBasicSet operator/(const SmallBasicSet& other) const;
 	SmallBasicSet map(int table[]) const;
@@ -87,7 +87,7 @@ public:
 	// miscellaneous
 	void quickadd(int bit); // add a number a to the set
 	int getNextInSet(int i); // TODO: implement, returns i's successor (still needed?)
-    int getBit(int positie) const;
+    static int get_bit(int pos);
 
 private:
     void setSet(bool elements[]);

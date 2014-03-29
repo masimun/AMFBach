@@ -319,7 +319,7 @@ AMFInterval::GeneralFastIterator::~GeneralFastIterator() {
  *******************************************/
 AMFInterval::AMFFastNonEmptyIterator::AMFFastNonEmptyIterator(AMFInterval* interval) {
     span = interval->getTop().span();
-    maxSpan = AMFunction::singletonFunction(span.maximum());
+    maxSpan = AMFunction::singleton_function(span.maximum());
     current = interval->getBottom();
     alfaBottom = current.reduce(span);
     alfaTop = interval->getTop().reduce(span);
@@ -432,20 +432,6 @@ void AMFInterval::AMFFastEmptyIterator::clearData() {
 /*******************************************
  * OTHER STUFF
  *******************************************/
-edges_t AMFInterval::edges() {
-//	AMFGraph g;
-	edges_t edges;
-    AMFunction r1 = getBottom();
-    AMFunction r2 = getTop();
-	for (SmallBasicSet r : r2.getSets()) {
-		set<SmallBasicSet> cr;
-		for (SmallBasicSet s : r2.getSets()) {
-			if (!r1.ge(r.setintersect(s))) { cr.insert(s); };
-		}
-		edges.insert(make_pair(r,cr));
-	}
-	return edges;
-}
 
 long long AMFInterval::lattice_size() {
 	if (!getBottom().leq(getTop())) {
@@ -538,7 +524,7 @@ string AMFInterval::toString() {
 
 AMFInterval AMFInterval::fullspace(int n) {
 	SmallBasicSet N = SmallBasicSet::universe(n);
-	return AMFInterval(AMFunction::emptyFunction(),AMFunction::universeFunction(N));
+	return AMFInterval(AMFunction::empty_function(),AMFunction::universe_function(N));
 }
 
 
