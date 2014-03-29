@@ -11,6 +11,7 @@ using namespace std;
 #include <string>
 #include <sstream>
 #include <cstdint>
+#include <vector>
 
 /**
  * Deze klasse is bedoeld om sets van integers voor te stellen.
@@ -30,21 +31,21 @@ public:
 	virtual ~SmallBasicSet();
 
 	// iterator
-	class SBSIterator : public iterator<forward_iterator_tag, int> {
+	class SBSIterator {
 		friend class SmallBasicSet;
 	public:
-		SmallBasicSet* sbs;
+		const SmallBasicSet* sbs;
 		int current;
 		int prev;
 		long bit;
 
-		SBSIterator(SmallBasicSet* set);
-		const reference operator*() { return prev; }
+		SBSIterator(const SmallBasicSet* const set);
+		const int operator*() { return prev; }
 		SBSIterator operator++();
 		bool hasNext();
 	};
 	typedef SBSIterator iterator;
-	iterator getIterator() { return iterator(this); };
+	iterator getIterator() const { return SBSIterator(this); };
 
 	// hasher
 	struct SBSHasher {
@@ -75,6 +76,7 @@ public:
     SmallBasicSet difference(int other) const;
 	SmallBasicSet operator/(const SmallBasicSet& other) const;
 	SmallBasicSet map(int table[]) const;
+	SmallBasicSet minmap(vector<int> & map, int* const next) const;
 
 	// comparison
 	bool equals(SmallBasicSet s) const;

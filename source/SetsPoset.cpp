@@ -21,11 +21,11 @@ SetsPoset::SetsPoset(const AMFunction & bottom, const AMFunction & top) {
 
 void SetsPoset::construct_level(const AMFunction & bottom, const AMFunction & top) {
 	map<long,set<SmallBasicSet>> h_level;
-	AMFunction h = top;
-	AMFunction* ph = &h;
+	// AMFunction h = top;
+	AMFunction* ph = new AMFunction(top);
 	AMFunction hh;
 	AMFunction g = bottom;
-	if (h.gt(g)) {
+	if (top.gt(g)) {
 		min_size = INT_MAX;
 		max_size = INT_MIN;
 		while (!(*ph).equals(g)) {
@@ -42,10 +42,10 @@ void SetsPoset::construct_level(const AMFunction & bottom, const AMFunction & to
 					}
 				}
 			}
-			// delete ph;
+			delete ph;
 			ph = hh;
 		}
-		// delete ph;
+		delete ph;
 		level.resize(max_size - min_size + 1);
 		for (long k = min_size ; k <= max_size ; k++ ) {
 			if ( h_level.find(k) != h_level.end() ) {

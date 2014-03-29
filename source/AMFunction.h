@@ -51,6 +51,12 @@ public:
     };
     typedef set<vector<int>,lex_compare> perm_t;
 
+    struct pt_less {
+    	bool operator() (const SmallBasicSet* const lhs, const SmallBasicSet* const rhs) const {
+    		return (*lhs) < (*rhs);
+    	}
+    };
+
 	AMFunction();
 	AMFunction(SmallBasicSet N);
 	AMFunction(SmallBasicSet s[], int size);
@@ -100,6 +106,7 @@ public:
 	perm_t symmetry_group();
 	AMFunction standard(perm_t permutations);
 	AMFunction standard();
+	AMFunction lexi_standard();
     
 	// class
 	static AMFunction emptyFunction();

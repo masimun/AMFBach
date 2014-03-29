@@ -368,6 +368,26 @@ AMFunction AMFunction::standard(perm_t permutations) {
 	return best;
 }
 
+AMFunction AMFunction::lexi_standard() {
+	AMFunction res;
+	SmallBasicSet sp = span();
+	int size = sp.numberofelements();
+	int max = sp.maximum();
+	vector<int> map(max+1);
+	vector<set<SmallBasicSet>> size_partition(size+1);
+	for ( SmallBasicSet s : this->getSets() ) {
+		size_partition[s.numberofelements()].insert(s);
+	}
+	int x = 1;
+	int* next = &x;
+	for ( int i = 1 ; i <= size ; i++ ) {
+		for ( SmallBasicSet s : size_partition[i] ) {
+			res.addSet(s.minmap(map,next));
+		}
+	}
+	return res;
+}
+
 AMFunction AMFunction::standard() {
 	SmallBasicSet sp = span();
 	int maplen = sp.numberofelements();

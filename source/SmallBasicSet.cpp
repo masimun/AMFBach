@@ -73,15 +73,11 @@ string SmallBasicSet::toString() const {
 	}
 	stringstream ss;
     int copyset = set;
-	//ss << "{";
-	for (int i = MAXELEMENT ; i >= 0 ; i-- ) {
-        int temp = copyset - getBit(i);
-		if (temp >= 0) {
-			ss << int_to_string(i);
-            copyset = temp;
-		}
-	}
-	//ss << "}";
+    SBSIterator it = getIterator();
+    while(it.hasNext()) {
+    	++it;
+    	ss << *it;
+    }
 	return ss.str();
 }
 
@@ -113,6 +109,24 @@ SmallBasicSet SmallBasicSet::map(int table[]) const {
 	}
 	return res;
 }
+
+SmallBasicSet SmallBasicSet::minmap(vector<int> & map, int* const next) const {
+	int res = 0;
+	SBSIterator it = this->getIterator();
+	while( it.hasNext() ) {
+		++it;
+		int x = map[*it];
+		if ( x == 0 ) {
+			map[*it] = *next;
+			res |= this->getBit(*next);
+			*next = *next + 1;
+		} else {
+			res |= this->getBit(x);
+		}
+	}
+	return SmallBasicSet(res);
+}
+
 void SmallBasicSet::quickadd(int a) {
 	set |= getBit(a);
 }
@@ -212,7 +226,7 @@ SmallBasicSet SmallBasicSet::universe(int n) {
  * ITERATOR
  *******************************************/
 
-SmallBasicSet::SBSIterator::SBSIterator(SmallBasicSet* set) {
+SmallBasicSet::SBSIterator::SBSIterator(const SmallBasicSet* const set) {
 	sbs = set;
 	current = 1;
 	bit = 1;

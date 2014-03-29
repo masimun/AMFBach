@@ -22,7 +22,7 @@ MappingPermutator::MappingPermutator(int* the_map, int* the_inverse, int the_len
 
 MappingPermutator::~MappingPermutator() {
 	if ( length > 0 ) {
-		// delete[] sub_permutator; TODO: memory leak
+		delete sub_permutator;
 	} 
 }
 
