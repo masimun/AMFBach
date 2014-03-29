@@ -346,9 +346,9 @@ iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFFastNonEmptyIterator:
         current = nextCurrent();
     }
     else if (itr0->hasNext()) {
-        //itr1->clearData();
         ++(*itr0);
         alfa0 = *(*itr0);
+        delete itr1;
         itr1 = (AMFInterval(alfaBottom[1],alfa0.meet(alfaTop[1])).getFastIterator());
         if (!itr1->hasNext()) isFinished = true;
         else {
@@ -358,12 +358,9 @@ iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFFastNonEmptyIterator:
         }
     }
     else {
+    	delete itr1;
+        delete itr0;
         isFinished = true;
-        //delete itr0;
-        //delete itr1;
-        
-        //itr1->clearData();
-        //itr0->clearData();
     }
     return *this;
 }
@@ -372,21 +369,12 @@ bool AMFInterval::AMFFastNonEmptyIterator::hasNext() {
 }
 
 AMFInterval::AMFFastNonEmptyIterator::~AMFFastNonEmptyIterator() {
-    //delete interval;
-    delete itr0;
-    delete itr1;
+
 }
 
 void AMFInterval::AMFFastNonEmptyIterator::clearData() {
-    if (isFinished) {
-        //delete interval;
-        itr0->clearData();
-        itr1->clearData();
-        //delete[] interval;
-    }
+	// nothing: TODO: remove the clearData() method
 }
-
-
 
 
 /*******************************************
@@ -441,21 +429,9 @@ void AMFInterval::AMFFastEmptyIterator::clearData() {
 }
 
 
-//AMFGraph AMFInterval::graph() {
-//	AMFGraph g;
-//	edges_t* edges = g.getEdges();
-//	const AMFunction &r1 = this->getBottom();
-//	const AMFunction &r2 = this->getTop();
-//	for (SmallBasicSet r : r2.getSets()) {
-//		set<SmallBasicSet> cr;
-//		for (SmallBasicSet s : r2.getSets()) {
-//			if (!r1.ge(s.setintersect(s))) { cr.insert(s); };
-//		}
-//		edges->insert(make_pair(r,cr));
-//	}
-//	return g;
-//}
-
+/*******************************************
+ * OTHER STUFF
+ *******************************************/
 edges_t AMFInterval::edges() {
 //	AMFGraph g;
 	edges_t edges;
