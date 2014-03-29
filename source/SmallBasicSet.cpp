@@ -7,18 +7,19 @@
 #include "SmallBasicSet.h"
 #include <bitset>
 
-SmallBasicSet::SmallBasicSet() : numberofelem(0) {
+const int SmallBasicSet::bits[13] = {1,2,4,8,16,32,64,128,256,512,1024,2048,4096};
+
+SmallBasicSet::SmallBasicSet() {
     set = 0;
 }
 
-SmallBasicSet::SmallBasicSet(int a[], int asize) : numberofelem(asize) {
+SmallBasicSet::SmallBasicSet(int a[], int asize) {
 	set = 0;
 	setSet(a,asize);
 }
 
 SmallBasicSet::SmallBasicSet(uint_fast16_t a) {
     set = a;
-    numberofelem = bitset<16>(a).count();
 }
 
 SmallBasicSet::~SmallBasicSet() {

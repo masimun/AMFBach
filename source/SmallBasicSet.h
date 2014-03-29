@@ -18,8 +18,7 @@ using namespace std;
 class SmallBasicSet {
 	static const int MAXELEMENT = 13;
     static const int MAXSET = 10000; // sum(1 .. 4096) = 8191
-    constexpr static int bits[13] = {1,2,4,8,16,32,64,128,256,512,1024,2048,4096};
-	int numberofelem;
+    static const int bits[13];
 	uint_fast16_t set;
 	friend std::ostream& operator<<(std::ostream &strm, const SmallBasicSet &s);
 
