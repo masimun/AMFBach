@@ -97,6 +97,7 @@ public:
 	AMFunction standard(const perm_t & permutations) const;
 	AMFunction standard() const;
 	AMFunction lexi_standard() const;
+	AMFunction lexi_standard2() const;
     
 	// class
 	static AMFunction empty_function();

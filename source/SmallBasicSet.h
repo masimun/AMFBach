@@ -76,7 +76,7 @@ public:
     SmallBasicSet difference(int other) const;
 	SmallBasicSet operator/(const SmallBasicSet& other) const;
 	SmallBasicSet map(int table[]) const;
-	SmallBasicSet minmap(vector<int> & map, int* const next) const;
+	SmallBasicSet minmap(vector<int> & map, int* & next) const;
 
 	// comparison
 	bool equals(SmallBasicSet s) const;

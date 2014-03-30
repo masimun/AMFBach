@@ -9,6 +9,8 @@
 #include "AMFunction.h"
 #include "Parser.h"
 #include <iostream>
+#include <vector>
+#include <algorithm>
 
 AMFunction::AMFunction() {
 	universe = SmallBasicSet::universe();
@@ -92,7 +94,7 @@ void AMFunction::setSets(set<SmallBasicSet> ss) {
  */
 void AMFunction::addSet(const SmallBasicSet & s) {
 	sets.insert(s);
-	bugstr = toString();
+	// bugstr = toString();
 }
 
 void AMFunction::removeAll(AMFunction amf) {
@@ -370,8 +372,42 @@ AMFunction AMFunction::lexi_standard() const {
 	for ( SmallBasicSet s : this->getSets() ) {
 		size_partition[s.numberofelements()].insert(s);
 	}
-	int x = 1;
-	int* next = &x;
+	int nr[max];
+	for (int x = 0 ; x < max ; x++ ) {
+		nr[x] = x+1;
+	}
+	int* next = nr;
+	for ( int i = 1 ; i <= size ; i++ ) {
+		for ( SmallBasicSet s : size_partition[i] ) {
+			res.addSet(s.minmap(map,next));
+		}
+	}
+	return res;
+}
+
+AMFunction AMFunction::lexi_standard2() const {
+	AMFunction res;
+	SmallBasicSet sp = span();
+	int size = sp.numberofelements();
+	int max = sp.maximum();
+	vector<int> map(max+1);
+	vector<int> code(max+1);
+	vector<set<SmallBasicSet>> size_partition(size+1);
+	for ( SmallBasicSet s : this->getSets() ) {
+		size_partition[s.numberofelements()].insert(s);
+		SmallBasicSet::iterator it = s.getIterator();
+		while (it.hasNext()) {
+			++it;
+			code[*it]++;
+		}
+	}
+	int nr[max];
+	for (int x = 0 ; x < max ; x++ ) {
+		vector<int>::iterator y = std::max_element(code.begin(),code.end());
+		*y -= *y;
+		nr[x] = y - code.begin();
+	}
+	int* next = nr;
 	for ( int i = 1 ; i <= size ; i++ ) {
 		for ( SmallBasicSet s : size_partition[i] ) {
 			res.addSet(s.minmap(map,next));

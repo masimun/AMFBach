@@ -109,7 +109,7 @@ SmallBasicSet SmallBasicSet::map(int table[]) const {
 	return res;
 }
 
-SmallBasicSet SmallBasicSet::minmap(vector<int> & map, int* const next) const {
+SmallBasicSet SmallBasicSet::minmap(vector<int> & map, int* & next) const {
 	int res = 0;
 	SBSIterator it = this->getIterator();
 	while( it.hasNext() ) {
@@ -118,7 +118,7 @@ SmallBasicSet SmallBasicSet::minmap(vector<int> & map, int* const next) const {
 		if ( x == 0 ) {
 			map[*it] = *next;
 			res |= this->get_bit(*next);
-			*next = *next + 1;
+			next++;
 		} else {
 			res |= this->get_bit(x);
 		}
