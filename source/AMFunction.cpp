@@ -368,7 +368,7 @@ AMFunction AMFunction::lexi_standard() const {
 	int size = sp.numberofelements();
 	int max = sp.maximum();
 	vector<int> map(max+1);
-	vector<set<SmallBasicSet>> size_partition(size+1);
+	vector<set<SmallBasicSet> > size_partition(size+1);
 	for ( SmallBasicSet s : this->getSets() ) {
 		size_partition[s.numberofelements()].insert(s);
 	}
@@ -392,7 +392,7 @@ AMFunction AMFunction::lexi_standard2() const {
 	int max = sp.maximum();
 	vector<int> map(max+1);
 	vector<int> code(max+1);
-	vector<set<SmallBasicSet>> size_partition(size+1);
+	vector<set<SmallBasicSet> > size_partition(size+1);
 	for ( SmallBasicSet s : this->getSets() ) {
 		size_partition[s.numberofelements()].insert(s);
 		SmallBasicSet::iterator it = s.getIterator();

@@ -35,7 +35,7 @@ int SmallBasicSet::maximum() const {
 	int bit = get_bit(MAXELEMENT);
 	while ( max > 0 ) {
 		if ((bit & set) != 0) { break; }
-		bit >>= 1;
+		bit > >= 1;
 		max--;
 	}
 	return max;

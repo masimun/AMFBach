@@ -19,7 +19,7 @@ using namespace std;
 #include <unordered_set>
 #include <vector>
 
-typedef map<SmallBasicSet,set<SmallBasicSet>> edges_t;
+typedef map<SmallBasicSet,set<SmallBasicSet> > edges_t;
 class AMFGraph {
 private:
 	edges_t edges;
