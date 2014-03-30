@@ -64,7 +64,7 @@ long long Solver::pc2_dedekind(int m) {
 
 	clock_t end_classes = clock();
 	cout << "finished generating equivalence classes" << endl;
-	cout << "@ " << (double) (end_classes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+	cout << "@ " << (long long) (end_classes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 
 	// collect
 	for (int i = 0; i < (int) classes->capacity() ; i++ ) {
@@ -79,7 +79,7 @@ long long Solver::pc2_dedekind(int m) {
 
 	clock_t end_collect = clock();
 	cout << "finished collecting equivalence classes" << endl;
-	cout << "@ " << (double) (end_collect - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+	cout << "@ " << (long long) (end_collect - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 	cout << "Amount of representatives:" << functions.size() << endl;
 
 	AMFunction e = AMFunction::empty_function();
@@ -96,7 +96,7 @@ long long Solver::pc2_dedekind(int m) {
 
 	clock_t end_isizes = clock();
 	cout << "finished generating interval sizes" << endl;
-	cout << "@ " << (double) (end_isizes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+	cout << "@ " << (long long) (end_isizes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 
 //	cout << "Test: interval sizes for n = " << n << endl;
 //	cout << "---------------------------------------------" << endl;
@@ -136,7 +136,7 @@ long long Solver::pc2_dedekind(int m) {
 
 	clock_t end_algo = clock();
 	cout << "finished: " << evaluations << " evaluations" << endl;
-	cout << "@ " << (double) (end_algo - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+	cout << "@ " << (long long) (end_algo - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 
 	return sum;
 

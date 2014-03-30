@@ -129,6 +129,7 @@ bool AMFInterval::AMFOneOrTwoIterator::hasNext() {
  *******************************************/
 AMFInterval::AMFOneElementIterator::AMFOneElementIterator(AMFInterval* intr ) {
     interval = intr;
+    given = false;
 }
 
 iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFOneElementIterator::operator ++() {
@@ -318,6 +319,7 @@ AMFInterval::GeneralFastIterator::~GeneralFastIterator() {
  *Fast Non Empty iterator
  *******************************************/
 AMFInterval::AMFFastNonEmptyIterator::AMFFastNonEmptyIterator(AMFInterval* interval) {
+    isFinished = false;
     span = interval->getTop().span();
     maxSpan = AMFunction::singleton_function(span.maximum());
     current = interval->getBottom();
@@ -381,6 +383,7 @@ void AMFInterval::AMFFastNonEmptyIterator::clearData() {
  *Fast Empty span iterator
  *******************************************/
 AMFInterval::AMFFastEmptySpanIterator::AMFFastEmptySpanIterator(AMFInterval* intr) {
+    isFinished = false;
     top = intr->getTop();
     current = (intr->getBottom());
     nxt = intr->getBottom();

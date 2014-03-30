@@ -69,7 +69,7 @@ string AMFunction::toString() {
 	for (SmallBasicSet s : sets) {
 		rep += s.toString() + ",";
 	}
-	rep.pop_back();
+	rep.erase(rep.end()-1);
 	rep += "]";
 	if (!isAntiMonotonic()) {
 		rep += "(!)";

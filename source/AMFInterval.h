@@ -136,7 +136,7 @@ public:
     public:
         AMFInterval* interval;
         AMFunction current;
-        bool given = false;
+        bool given;
         
         AMFOneElementIterator(AMFInterval* intr);
         const reference operator*() {return current;};
@@ -172,7 +172,7 @@ public:
         AMFunction current;
         SmallBasicSet span;
         AMFunction maxSpan;
-        bool isFinished = false;
+        bool isFinished;
         AMFunction ret;
         GeneralFastIterator* itr0;
         GeneralFastIterator* itr1;
@@ -201,7 +201,7 @@ public:
         AMFunction current;
         AMFunction nxt;
         AMFunction top;
-        bool isFinished = false;
+        bool isFinished;
         
         AMFFastEmptySpanIterator(AMFInterval* intr);
         const reference operator*() {return current;};

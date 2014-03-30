@@ -88,7 +88,7 @@ void pc2_dedekind_multi(int m) {
 	cout << "started generating equivalence classes" << endl;
     
 	// generate
-	vector<map<AMFunction,long>> classes = Solver::algorithm9(n);
+	vector<map<AMFunction,long>*>* classes = Solver::algorithm9(n);
     map<AMFunction,long> functions;
     map<AMFunction,long> temp;
     
@@ -97,15 +97,15 @@ void pc2_dedekind_multi(int m) {
 	cout << "@ " << (double) (end_classes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
     
     
-    int rest = ((int)classes.capacity()) % NUM_THREADS;
-    int split = ( (int) classes.capacity())/NUM_THREADS;
+    int rest = ((int)classes->capacity()) % NUM_THREADS;
+    int split = ( (int) classes->capacity())/NUM_THREADS;
     int t = 0;
     vector<map<AMFunction,long>> store (NUM_THREADS);
 
 	// collect
-    for (int i = 0; i < (int) classes.capacity() ; i++ ) {
+    for (int i = 0; i < (int) classes->capacity() ; i++ ) {
  		long coeff = Solver::combinations(n, i);
-		for( pair<AMFunction,long> p : classes.at(i)) {
+		for( pair<AMFunction,long> p : *classes->at(i)) {
             if(!(i<split+rest)){
                 store[t] = temp;
                 t = t+1;
@@ -120,8 +120,8 @@ void pc2_dedekind_multi(int m) {
     //	cout << "@ " << (double) (end_collect - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 	cout << "Amount of representatives:" << functions.size() << endl;
     
-	AMFunction e = AMFunction::emptyFunction();
-	AMFunction u = AMFunction::universeFunction(n);
+	AMFunction e = AMFunction::empty_function();
+	AMFunction u = AMFunction::universe_function(n);
 	map<AMFunction, long long> left_interval_size;
 	map<AMFunction, long long> right_interval_size;
 	for( pair<AMFunction,long> fpair : functions ) {
