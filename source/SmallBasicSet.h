@@ -12,16 +12,24 @@ using namespace std;
 #include <sstream>
 #include <cstdint>
 #include <vector>
+#include "BigInt.h"
+
+typedef long long bignum;
 
 /**
  * Deze klasse is bedoeld om sets van integers voor te stellen.
  */
 class SmallBasicSet {
+private:
+
 	static const int MAXELEMENT = 13;
     static const int MAXSET = 10000; // sum(1 .. 4096) = 8191
     static const int bits[13];
 	uint_fast16_t set;
 	friend std::ostream& operator<<(std::ostream &strm, const SmallBasicSet &s);
+
+    void setSet(bool elements[]);
+    void setSet(int setvalues[],int asize);
 
 public:
 
@@ -88,10 +96,6 @@ public:
 	void quickadd(int bit); // add a number a to the set
 	int getNextInSet(int i); // TODO: implement, returns i's successor (still needed?)
     static int get_bit(int pos);
-
-private:
-    void setSet(bool elements[]);
-    void setSet(int setvalues[],int asize);
 };
 
 #endif

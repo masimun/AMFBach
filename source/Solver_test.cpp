@@ -10,6 +10,7 @@ using namespace std;
 #include "MappingPermutator.h"
 #include <iostream>
 #include <unordered_set>
+#include "BigInt.h"
 
 void printarray(int arr[], int size) {
 	cout <<"[";
@@ -73,12 +74,15 @@ void test_algo9() {
 
 void test_pc2_dedekind() {
 	int m = 5+2;
-	long long d = Solver::pc2_dedekind(m);
+	bignum d = Solver::pc2_dedekind(m);
 	cout << d << endl;
 }
 
 int main() {
     test_pc2_dedekind();
+	//simple_decimal_bignum ward = "56713727820156410577229101238628035243";
+//	BigInt dedekind = "56130437228687557907788";
+//	cout << dedekind * dedekind << endl;
 	return 0;
 }
 

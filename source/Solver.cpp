@@ -27,6 +27,15 @@ void Solver::mapstore(map<AMFunction, long>& M, AMFunction A, long i) {
 	}
 }
 
+void Solver::mapstore(map<AMFunction, bignum>& M, AMFunction A, bignum i) {
+	map<AMFunction, bignum>::iterator it = M.find(A);
+	if (it != M.end()) {
+		(*it).second += i;
+	} else {
+		M.insert(make_pair(A,i));
+	}
+}
+
 /**
  * Increase the coefficient of A in M by 1
  */
@@ -51,7 +60,7 @@ long Solver::combinations(int n, int i) {
  * Algorithm for calculating the m'th dedekind number
  * using 2nd degree p-coefficients
  */
-long long Solver::pc2_dedekind(int m) {
+bignum Solver::pc2_dedekind(int m) {
 	int n = m - 2;
 	long REPORT = 20000;
 
@@ -60,7 +69,7 @@ long long Solver::pc2_dedekind(int m) {
 
 	// generate
 	vector<map<AMFunction,long>*>* classes = algorithm9(n);
-	map<AMFunction,long> functions;
+	map<AMFunction,bignum> functions;
 
 	clock_t end_classes = clock();
 	cout << "finished generating equivalence classes" << endl;
@@ -84,9 +93,9 @@ long long Solver::pc2_dedekind(int m) {
 
 	AMFunction e = AMFunction::empty_function();
 	AMFunction u = AMFunction::universe_function(n);
-	map<AMFunction, bigint> left_interval_size;
-	map<AMFunction, bigint> right_interval_size;
-	for( pair<AMFunction,long> fpair : functions ) {
+	map<AMFunction, bignum> left_interval_size;
+	map<AMFunction, bignum> right_interval_size;
+	for( pair<AMFunction,bignum> fpair : functions ) {
 		AMFunction &f = fpair.first;
 		AMFInterval left = AMFInterval(e,f);
 		AMFInterval right = AMFInterval(f,u);
@@ -98,40 +107,38 @@ long long Solver::pc2_dedekind(int m) {
 	cout << "finished generating interval sizes" << endl;
 	cout << "@ " << (long long) (end_isizes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 
-//	cout << "Test: interval sizes for n = " << n << endl;
-//	cout << "---------------------------------------------" << endl;
-//	for ( pair<AMFunction,long> fpair : functions ) {
-//		AMFunction& a = fpair.first;
-//		long l = left_interval_size.find(a)->second;
-//		long r = right_interval_size.find(a)->second;
-//		cout << a.toString() << "\t\tN:" << fpair.second << "\t\tL:" << l << "\t\tR:" << r << endl;
-//	}
-//	cout << "---------------------------------------------" << endl;
+	cout << "Test: interval sizes for n = " << n << endl;
+	cout << "---------------------------------------------" << endl;
+	for ( pair<AMFunction,bignum> fpair : functions ) {
+		AMFunction& a = fpair.first;
+		bignum l = left_interval_size.find(a)->second;
+		bignum r = right_interval_size.find(a)->second;
+		cout << a.toString() << "\t\tN:" << fpair.second << "\t\tL:" << l << "\t\tR:" << r << endl;
+	}
+	cout << "---------------------------------------------" << endl;
 
 	//return 0; //STOP
 
-	long long sum = 0L;
+	bignum sum = 0L;
 	long long evaluations = 0;
-	long long possibilities = 0;
     
 	AMFInterval::GeneralFastIterator& it2 = *(AMFInterval(e,u).getFastIterator());
 	while(it2.hasNext()) {
 		++it2;
 		AMFunction & r2 = *it2;
-		long long r2size = right_interval_size.at(r2.standard());
-		long long sumP = 0L;
-		for (pair<AMFunction,long> r1pair : functions ) {
-			possibilities++;
+		bignum r2size = right_interval_size.at(r2.standard());
+		bignum sumP = 0L;
+		for (pair<AMFunction,bignum> r1pair : functions ) {
 			AMFunction & r1 = r1pair.first;
 			if (r1.leq(r2)) {
 				sumP = sumP	+ ((r1pair.second) * (left_interval_size.at(r1)) * PatricksCoefficient(r1, r2));
-                evaluations++;
+                ++evaluations;
                 if ( evaluations % REPORT == 0 ) {
                 	cout << "partial sum: " << sum << " (" << evaluations << " evaluations)" << endl;
                 }
 			}
 		}
-		sum = sum + (sumP * r2size);
+		sum += (sumP * r2size);
 	}
 
 	clock_t end_algo = clock();
@@ -192,7 +199,7 @@ bool contains(list<AMFunction> as, AMFunction a) {
 	return false;
 }
 
-long long Solver::PatricksCoefficient(const AMFunction & r1, const AMFunction & r2) {
+bignum Solver::PatricksCoefficient(const AMFunction & r1, const AMFunction & r2) {
     // trivial case, no solutions unless r1 <= r2
     if (!r1.leq(r2)) {
        return 0;

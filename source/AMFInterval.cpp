@@ -436,7 +436,7 @@ void AMFInterval::AMFFastEmptyIterator::clearData() {
  * OTHER STUFF
  *******************************************/
 
-long long AMFInterval::lattice_size() {
+bignum AMFInterval::lattice_size() {
 	if (!getBottom().leq(getTop())) {
 		return 0;
 	} else if (getBottom().equals(getTop())) {

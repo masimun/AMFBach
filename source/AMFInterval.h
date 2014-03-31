@@ -249,9 +249,8 @@ public:
     SmallBasicSet bestSubset(SmallBasicSet span, long target,AMFunction bottom);
     
     //graph
-    //AMFGraph graph();
     edges_t edges();
-    long long lattice_size();
+    bignum lattice_size();
     
     //getters
     AMFunction getTop();
