@@ -79,7 +79,7 @@ bignum Solver::pc2_dedekind(int m) {
 	for (int i = 0; i < (int) classes->capacity() ; i++ ) {
 		long coeff = combinations(n, i);
 		for( pair<AMFunction,long> p : *classes->at(i)) {
-			mapstore(functions, p.first, p.second*coeff);
+			mapstore(functions, p.first, bignum(p.second*coeff));
 		}
 		delete classes->at(i);
 	}
@@ -107,15 +107,15 @@ bignum Solver::pc2_dedekind(int m) {
 	cout << "finished generating interval sizes" << endl;
 	cout << "@ " << (long long) (end_isizes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 
-	cout << "Test: interval sizes for n = " << n << endl;
-	cout << "---------------------------------------------" << endl;
-	for ( pair<AMFunction,bignum> fpair : functions ) {
-		AMFunction& a = fpair.first;
-		bignum l = left_interval_size.find(a)->second;
-		bignum r = right_interval_size.find(a)->second;
-		cout << a.toString() << "\t\tN:" << fpair.second << "\t\tL:" << l << "\t\tR:" << r << endl;
-	}
-	cout << "---------------------------------------------" << endl;
+//	cout << "Test: interval sizes for n = " << n << endl;
+//	cout << "---------------------------------------------" << endl;
+//	for ( pair<AMFunction,bignum> fpair : functions ) {
+//		AMFunction& a = fpair.first;
+//		bignum l = left_interval_size.find(a)->second;
+//		bignum r = right_interval_size.find(a)->second;
+//		cout << a.toString() << "\t\tN:" << fpair.second << "\t\tL:" << l << "\t\tR:" << r << endl;
+//	}
+//	cout << "---------------------------------------------" << endl;
 
 	//return 0; //STOP
 
