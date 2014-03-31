@@ -114,6 +114,9 @@ long long Solver::pc2_dedekind(int m) {
 	long long evaluations = 0;
 	long long possibilities = 0;
     
+    
+    //functions.begin()
+    
 	AMFInterval::GeneralFastIterator& it2 = *(AMFInterval(e,u).getFastIterator());
 	while(it2.hasNext()) {
 		++it2;
