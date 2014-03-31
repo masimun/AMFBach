@@ -94,7 +94,6 @@ void AMFunction::setSets(set<SmallBasicSet> ss) {
  */
 void AMFunction::addSet(const SmallBasicSet & s) {
 	sets.insert(s);
-	// bugstr = toString();
 }
 
 void AMFunction::removeAll(AMFunction amf) {
@@ -128,7 +127,6 @@ void AMFunction::addSetConditional(const SmallBasicSet & s) {
 	}
 	removeSets(subsets);
 	sets.insert(s);
-	//bugstr = toString();
 }
 
 void AMFunction::makeAntiMonotonic() {

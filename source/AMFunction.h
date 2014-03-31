@@ -107,9 +107,6 @@ public:
 	static AMFunction singleton_function(int l);
 	static AMFunction immediate_subsets(const SmallBasicSet & s);
 
-	// debug
-	string bugstr;
-    
 };
 
 #endif /* AMFUNCTION_H_ */
