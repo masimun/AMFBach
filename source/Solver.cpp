@@ -69,7 +69,7 @@ bignum Solver::pc2_dedekind(int m) {
 
 	// generate
 	vector<map<AMFunction,long>*>* classes = algorithm9(n);
-	map<AMFunction,bignum> functions;
+	map<AMFunction,long> functions;
 
 	clock_t end_classes = clock();
 	cout << "finished generating equivalence classes" << endl;
@@ -79,23 +79,30 @@ bignum Solver::pc2_dedekind(int m) {
 	for (int i = 0; i < (int) classes->capacity() ; i++ ) {
 		long coeff = combinations(n, i);
 		for( pair<AMFunction,long> p : *classes->at(i)) {
-			mapstore(functions, p.first, bignum(p.second*coeff));
+			mapstore(functions, p.first, p.second*coeff);
 		}
 		delete classes->at(i);
 	}
 	delete classes;
 
+	// transfer to vector for division purposes
+	vector<pair<AMFunction,bignum> > functions_vector;
+	functions_vector.reserve(functions.size());
+	for ( pair<AMFunction,long> fpair : functions ) {
+		functions_vector.push_back(make_pair(fpair.first,fpair.second));
+	}
 
 	clock_t end_collect = clock();
 	cout << "finished collecting equivalence classes" << endl;
 	cout << "@ " << (long long) (end_collect - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 	cout << "Amount of representatives:" << functions.size() << endl;
 
+	// generate interval sizes
 	AMFunction e = AMFunction::empty_function();
 	AMFunction u = AMFunction::universe_function(n);
 	map<AMFunction, bignum> left_interval_size;
 	map<AMFunction, bignum> right_interval_size;
-	for( pair<AMFunction,bignum> fpair : functions ) {
+	for( pair<AMFunction,bignum> fpair : functions_vector ) {
 		AMFunction &f = fpair.first;
 		AMFInterval left = AMFInterval(e,f);
 		AMFInterval right = AMFInterval(f,u);
@@ -117,13 +124,8 @@ bignum Solver::pc2_dedekind(int m) {
 //	}
 //	cout << "---------------------------------------------" << endl;
 
-	//return 0; //STOP
-
 	bignum sum = 0L;
 	long long evaluations = 0;
-    
-    
-    //functions.begin()
     
 	AMFInterval::GeneralFastIterator& it2 = *(AMFInterval(e,u).getFastIterator());
 	while(it2.hasNext()) {
@@ -131,7 +133,7 @@ bignum Solver::pc2_dedekind(int m) {
 		AMFunction & r2 = *it2;
 		bignum r2size = right_interval_size.at(r2.standard());
 		bignum sumP = 0L;
-		for (pair<AMFunction,bignum> r1pair : functions ) {
+		for (pair<AMFunction,bignum> r1pair : functions_vector ) {
 			AMFunction & r1 = r1pair.first;
 			if (r1.leq(r2)) {
 				sumP = sumP	+ ((r1pair.second) * (left_interval_size.at(r1)) * PatricksCoefficient(r1, r2));
