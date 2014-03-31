@@ -128,7 +128,7 @@ void AMFunction::addSetConditional(const SmallBasicSet & s) {
 	}
 	removeSets(subsets);
 	sets.insert(s);
-	bugstr = toString();
+	//bugstr = toString();
 }
 
 void AMFunction::makeAntiMonotonic() {
@@ -343,11 +343,10 @@ vector<AMFunction> AMFunction::reduce(const SmallBasicSet & sbs) const {
     int m = sbs.maximum();
     SmallBasicSet p = sbs.difference(m);
     vector<AMFunction> ret (2);
-    AMFunction* pointer = ret.data();
-    pointer[0] = this->project(p);
+    ret[0] = this->project(p);
     AMFunction a1 = (*this);
     a1.removeAll(ret[0]);
-    pointer[1] = a1.project(p);
+    ret[1] = a1.project(p);
     return ret;
 }
 
@@ -368,7 +367,7 @@ AMFunction AMFunction::lexi_standard() const {
 	int size = sp.numberofelements();
 	int max = sp.maximum();
 	vector<int> map(max+1);
-	vector<set<SmallBasicSet>> size_partition(size+1);
+	vector<set<SmallBasicSet> > size_partition(size+1);
 	for ( SmallBasicSet s : this->getSets() ) {
 		size_partition[s.numberofelements()].insert(s);
 	}
@@ -392,7 +391,7 @@ AMFunction AMFunction::lexi_standard2() const {
 	int max = sp.maximum();
 	vector<int> map(max+1);
 	vector<int> code(max+1);
-	vector<set<SmallBasicSet>> size_partition(size+1);
+	vector<set<SmallBasicSet> > size_partition(size+1);
 	for ( SmallBasicSet s : this->getSets() ) {
 		size_partition[s.numberofelements()].insert(s);
 		SmallBasicSet::iterator it = s.getIterator();

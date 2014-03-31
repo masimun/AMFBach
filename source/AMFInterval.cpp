@@ -374,10 +374,6 @@ AMFInterval::AMFFastNonEmptyIterator::~AMFFastNonEmptyIterator() {
 
 }
 
-void AMFInterval::AMFFastNonEmptyIterator::clearData() {
-	// nothing: TODO: remove the clearData() method
-}
-
 
 /*******************************************
  *Fast Empty span iterator
@@ -404,10 +400,6 @@ AMFInterval::AMFFastEmptySpanIterator::~AMFFastEmptySpanIterator() {
     
 }
 
-void AMFInterval::AMFFastEmptySpanIterator::clearData() {
-    //nothing
-}
-
 /*******************************************
  * ITERATOR Fast Empty
  *******************************************/
@@ -427,9 +419,6 @@ AMFInterval::AMFFastEmptyIterator::~AMFFastEmptyIterator() {
     //delete this;
 }
 
-void AMFInterval::AMFFastEmptyIterator::clearData() {
-    //nothing
-}
 
 
 /*******************************************

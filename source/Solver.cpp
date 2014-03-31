@@ -122,6 +122,9 @@ bignum Solver::pc2_dedekind(int m) {
 	bignum sum = 0L;
 	long long evaluations = 0;
     
+    
+    //functions.begin()
+    
 	AMFInterval::GeneralFastIterator& it2 = *(AMFInterval(e,u).getFastIterator());
 	while(it2.hasNext()) {
 		++it2;

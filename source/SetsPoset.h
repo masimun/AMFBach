@@ -22,11 +22,11 @@ class SetsPoset {
 private:
 	typedef SmallBasicSet SBS;
 
-	vector<set<SBS>> level;
-	map<SBS,set<SBS>> successors;
-	map<SBS,set<SBS>> predecessors;
-	map<SBS,set<SBS>> before;
-	map<SBS,set<SBS>> after;
+	vector<set<SBS> > level;
+	map<SBS,set<SBS> > successors;
+	map<SBS,set<SBS> > predecessors;
+	map<SBS,set<SBS> > before;
+	map<SBS,set<SBS> > after;
 	int min_size;
 	int max_size;
 
@@ -36,7 +36,7 @@ public:
 	virtual ~SetsPoset();
 	void construct_level(const AMFunction & bottom, const AMFunction & top);
 	void construct_cessors();
-	void store(map<long,set<SmallBasicSet>>* h_level, SmallBasicSet s);
+	void store(map<long,set<SmallBasicSet> >* h_level, SmallBasicSet s);
 
 	// general
 	bool is_empty();

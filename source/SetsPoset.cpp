@@ -20,7 +20,7 @@ SetsPoset::SetsPoset(const AMFunction & bottom, const AMFunction & top) {
 }
 
 void SetsPoset::construct_level(const AMFunction & bottom, const AMFunction & top) {
-	map<long,set<SmallBasicSet>> h_level;
+	map<long,set<SmallBasicSet> > h_level;
 	// AMFunction h = top;
 	AMFunction* ph = new AMFunction(top);
 	AMFunction hh;
@@ -70,7 +70,7 @@ void SetsPoset::construct_cessors() {
 	}
 	for (int k = 0 ; k < (int) level.capacity() - 1 ; k++ ) {
 		for (SBS s : level[k]) {
-			map<SBS,set<SBS>>::iterator s_pair = successors.find(s);
+			map<SBS,set<SBS> >::iterator s_pair = successors.find(s);
 			for (SBS t : level[k+1]) {
 				if (t.hasAsSubset(s)) {
 					(s_pair->second).insert(t);
@@ -85,7 +85,7 @@ SetsPoset::~SetsPoset() {
 	// TODO Auto-generated destructor stub
 }
 
-void SetsPoset::store(map<long,set<SmallBasicSet>>* h_level, SmallBasicSet s) {
+void SetsPoset::store(map<long,set<SmallBasicSet> >* h_level, SmallBasicSet s) {
 	int size = s.numberofelements();
 	if ( h_level->find(size) == h_level->end() ) {
 		h_level->insert(make_pair(size,set<SBS>()));
