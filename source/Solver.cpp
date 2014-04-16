@@ -6,6 +6,7 @@
  */
 
 #include "Solver.h"
+#define MASTER 0
 
 Solver::Solver() {
 	// TODO Auto-generated constructor stub
@@ -64,16 +65,34 @@ bignum Solver::pc2_dedekind(int m) {
 	int n = m - 2;
 	long REPORT = 20000;
 
+    int size;
+    int rank;
+    char name[BUFSIZ];
+    int res;
+
+    
+    MPI_Init(NULL, NULL);
+    
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    
+    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    
+    MPI_Get_processor_name(name, &res);
+    
+    
+    //cout << rank << endl;
+    //cout << size << endl;
+    
 	clock_t begin = clock();
-	cout << "started generating equivalence classes" << endl;
+	cout << name << " " << rank <<": has started generating equivalence classes" << endl;
 
 	// generate
 	vector<map<AMFunction,long>*>* classes = algorithm9(n);
 	map<AMFunction,long> functions;
 
 	clock_t end_classes = clock();
-	cout << "finished generating equivalence classes" << endl;
-	cout << "@ " << (long long) (end_classes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+	cout << name << " " << rank << ": is finished generating equivalence classes" << endl;
+	cout << name << " " << rank << ": @ " << (long long) (end_classes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 
 	// collect
 	for (int i = 0; i < (int) classes->capacity() ; i++ ) {
@@ -93,9 +112,9 @@ bignum Solver::pc2_dedekind(int m) {
 	}
 
 	clock_t end_collect = clock();
-	cout << "finished collecting equivalence classes" << endl;
-	cout << "@ " << (long long) (end_collect - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
-	cout << "Amount of representatives:" << functions.size() << endl;
+	cout << name << " " << rank << ": is finished collecting equivalence classes" << endl;
+	cout << name << " " << rank << ": @ " << (long long) (end_collect - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+	cout << name << " " << rank << ": Amount of representatives:" << functions.size() << endl;
 
 	// generate interval sizes
 	AMFunction e = AMFunction::empty_function();
@@ -111,8 +130,8 @@ bignum Solver::pc2_dedekind(int m) {
 	}
 
 	clock_t end_isizes = clock();
-	cout << "finished generating interval sizes" << endl;
-	cout << "@ " << (long long) (end_isizes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+	cout << name << " " << rank << ": is finished generating interval sizes" << endl;
+	cout <<name << " " << rank << ": @ " << (long long) (end_isizes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
 
 //	cout << "Test: interval sizes for n = " << n << endl;
 //	cout << "---------------------------------------------" << endl;
@@ -128,30 +147,60 @@ bignum Solver::pc2_dedekind(int m) {
 	long long evaluations = 0;
     
 	AMFInterval::GeneralFastIterator& it2 = *(AMFInterval(e,u).getFastIterator());
+    int rest = functions_vector.size()%(size);
+    int maxCalculations = (functions_vector.size() - rest) / size;
+    
+    if(rank+1<=rest){
+        maxCalculations++;
+    }
+    
 	while(it2.hasNext()) {
 		++it2;
 		AMFunction & r2 = *it2;
 		bignum r2size = right_interval_size.at(r2.standard());
 		bignum sumP = 0L;
-		for (pair<AMFunction,bignum> r1pair : functions_vector ) {
+        //for(vector<pair<AMFunction,bignum> >::iterator iter = (functions_vector.begin()+(rank));(iter < (functions_vector.end()-=size)); iter+= size){
+        vector<pair<AMFunction,bignum> >::iterator iter = functions_vector.begin();
+        iter += rank;
+        for (int calculations = 0; calculations < maxCalculations; calculations++) {
+            pair<AMFunction, bignum> r1pair = *iter;
 			AMFunction & r1 = r1pair.first;
 			if (r1.leq(r2)) {
 				sumP = sumP	+ ((r1pair.second) * (left_interval_size.at(r1)) * PatricksCoefficient(r1, r2));
                 ++evaluations;
                 if ( evaluations % REPORT == 0 ) {
-                	cout << "partial sum: " << sum << " (" << evaluations << " evaluations)" << endl;
+                	cout << name << " " << rank << " partial sum: " << sum << " (" << evaluations << " evaluations)" << endl;
                 }
-			}
+            }
+            iter+=size;
 		}
 		sum += (sumP * r2size);
 	}
+    
+    //cout << evaluations << endl;
+    if (rank == MASTER) {
+      
+        long long rec;
+        int i =1;
+        while (i < size) {
 
-	clock_t end_algo = clock();
-	cout << "finished: " << evaluations << " evaluations" << endl;
-	cout << "@ " << (long long) (end_algo - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+            MPI_Recv(&rec, 1, MPI_LONG_LONG, i, 0, MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+            sum = sum + rec;
+            i++;
+        }
+        clock_t end_algo = clock();
+        cout << name << " " << rank << "finished: " << evaluations << " evaluations" << endl;
+        cout << name << " " << rank << "finished @ " << (long long) (end_algo - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+        //cout << sum << endl;
+        
+    } else if (rank != MASTER) {
+        
+        MPI_Send(&sum, 1, MPI_LONG_LONG, 0, 0, MPI_COMM_WORLD);
+    }
+
+    MPI_Finalize();
 
 	return sum;
-
 }
 
 /**
@@ -221,56 +270,3 @@ bignum Solver::PatricksCoefficient(const AMFunction & r1, const AMFunction & r2)
     return (1<<(AMFGraph(r1,r2.minus(r1)).count_connected()));
 }
 
-
-
-
-
-/*
-void Solver::verynaivededekind() {
-	int const n = 4; // works instant up to 4... and 5 takes a while.
-	int sbsamount = 1;
-	for( int i = 0 ; i < n ; i++) {
-		sbsamount *= 2;
-	}
-	SmallBasicSet sbs[sbsamount];
-	for (int i = 0 ; i < sbsamount ; i++) {
-		sbs[i] = SmallBasicSet(i);
-		cout << sbs[i].toString() << endl;
-	}
-	cout << "----" << endl;
-	int accdede = 1;
-	cout << "lege AMF - 1" << endl;
-	list<AMFunction> amfs;
-	amfs.push_front(AMFunction());
-	int itno = 0;
-	bool set_added = true;
-	while (set_added) {
-		set_added = false;
-		cout << "chains of length " << (itno++)+1 << endl;
-		list<AMFunction> amfs_new;
-		for (AMFunction a : amfs) {
-			for (SmallBasicSet s : sbs) {
-				AMFunction a_new = a.shallowclone();
-				if (!a_new.contains(s)) {
-					a_new.addSet(s);
-					if (a_new.isAntiMonotonic() && !contains(amfs_new,a_new)) {
-						accdede++;
-						// cout << a_new.toString() << " - " << accdede << endl;
-						if (accdede % 1000 == 0) {cout << "count:" << accdede << endl;}
-						amfs_new.push_front(a_new);
-						set_added = true;
-					}
-				}
-			}
-		}
-		amfs = amfs_new;
-	}
-	cout << "Dedekind number for n = " << n << ": " << accdede;
-}
-*/
-/*
-int main() {
-    verynaivededekind();
-}
-
-*/

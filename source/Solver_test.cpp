@@ -72,17 +72,17 @@ void test_algo9() {
 	cout << sum << endl;
 }
 
-void test_pc2_dedekind() {
-	int m = 5+2;
+void test_pc2_dedekind(int m) {
 	bignum d = Solver::pc2_dedekind(m);
-	cout << d << endl;
+	//cout << d << endl;
 }
 
-int main() {
-    test_pc2_dedekind();
-	//simple_decimal_bignum ward = "56713727820156410577229101238628035243";
-//	BigInt dedekind = "56130437228687557907788";
-//	cout << dedekind * dedekind << endl;
-	return 0;
-}
+//int main(){
+//    test_pc2_dedekind(7);
+//}
+
+//int main(int argc,char* arg[]) {
+//    test_pc2_dedekind((int) *arg[0]);
+//	return 0;
+//}
 

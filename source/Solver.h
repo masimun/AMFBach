@@ -19,12 +19,15 @@
 #include <map>
 #include <vector>
 #include <unordered_set>
+#include "mpi.h"
+
 using namespace std;
 
 class Solver {
 public:
 	Solver();
 	virtual ~Solver();
+
 
 	// UTILITY
 	static long combinations(int n, int i);

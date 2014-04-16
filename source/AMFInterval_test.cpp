@@ -25,14 +25,14 @@ void test_amfinterval() {
 
 void test_fastiterator(){
     Parser p;
-    AMFInterval amf(p.parse_amf(""),p.parse_amf("{[12345]}"));
+    AMFInterval amf(p.parse_amf("{}"),p.parse_amf("{[123]}"));
     long i = 0;
     AMFInterval::GeneralFastIterator& amfit = (*(amf.getFastIterator()));
     while(amfit.hasNext()) {
         i++;
         (++amfit);
-        //AMFunction a = (*amfit);
-        //cout  <<i << " \t " << a.toString() << endl;
+        AMFunction a = (*amfit);
+        cout  << " \t " << a.toString() << endl;
         
     }
     cout << i << endl;
@@ -41,7 +41,7 @@ void test_fastiterator(){
 
 void test_iterator() {
     Parser p;
-    AMFInterval amf(p.parse_amf(""),p.parse_amf("{[12345]}"));
+    AMFInterval amf(p.parse_amf(""),p.parse_amf("{[123]}"));
     //AMFInterval amf(p.parse_amf("{[12][23]}"),p.parse_amf("{[123]}"));
     long i = 0;
     AMFInterval::GeneralIterator& amfit = (*(amf.getIterator()));
@@ -116,9 +116,9 @@ void test_graph() {
 }
 
 
-//int main() {
+int main() {
 
-
+    test_fastiterator();
     
   //  const clock_t begin_time = clock();
     // do something
@@ -129,5 +129,5 @@ void test_graph() {
     //test_bestSubSet();
     //cout << SmallBasicSet(3).size();
    // return 0;
-//}
+}
 

@@ -319,6 +319,7 @@ AMFInterval::GeneralFastIterator::~GeneralFastIterator() {
  *Fast Non Empty iterator
  *******************************************/
 AMFInterval::AMFFastNonEmptyIterator::AMFFastNonEmptyIterator(AMFInterval* interval) {
+    
     isFinished = false;
     span = interval->getTop().span();
     maxSpan = AMFunction::singleton_function(span.maximum());
@@ -379,6 +380,7 @@ AMFInterval::AMFFastNonEmptyIterator::~AMFFastNonEmptyIterator() {
  *Fast Empty span iterator
  *******************************************/
 AMFInterval::AMFFastEmptySpanIterator::AMFFastEmptySpanIterator(AMFInterval* intr) {
+    
     isFinished = false;
     top = intr->getTop();
     current = (intr->getBottom());
@@ -404,7 +406,7 @@ AMFInterval::AMFFastEmptySpanIterator::~AMFFastEmptySpanIterator() {
  * ITERATOR Fast Empty
  *******************************************/
 AMFInterval::AMFFastEmptyIterator::AMFFastEmptyIterator() {
-    
+    cout << "it fast empty" << endl;
 }
 
 iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFFastEmptyIterator::operator ++() {
