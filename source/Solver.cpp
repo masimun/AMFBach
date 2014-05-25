@@ -61,16 +61,20 @@ long Solver::combinations(int n, int i) {
  * Algorithm for calculating the m'th dedekind number
  * using 2nd degree p-coefficients
  */
-bignum Solver::pc2_dedekind(int m) {
+void Solver::pc2_dedekind(int m) {
 	int n = m - 2;
 	long REPORT = 20000;
-
+    
     int size;
     int rank;
     char name[BUFSIZ];
     int res;
-
+    cout.precision(25);
     
+    clock_t begin = clock();
+    /**
+     * Initialize MPI
+     */
     MPI_Init(NULL, NULL);
     
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
@@ -79,21 +83,22 @@ bignum Solver::pc2_dedekind(int m) {
     
     MPI_Get_processor_name(name, &res);
     
+	
+	
     
-    //cout << rank << endl;
-    //cout << size << endl;
+    cout << name << " " << rank <<": has started generating equivalence classes" << endl;
     
-	clock_t begin = clock();
-	cout << name << " " << rank <<": has started generating equivalence classes" << endl;
-
+    
 	// generate
 	vector<map<AMFunction,long>*>* classes = algorithm9(n);
 	map<AMFunction,long> functions;
-
+    
+    
 	clock_t end_classes = clock();
 	cout << name << " " << rank << ": is finished generating equivalence classes" << endl;
-	cout << name << " " << rank << ": @ " << (long long) (end_classes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
-
+	cout << name << " " << rank << ": @ " << (long double) (end_classes - begin) / (CLOCKS_PER_SEC) << " sec" << endl;
+    
+    
 	// collect
 	for (int i = 0; i < (int) classes->capacity() ; i++ ) {
 		long coeff = combinations(n, i);
@@ -103,19 +108,21 @@ bignum Solver::pc2_dedekind(int m) {
 		delete classes->at(i);
 	}
 	delete classes;
-
+    
 	// transfer to vector for division purposes
 	vector<pair<AMFunction,bignum> > functions_vector;
 	functions_vector.reserve(functions.size());
 	for ( pair<AMFunction,long> fpair : functions ) {
 		functions_vector.push_back(make_pair(fpair.first,fpair.second));
 	}
-
+    
+    
 	clock_t end_collect = clock();
 	cout << name << " " << rank << ": is finished collecting equivalence classes" << endl;
-	cout << name << " " << rank << ": @ " << (long long) (end_collect - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
+	cout << name << " " << rank << ": @ " << (long double) (end_collect - begin) / (CLOCKS_PER_SEC ) << " sec" << endl;
 	cout << name << " " << rank << ": Amount of representatives:" << functions.size() << endl;
-
+    
+    
 	// generate interval sizes
 	AMFunction e = AMFunction::empty_function();
 	AMFunction u = AMFunction::universe_function(n);
@@ -128,79 +135,67 @@ bignum Solver::pc2_dedekind(int m) {
 		left_interval_size.insert(make_pair(f,left.lattice_size()));
 		right_interval_size.insert(make_pair(f,right.lattice_size()));
 	}
-
+    
+    
 	clock_t end_isizes = clock();
 	cout << name << " " << rank << ": is finished generating interval sizes" << endl;
-	cout <<name << " " << rank << ": @ " << (long long) (end_isizes - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
-
-//	cout << "Test: interval sizes for n = " << n << endl;
-//	cout << "---------------------------------------------" << endl;
-//	for ( pair<AMFunction,bignum> fpair : functions ) {
-//		AMFunction& a = fpair.first;
-//		bignum l = left_interval_size.find(a)->second;
-//		bignum r = right_interval_size.find(a)->second;
-//		cout << a.toString() << "\t\tN:" << fpair.second << "\t\tL:" << l << "\t\tR:" << r << endl;
-//	}
-//	cout << "---------------------------------------------" << endl;
-
+	cout <<name << " " << rank << ": @ " << (long double) (end_isizes - begin) / (CLOCKS_PER_SEC) << " sec" << endl;
+    
+    
 	bignum sum = 0L;
 	long long evaluations = 0;
-    
-	AMFInterval::GeneralFastIterator& it2 = *(AMFInterval(e,u).getFastIterator());
-    int rest = functions_vector.size()%(size);
-    int maxCalculations = (functions_vector.size() - rest) / size;
-    
-    if(rank+1<=rest){
-        maxCalculations++;
-    }
-    
-	while(it2.hasNext()) {
-		++it2;
-		AMFunction & r2 = *it2;
-		bignum r2size = right_interval_size.at(r2.standard());
-		bignum sumP = 0L;
-        //for(vector<pair<AMFunction,bignum> >::iterator iter = (functions_vector.begin()+(rank));(iter < (functions_vector.end()-=size)); iter+= size){
-        vector<pair<AMFunction,bignum> >::iterator iter = functions_vector.begin();
-        iter += rank;
-        for (int calculations = 0; calculations < maxCalculations; calculations++) {
-            pair<AMFunction, bignum> r1pair = *iter;
-			AMFunction & r1 = r1pair.first;
-			if (r1.leq(r2)) {
-				sumP = sumP	+ ((r1pair.second) * (left_interval_size.at(r1)) * PatricksCoefficient(r1, r2));
-                ++evaluations;
-                if ( evaluations % REPORT == 0 ) {
-                	cout << name << " " << rank << " partial sum: " << sum << " (" << evaluations << " evaluations)" << endl;
-                }
+    AMFInterval::GeneralFastIterator& it2 = *(AMFInterval(e,u).getFastIterator());
+    while(it2.hasNext()) {
+        ++it2;
+        AMFunction & r2 = *it2;
+        bignum r2size = right_interval_size.at(r2.standard());
+        bignum sumP = 0L;
+        // vector<pair<AMFunction,bignum> >::iterator iter = functions_vector.begin();
+        int i = rank;
+        while (i < functions_vector.size()) {
+            pair<AMFunction, bignum> r1pair = functions_vector[i];
+            AMFunction & r1 = r1pair.first;
+            if (r1.leq(r2)) {
+                sumP = sumP + ((r1pair.second) * (left_interval_size.at(r1)) * PatricksCoefficient(r1, r2));
+                
+                 ++evaluations;
+                 if ( evaluations % REPORT == 0 ) {
+                 cout << name << " " << rank << " partial sum: " << sum << " (" << evaluations << " evaluations)" << endl;
+                 
+                 }
+                
             }
-            iter+=size;
-		}
-		sum += (sumP * r2size);
-	}
+            i += size;
+        }
+        sum += (sumP * r2size);
+    }
     
     //cout << evaluations << endl;
     if (rank == MASTER) {
-      
-        long long rec;
+        
+        bignum rec;
         int i =1;
         while (i < size) {
-
-            MPI_Recv(&rec, 1, MPI_LONG_LONG, i, 0, MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+            
+            MPI_Recv(&rec, 1, MPI_LONG_DOUBLE, i, 0, MPI_COMM_WORLD,MPI_STATUS_IGNORE);
             sum = sum + rec;
             i++;
         }
         clock_t end_algo = clock();
+        //cout <<(long double) (end_algo - begin) / (CLOCKS_PER_SEC) << endl;
+        
+        
         cout << name << " " << rank << "finished: " << evaluations << " evaluations" << endl;
-        cout << name << " " << rank << "finished @ " << (long long) (end_algo - begin) / (CLOCKS_PER_SEC / 1000) << " msec" << endl;
-        //cout << sum << endl;
+        cout << name << " " << rank << "@ " << (long double) (end_algo - begin) / (CLOCKS_PER_SEC) << " sec" << endl;
+        cout <<"AMF("<< m <<") =" <<sum << endl;
         
     } else if (rank != MASTER) {
         
-        MPI_Send(&sum, 1, MPI_LONG_LONG, 0, 0, MPI_COMM_WORLD);
+        MPI_Send(&sum, 1, MPI_LONG_DOUBLE, 0, 0, MPI_COMM_WORLD);
     }
-
+    
     MPI_Finalize();
-
-	return sum;
+    
 }
 
 /**
@@ -242,7 +237,7 @@ map<AMFunction,long>* Solver::algorithm7(int n, const map<AMFunction,long>* cons
 	}
 	return S1;
 }
- 
+
 
 bool contains(list<AMFunction> as, AMFunction a) {
 	for ( AMFunction b : as ) {
@@ -256,7 +251,7 @@ bool contains(list<AMFunction> as, AMFunction a) {
 bignum Solver::PatricksCoefficient(const AMFunction & r1, const AMFunction & r2) {
     // trivial case, no solutions unless r1 <= r2
     if (!r1.leq(r2)) {
-       return 0;
+        return 0;
     }
     // trivial case, one solution if r1 == r2
     if (r1.equals(r2)){

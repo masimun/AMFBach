@@ -27,8 +27,8 @@ class Solver {
 public:
 	Solver();
 	virtual ~Solver();
-
-
+    
+    
 	// UTILITY
 	static long combinations(int n, int i);
 	static long comb(int n, int i);
@@ -36,16 +36,16 @@ public:
 	static void mapstore(map<AMFunction, long>& M, AMFunction A);
 	static void mapstore(map<AMFunction, bignum>& M, AMFunction A, bignum i);
     static edges_t graph(AMFunction r1, AMFunction r2);
-
+    
 	// ALGORITHMS
 	static vector<map<AMFunction,long>*>* algorithm9(int n);
 	static vector<map<AMFunction,long>*>* equivalence_classes(int n); // == algorithm 9
 	static map<AMFunction,long>* algorithm7(int n, const map<AMFunction,long>* const S);
-	static bignum pc2_dedekind(int n);
-
+	static void pc2_dedekind(int n);
+    
 	// COEFFICIENTS
     static bignum PatricksCoefficient(const AMFunction & r1, const AMFunction & r2);
-
+    
     // OTHER
     static void verynaivededekind();
 };

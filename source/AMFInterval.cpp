@@ -406,7 +406,7 @@ AMFInterval::AMFFastEmptySpanIterator::~AMFFastEmptySpanIterator() {
  * ITERATOR Fast Empty
  *******************************************/
 AMFInterval::AMFFastEmptyIterator::AMFFastEmptyIterator() {
-    cout << "it fast empty" << endl;
+    
 }
 
 iterator<forward_iterator_tag, AMFunction> AMFInterval::AMFFastEmptyIterator::operator ++() {

@@ -116,9 +116,9 @@ void test_graph() {
 }
 
 
-int main() {
-
-    test_fastiterator();
+//int main() {
+   // cout << "1234" << "\t" << "tets" <<endl;
+    //test_fastiterator();
     
   //  const clock_t begin_time = clock();
     // do something
@@ -129,5 +129,5 @@ int main() {
     //test_bestSubSet();
     //cout << SmallBasicSet(3).size();
    // return 0;
-}
+//}
 
